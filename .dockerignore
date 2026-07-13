@@ -1,0 +1,35 @@
+# Ignorer les fichiers de build
+target/
+*.class
+*.jar
+*.war
+
+# Ignorer les fichiers IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Ignorer les logs
+logs/
+*.log
+
+# Ignorer Git
+.git/
+.gitignore
+
+# Ignorer Docker
+Dockerfile
+.dockerignore
+
+# Ignorer les fichiers système
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers de test
+src/test/
