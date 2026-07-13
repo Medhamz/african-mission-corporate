@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+<body>
+
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- ==================== EN-TÊTE ==================== -->
+<section class="page-header">
+    <div class="container text-center" data-aos="fade-up">
+        <h1 class="display-4 fw-bold">Notre équipe</h1>
+        <p class="lead">Des experts passionnés à votre service</p>
+    </div>
+</section>
+
+<!-- ==================== PRÉSENTATION ==================== -->
+<section class="py-5" style="background: #ffffff;">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5" data-aos="fade-up">
+            <div class="col-lg-8">
+                <p class="lead text-muted">African Mission Corporate s'appuie sur une équipe pluridisciplinaire d'experts, ingénieurs et techniciens dédiés à la réussite de vos projets.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Membre 1 -->
+            <div class="col-md-4" data-aos="flip-up">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <img src="https://via.placeholder.com/200x200/0a1628/ffc107?text=CEO" class="rounded-circle mb-3" style="width:150px;height:150px;object-fit:cover;">
+                        <h5 class="fw-bold">Mamadou Diarra</h5>
+                        <p class="text-warning">Directeur Général</p>
+                        <p class="text-muted small">20 ans d'expérience dans le BTP et l'ingénierie. Diplômé de l'École Polytechnique.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membre 2 -->
+            <div class="col-md-4" data-aos="flip-up" data-aos-delay="100">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <img src="https://via.placeholder.com/200x200/0a1628/ffc107?text=CTO" class="rounded-circle mb-3" style="width:150px;height:150px;object-fit:cover;">
+                        <h5 class="fw-bold">Aïssata Touré</h5>
+                        <p class="text-warning">Directrice Technique</p>
+                        <p class="text-muted small">Spécialiste en génie civil et énergies renouvelables. 15 ans d'expérience.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membre 3 -->
+            <div class="col-md-4" data-aos="flip-up" data-aos-delay="200">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <img src="https://via.placeholder.com/200x200/0a1628/ffc107?text=CFO" class="rounded-circle mb-3" style="width:150px;height:150px;object-fit:cover;">
+                        <h5 class="fw-bold">Oumar Coulibaly</h5>
+                        <p class="text-warning">Directeur Financier</p>
+                        <p class="text-muted small">Expert en finance et gestion de projets internationaux. 12 ans d'expérience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== NOS VALEURS ==================== -->
+<section class="py-5" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold" style="color: #0a1628;">Nos valeurs</h2>
+            <p class="text-muted">Des principes qui guident nos actions au quotidien</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3 text-center" data-aos="zoom-in">
+                <i class="fas fa-check-circle text-warning display-4"></i>
+                <h5 class="fw-bold mt-3">Intégrité</h5>
+                <p class="text-muted small">Transparence et honnêteté dans toutes nos actions</p>
+            </div>
+            <div class="col-md-3 text-center" data-aos="zoom-in" data-aos-delay="100">
+                <i class="fas fa-lightbulb text-warning display-4"></i>
+                <h5 class="fw-bold mt-3">Innovation</h5>
+                <p class="text-muted small">Solutions techniques avancées et créatives</p>
+            </div>
+            <div class="col-md-3 text-center" data-aos="zoom-in" data-aos-delay="200">
+                <i class="fas fa-globe-africa text-warning display-4"></i>
+                <h5 class="fw-bold mt-3">Durabilité</h5>
+                <p class="text-muted small">Engagement pour un développement durable</p>
+            </div>
+            <div class="col-md-3 text-center" data-aos="zoom-in" data-aos-delay="300">
+                <i class="fas fa-users text-warning display-4"></i>
+                <h5 class="fw-bold mt-3">Collaboration</h5>
+                <p class="text-muted small">Travail en équipe et partenariat gagnant-gagnant</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>AOS.init({duration:800,once:true,offset:100});</script>
+</body>
+</html>

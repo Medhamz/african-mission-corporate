@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+<body>
+
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- ==================== EN-TÊTE ==================== -->
+<section class="page-header">
+  <div class="container text-center" data-aos="fade-up">
+    <h1 class="display-4 fw-bold">Nos services</h1>
+    <p class="lead">Des solutions sur mesure pour vos projets</p>
+  </div>
+</section>
+
+<!-- ==================== SERVICES PRINCIPAUX ==================== -->
+<section class="py-5" style="background: #ffffff;">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Service 1 : BTP -->
+      <div class="col-md-6" data-aos="fade-up">
+        <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm" style="border-left: 4px solid #ffc107;">
+          <div class="display-4 text-warning mb-3"><i class="fas fa-building-construction"></i></div>
+          <h3 class="fw-bold">Bâtiment &amp; Travaux Publics</h3>
+          <p class="text-muted">Construction de bâtiments, routes, ponts, génie civil et infrastructures.</p>
+          <ul class="list-unstyled text-muted">
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Construction de bâtiments</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Routes et ponts</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Génie civil</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Service 2 : Énergie -->
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm" style="border-left: 4px solid #ffc107;">
+          <div class="display-4 text-warning mb-3"><i class="fas fa-bolt"></i></div>
+          <h3 class="fw-bold">Énergie</h3>
+          <p class="text-muted">Électrification, énergies renouvelables, groupes électrogènes.</p>
+          <ul class="list-unstyled text-muted">
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Électrification rurale/urbaine</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Énergies solaires</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Groupes électrogènes</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Service 3 : Agriculture -->
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm" style="border-left: 4px solid #ffc107;">
+          <div class="display-4 text-warning mb-3"><i class="fas fa-tractor"></i></div>
+          <h3 class="fw-bold">Agrobusiness</h3>
+          <p class="text-muted">Aménagements hydro-agricoles, fertilisation, agrosylvo-pastoral.</p>
+          <ul class="list-unstyled text-muted">
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Aménagement hydro-agricole</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Fertilisation des sols</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Phytopharmacie</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Service 4 : Mines -->
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm" style="border-left: 4px solid #ffc107;">
+          <div class="display-4 text-warning mb-3"><i class="fas fa-gem"></i></div>
+          <h3 class="fw-bold">Mines &amp; Métaux précieux</h3>
+          <p class="text-muted">Exploitation minière, équipements miniers, achat d'or.</p>
+          <ul class="list-unstyled text-muted">
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Services miniers</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Achat d'or et métaux précieux</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Équipements miniers</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Service 5 : Commerce & Import-Export -->
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm" style="border-left: 4px solid #ffc107;">
+          <div class="display-4 text-warning mb-3"><i class="fas fa-ship"></i></div>
+          <h3 class="fw-bold">Commerce &amp; Import-Export</h3>
+          <p class="text-muted">Commerce général, import-export, hydrocarbures.</p>
+          <ul class="list-unstyled text-muted">
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Commerce général</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Import-Export</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Hydrocarbures</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Service 6 : Conseil & Formation -->
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="service-card h-100 p-4 bg-white rounded-4 shadow-sm" style="border-left: 4px solid #ffc107;">
+          <div class="display-4 text-warning mb-3"><i class="fas fa-handshake"></i></div>
+          <h3 class="fw-bold">Conseil &amp; Formation</h3>
+          <p class="text-muted">Études, consultations, appui-conseil, formation.</p>
+          <ul class="list-unstyled text-muted">
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Études et consulting</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Formation des entreprises</li>
+            <li><i class="fas fa-check-circle text-warning me-2"></i>Business développement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== POURQUOI NOUS CHOISIR ==================== -->
+<section class="py-5" style="background: #0a1628; color: #fff;">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="fw-bold text-warning">Pourquoi choisir African Mission Corporate ?</h2>
+      <p class="text-light" style="opacity: 0.8;">Des valeurs qui font la différence</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-3 text-center" data-aos="zoom-in">
+        <div class="display-1 text-warning"><i class="fas fa-medal"></i></div>
+        <h5 class="fw-bold mt-3">Excellence</h5>
+        <p class="text-light" style="opacity: 0.7;">Des standards de qualité élevés</p>
+      </div>
+      <div class="col-md-3 text-center" data-aos="zoom-in" data-aos-delay="100">
+        <div class="display-1 text-warning"><i class="fas fa-leaf"></i></div>
+        <h5 class="fw-bold mt-3">Durabilité</h5>
+        <p class="text-light" style="opacity: 0.7;">Engagement pour l'environnement</p>
+      </div>
+      <div class="col-md-3 text-center" data-aos="zoom-in" data-aos-delay="200">
+        <div class="display-1 text-warning"><i class="fas fa-users"></i></div>
+        <h5 class="fw-bold mt-3">Expertise</h5>
+        <p class="text-light" style="opacity: 0.7;">30 domaines de compétence</p>
+      </div>
+      <div class="col-md-3 text-center" data-aos="zoom-in" data-aos-delay="300">
+        <div class="display-1 text-warning"><i class="fas fa-handshake"></i></div>
+        <h5 class="fw-bold mt-3">Confiance</h5>
+        <p class="text-light" style="opacity: 0.7;">Des clients satisfaits</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script>AOS.init({duration:800,once:true,offset:100});</script>
+</body>
+</html>

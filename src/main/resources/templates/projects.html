@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+<body>
+
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- ==================== EN-TÊTE ==================== -->
+<section class="page-header">
+    <div class="container text-center" data-aos="fade-up">
+        <h1 class="display-4 fw-bold">Nos projets</h1>
+        <p class="lead">Des réalisations concrètes au Mali et à l'international</p>
+    </div>
+</section>
+
+<!-- ==================== FILTRES ==================== -->
+<section class="py-4" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <button class="btn btn-outline-dark active" data-filter="all">Tous</button>
+            <button class="btn btn-outline-dark" data-filter="btp">BTP</button>
+            <button class="btn btn-outline-dark" data-filter="energie">Énergie</button>
+            <button class="btn btn-outline-dark" data-filter="agriculture">Agriculture</button>
+            <button class="btn btn-outline-dark" data-filter="mines">Mines</button>
+            <button class="btn btn-outline-dark" data-filter="infrastructure">Infrastructure</button>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GALERIE DE PROJETS ==================== -->
+<section class="py-5" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Projet 1 -->
+            <div class="col-md-6 col-lg-4 project-item" data-category="btp" data-aos="fade-up">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=Construction+BTP" class="card-img-top" alt="Projet BTP">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">BTP</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Construction d'un complexe scolaire</h5>
+                        <p class="card-text text-muted">Bamako - 3 bâtiments modernes pour 500 élèves</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 2 -->
+            <div class="col-md-6 col-lg-4 project-item" data-category="energie" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=Electrification" class="card-img-top" alt="Projet Énergie">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">Énergie</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Électrification rurale - 12 villages</h5>
+                        <p class="card-text text-muted">Région de Koulikoro - 240 foyers raccordés</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 3 -->
+            <div class="col-md-6 col-lg-4 project-item" data-category="agriculture" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=Agrobusiness" class="card-img-top" alt="Projet Agriculture">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">Agriculture</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Aménagement hydro-agricole</h5>
+                        <p class="card-text text-muted">Office du Niger - 150 hectares irrigués</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 4 -->
+            <div class="col-md-6 col-lg-4 project-item" data-category="infrastructure" data-aos="fade-up" data-aos-delay="300">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=Forage" class="card-img-top" alt="Projet Infrastructure">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">Infrastructure</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Forage et AEP - 5 villages</h5>
+                        <p class="card-text text-muted">Région de Sikasso - 5000 bénéficiaires</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 5 -->
+            <div class="col-md-6 col-lg-4 project-item" data-category="mines" data-aos="fade-up" data-aos-delay="400">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=Mines" class="card-img-top" alt="Projet Mines">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">Mines</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Exploration minière - Région de Kayes</h5>
+                        <p class="card-text text-muted">Études géologiques et prospection</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 6 -->
+            <div class="col-md-6 col-lg-4 project-item" data-category="btp" data-aos="fade-up" data-aos-delay="500">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=Route" class="card-img-top" alt="Projet Route">
+                        <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">BTP</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Construction de route - 45 km</h5>
+                        <p class="card-text text-muted">Route de désenclavement - Région de Mopti</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== STATISTIQUES ==================== -->
+<section class="py-5" style="background: #0a1628; color: #fff;">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3" data-aos="count-up">
+                <div class="display-1 fw-bold text-warning">50+</div>
+                <p>Projets réalisés</p>
+            </div>
+            <div class="col-md-3" data-aos="count-up" data-aos-delay="100">
+                <div class="display-1 fw-bold text-warning">30</div>
+                <p>Domaines d'expertise</p>
+            </div>
+            <div class="col-md-3" data-aos="count-up" data-aos-delay="200">
+                <div class="display-1 fw-bold text-warning">15+</div>
+                <p>Partenaires</p>
+            </div>
+            <div class="col-md-3" data-aos="count-up" data-aos-delay="300">
+                <div class="display-1 fw-bold text-warning">100%</div>
+                <p>Satisfaction client</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script>
+    AOS.init({duration:800,once:true,offset:100});
+    // Filtres
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.project-item').forEach(item => {
+                if(filter === 'all' || item.dataset.category === filter) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

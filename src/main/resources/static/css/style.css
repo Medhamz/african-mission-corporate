@@ -1,141 +1,729 @@
 /* ============================================
+   CYBER THEME - ROOT VARIABLES
+============================================ */
+:root {
+    --cyber-bg-primary: #0a0a1a;
+    --cyber-bg-secondary: #0d0d1f;
+    --cyber-bg-card: #111128;
+    --cyber-neon-blue: #4a7cff;
+    --cyber-neon-cyan: #00f0ff;
+    --cyber-neon-purple: #8b5cf6;
+    --cyber-neon-gold: #ffc107;
+    --cyber-neon-pink: #ff6b9d;
+    --cyber-text-primary: #ffffff;
+    --cyber-text-secondary: #b8c6ff;
+    --cyber-text-muted: #8899cc;
+    --cyber-border-glow: rgba(74, 124, 255, 0.3);
+    --cyber-shadow-glow: 0 0 30px rgba(74, 124, 255, 0.15);
+}
+
+/* ============================================
    RESET & BASE
 ============================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f8f9fa !important;
-    color: #212529 !important;
+    background: var(--cyber-bg-primary) !important;
+    color: var(--cyber-text-primary) !important;
     padding-top: 76px;
     overflow-x: hidden;
 }
 
 /* ============================================
-   NAVBAR
+   NAVBAR - CYBER
 ============================================ */
 .navbar {
     padding: 16px 0;
     transition: all 0.3s ease;
-    background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%) !important;
-    backdrop-filter: blur(10px);
+    background: rgba(10, 10, 26, 0.92) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(74, 124, 255, 0.15);
 }
 
-.navbar-brand { font-size: 1.4rem; letter-spacing: 0.5px; color: #fff !important; }
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    color: #fff !important;
+    text-shadow: 0 0 30px rgba(74, 124, 255, 0.2);
+}
+
 .navbar-nav .nav-link {
     font-weight: 500;
     padding: 8px 20px !important;
-    color: rgba(255,255,255,0.85) !important;
+    color: rgba(255,255,255,0.7) !important;
     border-radius: 8px;
     transition: all 0.3s ease;
+    position: relative;
 }
-.navbar-nav .nav-link:hover { background: rgba(255,193,7,0.15); color: #ffc107 !important; }
-.navbar-nav .nav-link.active { color: #ffc107 !important; }
+.navbar-nav .nav-link:hover {
+    color: var(--cyber-neon-cyan) !important;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+.navbar-nav .nav-link.active {
+    color: var(--cyber-neon-cyan) !important;
+}
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 2px;
+    background: var(--cyber-neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+}
 
 /* ============================================
-   HERO - PAGE D'ACCUEIL
+   HERO SECTION - CYBER
 ============================================ */
 .hero-section {
-    background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%);
+    background: var(--cyber-bg-primary);
     min-height: 100vh;
     color: #fff;
 }
-.hero-section .display-3 { font-weight: 800; letter-spacing: -1px; }
 
-/* ============================================
-   PAGE HEADER (Toutes les pages)
-============================================ */
-.page-header {
-    background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%);
-    padding: 120px 0 60px 0;
-    color: #ffffff !important;
-}
-.page-header h1 { font-weight: 800; color: #ffffff !important; }
-.page-header p { opacity: 0.9; color: #ffffff !important; }
-
-/* ============================================
-   ACTIVITIES PAGE - CARTES
-============================================ */
-.activities-section {
-    background: #f8f9fa !important;
-    padding: 60px 0;
-}
-
-.activities-section .card {
-    border: none !important;
-    border-radius: 16px !important;
-    background: #ffffff !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
-    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+/* Grille cyberpunk */
+.cyber-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(74, 124, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74, 124, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
 }
-.activities-section .card:hover {
-    transform: translateY(-8px) !important;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12) !important;
+
+/* Particules flottantes */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
 }
-.activities-section .card-body {
-    padding: 28px 24px !important;
-    background: #ffffff !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--cyber-neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    animation: particleFloat 6s ease-in-out infinite;
 }
-.activities-section .card-title {
-    color: #0a1628 !important;
+
+@keyframes particleFloat {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+    50% { transform: translateY(-50px) scale(1.5); opacity: 1; }
+}
+
+/* Lignes néon */
+.neon-line {
+    position: absolute;
+    z-index: 0;
+    background: linear-gradient(90deg, transparent, var(--cyber-neon-cyan), transparent);
+    opacity: 0.15;
+    animation: neonPulse 4s ease-in-out infinite;
+}
+
+.neon-line-1 {
+    top: 15%;
+    left: 0;
+    width: 30%;
+    height: 1px;
+}
+.neon-line-2 {
+    bottom: 25%;
+    right: 0;
+    width: 25%;
+    height: 1px;
+    animation-delay: 1.5s;
+}
+.neon-line-3 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 40%;
+    height: 1px;
+    animation-delay: 3s;
+    opacity: 0.05;
+}
+
+@keyframes neonPulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.3; }
+}
+
+/* Badge cyber */
+.cyber-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px;
+    border: 1px solid rgba(74, 124, 255, 0.3);
+    border-radius: 50px;
+    background: rgba(74, 124, 255, 0.05);
+}
+
+.cyber-badge-text {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--cyber-neon-cyan);
+    font-weight: 600;
+}
+
+.cyber-badge-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyber-neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.5); }
+}
+
+/* Titre principal */
+.cyber-title {
+    text-shadow: 0 0 60px rgba(74, 124, 255, 0.15);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--cyber-neon-gold), var(--cyber-neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-cyber {
+    color: #fff;
+    text-shadow: 0 0 40px rgba(74, 124, 255, 0.2);
+}
+
+.cyber-line {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cyber-neon-cyan), transparent);
+    margin-bottom: 20px;
+    border-radius: 2px;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+}
+
+/* ============================================
+   BOUTONS CYBER
+============================================ */
+.btn-cyber-primary {
+    position: relative;
+    display: inline-block;
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--cyber-neon-cyan), var(--cyber-neon-blue));
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.btn-cyber-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(74, 124, 255, 0.4);
+}
+
+.btn-cyber-primary .btn-cyber-text {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-cyber-primary .btn-cyber-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
+    animation: glowRotate 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-cyber-primary:hover .btn-cyber-glow {
+    opacity: 1;
+}
+
+@keyframes glowRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn-cyber-secondary {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.btn-cyber-secondary:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--cyber-neon-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 240, 255, 0.1);
+}
+
+.btn-cyber-secondary .btn-cyber-text {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-cyber-outline {
+    display: inline-block;
+    padding: 14px 36px;
+    border: 1px solid rgba(74, 124, 255, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.btn-cyber-outline:hover {
+    background: rgba(74, 124, 255, 0.05);
+    border-color: var(--cyber-neon-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 240, 255, 0.1);
+}
+
+.btn-cyber-outline .btn-cyber-text {
+    color: var(--cyber-neon-cyan);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   STATS CYBER
+============================================ */
+.cyber-stats {
+    margin-top: 2rem !important;
+}
+
+.cyber-stat-item {
+    position: relative;
+    padding: 8px 0;
+}
+
+.cyber-stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--cyber-neon-gold), var(--cyber-neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(255, 193, 7, 0.15);
+}
+
+.cyber-stat-label {
+    font-size: 0.85rem;
+    color: var(--cyber-text-secondary);
+    letter-spacing: 1px;
+    font-weight: 300;
+}
+
+.cyber-stat-line {
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyber-neon-cyan), transparent);
+    margin-top: 6px;
+    border-radius: 1px;
+}
+
+/* ============================================
+   GLOBE CYBER
+============================================ */
+.cyber-globe-container {
+    position: relative;
+    display: inline-block;
+}
+
+.cyber-globe-icon {
+    font-size: 200px;
+    color: rgba(74, 124, 255, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.cyber-globe-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    animation: ringExpand 4s ease-in-out infinite;
+}
+
+.cyber-globe-ring.ring-2 {
+    width: 280px;
+    height: 280px;
+    animation-delay: 1.5s;
+    border-color: rgba(74, 124, 255, 0.08);
+}
+
+.cyber-globe-ring.ring-3 {
+    width: 340px;
+    height: 340px;
+    animation-delay: 3s;
+    border-color: rgba(255, 193, 7, 0.06);
+}
+
+@keyframes ringExpand {
+    0% { width: 200px; height: 200px; opacity: 0.8; }
+    50% { width: 250px; height: 250px; opacity: 0.2; }
+    100% { width: 200px; height: 200px; opacity: 0.8; }
+}
+
+/* ============================================
+   SCROLL INDICATOR
+============================================ */
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+}
+
+.scroll-text {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--cyber-text-muted);
+}
+
+.scroll-line {
+    width: 1px;
+    height: 30px;
+    background: linear-gradient(180deg, var(--cyber-neon-cyan), transparent);
+    animation: scrollLineMove 2s ease-in-out infinite;
+}
+
+.scroll-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyber-neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    animation: scrollDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollLineMove {
+    0% { transform: translateY(-10px); opacity: 0; }
+    50% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(10px); opacity: 0; }
+}
+
+@keyframes scrollDotPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* ============================================
+   CARDS CYBER
+============================================ */
+.cyber-card {
+    position: relative;
+    background: var(--cyber-bg-card);
+    border-radius: 16px;
+    padding: 32px 24px;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(74, 124, 255, 0.08);
+}
+
+.cyber-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 240, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 80px rgba(0, 240, 255, 0.02);
+}
+
+.cyber-card-glow {
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(74, 124, 255, 0.05), transparent 70%);
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+.cyber-card:hover .cyber-card-glow {
+    top: -30%;
+    right: -30%;
+    background: radial-gradient(circle, rgba(74, 124, 255, 0.1), transparent 70%);
+}
+
+.cyber-card-content {
+    position: relative;
+    z-index: 1;
+}
+
+.cyber-card-icon {
+    font-size: 2.5rem;
+    color: var(--cyber-neon-cyan);
+    margin-bottom: 16px;
+    display: inline-block;
+    text-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+}
+
+.cyber-card-title {
+    color: #fff !important;
     font-weight: 700 !important;
     margin-bottom: 12px !important;
     font-size: 1.15rem !important;
 }
-.activities-section .card-text {
-    color: #6c757d !important;
+
+.cyber-card-text {
+    color: var(--cyber-text-muted) !important;
     font-size: 0.95rem !important;
     line-height: 1.6 !important;
     margin-bottom: 16px !important;
 }
-.activities-section .display-4 {
-    font-size: 2.5rem !important;
-    color: #ffc107 !important;
-    margin-bottom: 16px !important;
+
+.cyber-card-badge {
+    display: inline-block;
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--cyber-neon-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    background: rgba(0, 240, 255, 0.05);
+    letter-spacing: 0.5px;
 }
-.activities-section .badge {
-    background: #f1f3f5 !important;
-    color: #0a1628 !important;
-    font-weight: 500 !important;
-    padding: 6px 16px !important;
-    border-radius: 20px !important;
-    border: 1px solid #e9ecef !important;
-    font-size: 0.85rem !important;
+
+.cyber-card-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyber-neon-cyan), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.cyber-card:hover .cyber-card-border {
+    transform: scaleX(1);
 }
 
 /* ============================================
-   BOUTONS
+   SECTION TITLES CYBER
 ============================================ */
-.btn-warning {
-    background: #ffc107 !important;
-    border-color: #ffc107 !important;
-    color: #0a1628 !important;
-    font-weight: 600 !important;
+.cyber-section {
+    position: relative;
 }
-.btn-warning:hover {
-    background: #e6ae00 !important;
-    border-color: #e6ae00 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255,193,7,0.4);
+
+.cyber-section-tag {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: var(--cyber-neon-cyan);
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: 0.7;
 }
-.btn-dark { transition: all 0.3s ease; }
-.btn-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+
+.cyber-section-title {
+    color: #fff !important;
+    font-weight: 700;
+}
+
+.cyber-section-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyber-neon-cyan), transparent);
+    margin: 12px auto 16px;
+    border-radius: 2px;
+}
 
 /* ============================================
-   FORMULAIRES
+   FEATURES LIST
+============================================ */
+.cyber-features li {
+    padding: 8px 0;
+    color: var(--cyber-text-secondary);
+    font-size: 1rem;
+}
+
+.text-cyber-accent {
+    color: var(--cyber-neon-cyan) !important;
+}
+
+/* ============================================
+   IMAGE FRAME CYBER
+============================================ */
+.cyber-image-frame {
+    position: relative;
+    display: inline-block;
+    padding: 8px;
+    background: linear-gradient(135deg, rgba(74, 124, 255, 0.2), rgba(0, 240, 255, 0.05));
+    border-radius: 16px;
+}
+
+.cyber-image-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, var(--cyber-neon-cyan), transparent, var(--cyber-neon-purple));
+    border-radius: 18px;
+    opacity: 0.3;
+    filter: blur(4px);
+    z-index: 0;
+}
+
+.cyber-image-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--cyber-neon-cyan);
+    border-style: solid;
+    border-width: 0;
+    z-index: 2;
+    opacity: 0.6;
+}
+
+.cyber-image-corner.corner-tl {
+    top: 4px;
+    left: 4px;
+    border-top-width: 2px;
+    border-left-width: 2px;
+}
+.cyber-image-corner.corner-tr {
+    top: 4px;
+    right: 4px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+}
+.cyber-image-corner.corner-bl {
+    bottom: 4px;
+    left: 4px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+}
+.cyber-image-corner.corner-br {
+    bottom: 4px;
+    right: 4px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+}
+
+/* ============================================
+   PARTNER CARD CYBER
+============================================ */
+.cyber-partner-card {
+    position: relative;
+    padding: 16px 24px;
+    background: var(--cyber-bg-card);
+    border-radius: 12px;
+    border: 1px solid rgba(74, 124, 255, 0.08);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.cyber-partner-card:hover {
+    border-color: rgba(0, 240, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cyber-partner-name {
+    color: var(--cyber-text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.cyber-partner-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: radial-gradient(circle at center, rgba(74, 124, 255, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cyber-partner-card:hover .cyber-partner-glow {
+    opacity: 1;
+}
+
+/* ============================================
+   PAGE HEADER - CYBER
+============================================ */
+.page-header {
+    background: var(--cyber-bg-primary);
+    padding: 120px 0 60px 0;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(74, 124, 255, 0.08);
+    position: relative;
+}
+.page-header h1 { font-weight: 800; color: #ffffff !important; }
+.page-header p { opacity: 0.9; color: var(--cyber-text-secondary) !important; }
+
+/* ============================================
+   ACTIVITIES SECTION - CYBER
+============================================ */
+.activities-section {
+    background: var(--cyber-bg-secondary) !important;
+    padding: 60px 0;
+}
+
+/* ============================================
+   FORMULAIRES - CYBER
 ============================================ */
 .form-control {
     border-radius: 12px !important;
-    border: 2px solid #e9ecef !important;
+    border: 1px solid rgba(74, 124, 255, 0.15) !important;
     padding: 14px 18px !important;
+    background: rgba(255,255,255,0.03) !important;
+    color: #fff !important;
 }
 .form-control:focus {
-    border-color: #ffc107 !important;
-    box-shadow: 0 0 0 4px rgba(255,193,7,0.15) !important;
+    border-color: var(--cyber-neon-cyan) !important;
+    box-shadow: 0 0 0 4px rgba(0, 240, 255, 0.1) !important;
+    background: rgba(255,255,255,0.05) !important;
+}
+.form-control::placeholder {
+    color: var(--cyber-text-muted) !important;
 }
 
 /* ============================================
@@ -143,23 +731,38 @@ body {
 ============================================ */
 @media (max-width: 992px) {
     body { padding-top: 68px; }
-    .hero-section .display-3 { font-size: 2.5rem; }
+    .cyber-title { font-size: 2.5rem !important; }
+    .cyber-globe-icon { font-size: 120px !important; }
+    .cyber-stat-number { font-size: 2rem !important; }
 }
+
 @media (max-width: 768px) {
-    .hero-section .display-3 { font-size: 2rem; }
-    .hero-section .lead { font-size: 1rem !important; }
+    .cyber-title { font-size: 2rem !important; }
+    .cyber-grid { background-size: 20px 20px; }
+    .particle { display: none; }
+    .neon-line { display: none; }
+    .scroll-indicator { display: none; }
+    .cyber-globe-icon { font-size: 80px !important; }
 }
+
 @media (max-width: 576px) {
     .hero-section { min-height: 90vh; }
     .navbar-nav .nav-link { padding: 10px 0 !important; }
+    .cyber-badge { padding: 4px 12px; }
+    .cyber-badge-text { font-size: 0.6rem; letter-spacing: 2px; }
+    .cyber-stat-number { font-size: 1.5rem !important; }
+    .btn-cyber-primary, .btn-cyber-secondary, .btn-cyber-outline {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+    }
 }
 
 /* ============================================
-   FIX FINAL - FORCER LA VISIBILITE
+   FIX - FORCER LA VISIBILITE
 ============================================ */
-.card-body, .card-title, .card-text, .badge, section, .container, .row, .col-md-4, .col-md-6, .col-lg-4 {
+.card-body, .card-title, .card-text, .badge,
+section, .container, .row, .col-md-4, .col-md-6, .col-lg-4 {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    color: #212529 !important;
 }

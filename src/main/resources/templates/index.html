@@ -6,132 +6,206 @@
 <!-- Navbar -->
 <nav th:replace="~{fragments/header :: header}"></nav>
 
-<!-- ==================== HERO SECTION ==================== -->
-<section class="hero-section d-flex align-items-center" style="min-height: 100vh; background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%); position: relative; overflow: hidden; padding-top: 76px;">
+<!-- ============================================ -->
+<!-- HERO SECTION - CYBER THEME                  -->
+<!-- ============================================ -->
+<section class="hero-section d-flex align-items-center" style="min-height: 100vh; position: relative; overflow: hidden; padding-top: 76px; background: #0a0a1a;">
 
-    <!-- Animated Background -->
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
-        <div style="position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,193,7,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-        <div style="position: absolute; bottom: -30%; left: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(13,110,253,0.08) 0%, transparent 70%); border-radius: 50%;"></div>
+    <!-- Grid cyberpunk en arrière-plan -->
+    <div class="cyber-grid"></div>
+
+    <!-- Particules animées -->
+    <div class="particles-container">
+        <div class="particle" style="top:10%; left:5%; animation-delay:0s;"></div>
+        <div class="particle" style="top:20%; right:10%; animation-delay:1s;"></div>
+        <div class="particle" style="bottom:30%; left:15%; animation-delay:2s;"></div>
+        <div class="particle" style="top:60%; right:20%; animation-delay:0.5s;"></div>
+        <div class="particle" style="bottom:10%; right:5%; animation-delay:1.5s;"></div>
+        <div class="particle" style="top:40%; left:8%; animation-delay:2.5s;"></div>
+        <div class="particle" style="bottom:50%; right:12%; animation-delay:0.8s;"></div>
+        <div class="particle" style="top:80%; left:25%; animation-delay:1.8s;"></div>
     </div>
 
-    <div class="container" style="position: relative; z-index: 1;">
+    <!-- Lignes néon animées -->
+    <div class="neon-line neon-line-1"></div>
+    <div class="neon-line neon-line-2"></div>
+    <div class="neon-line neon-line-3"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
         <div class="row align-items-center">
             <div class="col-lg-7 text-white" data-aos="fade-right" data-aos-duration="1000">
-                <h1 class="display-3 fw-bold mb-3">
-                    <span style="color: #ffc107;">African Mission</span> Corporate
+                <!-- Badge cyber -->
+                <div class="cyber-badge mb-4">
+                    <span class="cyber-badge-text">✦ ENTERPRISE ✦</span>
+                    <span class="cyber-badge-pulse"></span>
+                </div>
+
+                <h1 class="display-3 fw-bold mb-3 cyber-title">
+                    <span class="text-gradient">African Mission</span>
+                    <span class="text-cyber">Corporate</span>
                 </h1>
-                <p class="lead mb-4" style="opacity: 0.9; font-size: 1.3rem;">
+
+                <div class="cyber-line mb-4"></div>
+
+                <p class="lead mb-4" style="opacity: 0.9; font-size: 1.3rem; color: #b8c6ff; text-shadow: 0 0 20px rgba(100,150,255,0.1);">
                     SARL spécialisée dans les prestations de services, le BTP,
                     l'agrobusiness, l'import-export et le développement durable.
                 </p>
+
                 <div class="d-flex gap-3 flex-wrap">
-                    <a href="/activities" class="btn btn-warning btn-lg px-5 py-3 fw-bold">
-                        <i class="fas fa-rocket me-2"></i>Nos activités
+                    <a href="/activities" class="btn-cyber-primary">
+                        <span class="btn-cyber-text"><i class="fas fa-rocket me-2"></i>Nos activités</span>
+                        <span class="btn-cyber-glow"></span>
                     </a>
-                    <a href="/contact" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold">
-                        <i class="fas fa-phone me-2"></i>Nous contacter
+                    <a href="/contact" class="btn-cyber-secondary">
+                        <span class="btn-cyber-text"><i class="fas fa-phone me-2"></i>Nous contacter</span>
                     </a>
                 </div>
 
-                <!-- Stats -->
-                <div class="row mt-5 g-3">
+                <!-- Stats cyber -->
+                <div class="row mt-5 g-3 cyber-stats">
                     <div class="col-4">
-                        <div class="text-warning display-4 fw-bold" th:text="${activities != null ? activities.size() : 0} + '+'">33+</div>
-                        <div style="opacity: 0.8;">Activités</div>
+                        <div class="cyber-stat-item">
+                            <div class="cyber-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">33+</div>
+                            <div class="cyber-stat-label">Activités</div>
+                            <div class="cyber-stat-line"></div>
+                        </div>
                     </div>
                     <div class="col-4">
-                        <div class="text-warning display-4 fw-bold">15+</div>
-                        <div style="opacity: 0.8;">Domaines</div>
+                        <div class="cyber-stat-item">
+                            <div class="cyber-stat-number">15+</div>
+                            <div class="cyber-stat-label">Domaines</div>
+                            <div class="cyber-stat-line"></div>
+                        </div>
                     </div>
                     <div class="col-4">
-                        <div class="text-warning display-4 fw-bold">100%</div>
-                        <div style="opacity: 0.8;">Engagement</div>
+                        <div class="cyber-stat-item">
+                            <div class="cyber-stat-number">100%</div>
+                            <div class="cyber-stat-label">Engagement</div>
+                            <div class="cyber-stat-line"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-5 text-center d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000">
-                <i class="fas fa-globe-africa" style="font-size: 250px; color: rgba(255,193,7,0.2);"></i>
+                <div class="cyber-globe-container">
+                    <i class="fas fa-globe-africa cyber-globe-icon"></i>
+                    <div class="cyber-globe-ring"></div>
+                    <div class="cyber-globe-ring ring-2"></div>
+                    <div class="cyber-globe-ring ring-3"></div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+        <span class="scroll-text">SCROLL</span>
+        <div class="scroll-line"></div>
+        <div class="scroll-dot"></div>
+    </div>
 </section>
 
-<!-- ==================== ACTIVITIES PREVIEW ==================== -->
-<section class="py-5" style="background: #f8f9fa;">
+<!-- ============================================ -->
+<!-- ACTIVITIES PREVIEW - CYBER THEME            -->
+<!-- ============================================ -->
+<section class="cyber-section py-5" style="background: #0d0d1f;">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold" style="color: #0a1628;">
-                <i class="fas fa-tasks text-warning me-2"></i>Nos activités principales
+            <div class="cyber-section-tag">✦ SERVICES ✦</div>
+            <h2 class="fw-bold cyber-section-title">
+                <span class="text-gradient">Nos activités</span> principales
             </h2>
-            <p class="text-muted" style="font-size: 1.1rem;">Découvrez l'étendue de nos compétences et services</p>
+            <div class="cyber-section-line"></div>
+            <p class="text-muted" style="font-size: 1.1rem; color: #8899cc !important;">Découvrez l'étendue de nos compétences et services</p>
         </div>
 
         <div class="row g-4">
-            <div class="col-md-4" th:each="activity : ${activities}" th:if="${activityStat.index < 6}" data-aos="fade-up" th:data-aos-delay="${100 * activityStat.index}">
-                <div class="card h-100 border-0 shadow-lg hover-card" style="transition: transform 0.3s, box-shadow 0.3s;">
-                    <div class="card-body text-center p-4">
-                        <div class="display-4 text-warning mb-3">
+            <div class="col-md-4" th:each="activity : ${activities}" th:if="${activityStat.index < 6}"
+                 data-aos="fade-up" th:data-aos-delay="${100 * activityStat.index}">
+                <div class="cyber-card">
+                    <div class="cyber-card-glow"></div>
+                    <div class="cyber-card-content">
+                        <div class="cyber-card-icon">
                             <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
                         </div>
-                        <h5 class="card-title fw-bold" th:text="${activity.title}">Titre</h5>
-                        <p class="card-text text-muted" th:text="${activity.description}">Description</p>
-                        <span class="badge bg-light text-dark rounded-pill px-3 py-2" th:text="${activity.category}">Catégorie</span>
+                        <h5 class="cyber-card-title" th:text="${activity.title}">Titre</h5>
+                        <p class="cyber-card-text" th:text="${activity.description}">Description</p>
+                        <span class="cyber-card-badge" th:text="${activity.category}">Catégorie</span>
                     </div>
+                    <div class="cyber-card-border"></div>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mt-4">
-            <a href="/activities" class="btn btn-dark btn-lg px-5 py-3 fw-bold" style="pointer-events: auto; position: relative; z-index: 10;">
-                Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i>
+        <div class="text-center mt-5">
+            <a href="/activities" class="btn-cyber-outline">
+                <span class="btn-cyber-text">Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i></span>
             </a>
         </div>
     </div>
 </section>
 
-<!-- ==================== ABOUT PREVIEW ==================== -->
-<section class="py-5" style="background: #ffffff;">
+<!-- ============================================ -->
+<!-- ABOUT PREVIEW - CYBER THEME                 -->
+<!-- ============================================ -->
+<section class="cyber-section py-5" style="background: #0a0a1a;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <h2 class="fw-bold" style="color: #0a1628;">
-                    <i class="fas fa-info-circle text-warning me-2"></i>À propos de nous
+                <div class="cyber-section-tag">✦ À PROPOS ✦</div>
+                <h2 class="fw-bold cyber-section-title" style="color: #fff;">
+                    <span class="text-gradient">Qui sommes-</span>nous ?
                 </h2>
-                <p class="lead mt-3" style="font-size: 1.1rem;">
+                <div class="cyber-section-line" style="margin-left:0;"></div>
+                <p class="lead mt-3" style="font-size: 1.1rem; color: #b8c6ff;">
                     African Mission Corporate SARL est une entreprise malienne polyvalente, engagée dans le développement
                     durable et l'excellence opérationnelle.
                 </p>
-                <ul class="list-unstyled mt-4">
-                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Plus de 33 activités variées</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Présence au Mali et à l'international</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Engagement pour le développement durable</li>
-                    <li class="mb-2"><i class="fas fa-check-circle text-warning me-2"></i>Expertise multi-sectorielle</li>
+                <ul class="list-unstyled mt-4 cyber-features">
+                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Plus de 33 activités variées</li>
+                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Présence au Mali et à l'international</li>
+                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Engagement pour le développement durable</li>
+                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Expertise multi-sectorielle</li>
                 </ul>
-                <a href="/about" class="btn btn-warning btn-lg mt-3 px-5 py-3 fw-bold">
-                    En savoir plus
+                <a href="/about" class="btn-cyber-primary mt-3">
+                    <span class="btn-cyber-text">En savoir plus</span>
+                    <span class="btn-cyber-glow"></span>
                 </a>
             </div>
             <div class="col-lg-6 text-center" data-aos="fade-left">
-                <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=African+Mission"
-                     alt="African Mission" class="img-fluid rounded-4 shadow-lg" style="max-height: 400px;">
+                <div class="cyber-image-frame">
+                    <div class="cyber-image-glow"></div>
+                    <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=African+Mission"
+                         alt="African Mission" class="img-fluid rounded-4" style="max-height: 400px; position:relative; z-index:1;">
+                    <div class="cyber-image-corner corner-tl"></div>
+                    <div class="cyber-image-corner corner-tr"></div>
+                    <div class="cyber-image-corner corner-bl"></div>
+                    <div class="cyber-image-corner corner-br"></div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==================== PARTNERS ==================== -->
-<section class="py-5" style="background: #f8f9fa;">
+<!-- ============================================ -->
+<!-- PARTNERS - CYBER THEME                     -->
+<!-- ============================================ -->
+<section class="cyber-section py-5" style="background: #0d0d1f;">
     <div class="container">
         <div class="text-center mb-4" data-aos="fade-up">
-            <h3 class="fw-bold" style="color: #0a1628;">
-                <i class="fas fa-handshake text-warning me-2"></i>Nos partenaires
+            <div class="cyber-section-tag">✦ PARTENAIRES ✦</div>
+            <h3 class="fw-bold cyber-section-title" style="color: #fff;">
+                <span class="text-gradient">Nos</span> partenaires
             </h3>
+            <div class="cyber-section-line"></div>
         </div>
         <div class="row align-items-center justify-content-center g-4">
             <div class="col-md-2 col-4 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
-                <div class="bg-white p-3 rounded-3 shadow-sm">
-                    <span class="fw-bold" th:text="${partner.name}">Partenaire</span>
+                <div class="cyber-partner-card">
+                    <span class="cyber-partner-name" th:text="${partner.name}">Partenaire</span>
+                    <div class="cyber-partner-glow"></div>
                 </div>
             </div>
         </div>
@@ -141,7 +215,7 @@
 <!-- Footer -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-<!-- Initialiser AOS -->
+<!-- AOS Init -->
 <script>
     AOS.init({
         duration: 800,
