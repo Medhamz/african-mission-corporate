@@ -1,0 +1,254 @@
+/* ============================================
+   GLOBAL STYLES
+============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    padding-top: 76px;
+}
+
+:root {
+    --primary-dark: #0a1628;
+    --primary-blue: #1a3a6a;
+    --gold: #ffc107;
+    --gold-hover: #e6ae00;
+}
+
+/* ============================================
+   NAVBAR
+============================================ */
+.navbar {
+    padding: 16px 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    padding: 8px 20px !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107 !important;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #ffc107;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 60%;
+}
+
+.navbar-nav .nav-link.active {
+    color: #ffc107 !important;
+}
+
+.navbar-nav .nav-link.active::after {
+    width: 60%;
+}
+
+/* ============================================
+   HERO SECTION
+============================================ */
+.hero-section {
+    background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%);
+    min-height: 100vh;
+}
+
+.hero-section .display-3 {
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+/* ============================================
+   CARDS
+============================================ */
+.hover-card {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s ease !important;
+}
+
+.hover-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.hover-card .card-body {
+    transition: all 0.3s ease;
+}
+
+.hover-card:hover .card-body {
+    background: linear-gradient(180deg, #ffffff 0%, #fffdf0 100%);
+}
+
+/* ============================================
+   BUTTONS
+============================================ */
+.btn-warning {
+    background: #ffc107;
+    border-color: #ffc107;
+    color: #0a1628;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    background: #e6ae00;
+    border-color: #e6ae00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
+    color: #0a1628;
+}
+
+.btn-dark {
+    transition: all 0.3s ease;
+}
+
+.btn-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-light:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   FORM ELEMENTS
+============================================ */
+.form-control {
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    padding: 14px 18px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.15);
+}
+
+.form-control-lg {
+    font-size: 1rem;
+}
+
+/* ============================================
+   BADGES
+============================================ */
+.badge {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 992px) {
+    body {
+        padding-top: 68px;
+    }
+
+    .hero-section .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section .display-3 {
+        font-size: 2rem;
+    }
+
+    .hero-section .lead {
+        font-size: 1rem !important;
+    }
+
+    .hero-section .btn-lg {
+        padding: 12px 30px !important;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        min-height: 90vh;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px 0 !important;
+    }
+}
+
+/* ============================================
+   SCROLLBAR
+============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffc107, #e6ae00);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d4a000;
+}
+
+/* ============================================
+   SELECTION
+============================================ */
+::selection {
+    background: #ffc107;
+    color: #0a1628;
+}
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 193, 7, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(255, 193, 7, 0.4); }
+}

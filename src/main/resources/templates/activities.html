@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+<body>
+
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- Page Header -->
+<section class="py-5" style="background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%); padding-top: 120px;">
+    <div class="container text-white text-center" data-aos="fade-up">
+        <h1 class="display-4 fw-bold">Nos activités</h1>
+        <p class="lead" style="opacity: 0.9;">Découvrez l'ensemble de nos services et compétences</p>
+    </div>
+</section>
+
+<!-- Activities List -->
+<section class="py-5" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="row g-4">
+            <div th:each="activity : ${activities}" class="col-md-6 col-lg-4" data-aos="fade-up" th:data-aos-delay="${100 * activityStat.index}">
+                <div class="card h-100 border-0 shadow-lg hover-card" style="transition: transform 0.3s, box-shadow 0.3s;">
+                    <div class="card-body p-4">
+                        <div class="display-4 text-warning mb-3">
+                            <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
+                        </div>
+                        <h5 class="card-title fw-bold" th:text="${activity.title}">Titre</h5>
+                        <p class="card-text text-muted" th:text="${activity.description}">Description</p>
+                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2" th:text="${activity.category}">Catégorie</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script>
+    AOS.init({duration: 800, once: true, offset: 100});
+</script>
+</body>
+</html>
