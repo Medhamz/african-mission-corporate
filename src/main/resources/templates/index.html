@@ -7,14 +7,14 @@
 <nav th:replace="~{fragments/header :: header}"></nav>
 
 <!-- ============================================ -->
-<!-- HERO SECTION - CYBER THEME                  -->
+<!-- HERO SECTION - ENTÊTE AJUSTÉE              -->
 <!-- ============================================ -->
-<section class="hero-section d-flex align-items-center" style="min-height: 100vh; position: relative; overflow: hidden; padding-top: 76px; background: #0a0a1a;">
+<section class="hero-section d-flex align-items-center" style="min-height: 90vh; position: relative; overflow: hidden; padding-top: 60px; background: #0a0a1a;">
 
-    <!-- Grid cyberpunk en arrière-plan -->
+    <!-- Grille cyberpunk -->
     <div class="cyber-grid"></div>
 
-    <!-- Particules animées -->
+    <!-- Particules -->
     <div class="particles-container">
         <div class="particle" style="top:10%; left:5%; animation-delay:0s;"></div>
         <div class="particle" style="top:20%; right:10%; animation-delay:1s;"></div>
@@ -26,28 +26,28 @@
         <div class="particle" style="top:80%; left:25%; animation-delay:1.8s;"></div>
     </div>
 
-    <!-- Lignes néon animées -->
+    <!-- Lignes néon -->
     <div class="neon-line neon-line-1"></div>
     <div class="neon-line neon-line-2"></div>
     <div class="neon-line neon-line-3"></div>
 
-    <div class="container" style="position: relative; z-index: 2;">
+    <div class="container" style="position: relative; z-index: 2; padding-top: 20px;">
         <div class="row align-items-center">
             <div class="col-lg-7 text-white" data-aos="fade-right" data-aos-duration="1000">
                 <!-- Badge cyber -->
-                <div class="cyber-badge mb-4">
+                <div class="cyber-badge mb-3">
                     <span class="cyber-badge-text">✦ ENTERPRISE ✦</span>
                     <span class="cyber-badge-pulse"></span>
                 </div>
 
-                <h1 class="display-3 fw-bold mb-3 cyber-title">
+                <h1 class="display-3 fw-bold mb-3 cyber-title" style="font-size: calc(2.5rem + 1vw);">
                     <span class="text-gradient">African Mission</span>
                     <span class="text-cyber">Corporate</span>
                 </h1>
 
-                <div class="cyber-line mb-4"></div>
+                <div class="cyber-line mb-3"></div>
 
-                <p class="lead mb-4" style="opacity: 0.9; font-size: 1.3rem; color: #b8c6ff; text-shadow: 0 0 20px rgba(100,150,255,0.1);">
+                <p class="lead mb-4" style="opacity: 0.9; font-size: 1.1rem; color: #b8c6ff; line-height: 1.6;">
                     SARL spécialisée dans les prestations de services, le BTP,
                     l'agrobusiness, l'import-export et le développement durable.
                 </p>
@@ -62,8 +62,8 @@
                     </a>
                 </div>
 
-                <!-- Stats cyber -->
-                <div class="row mt-5 g-3 cyber-stats">
+                <!-- Stats -->
+                <div class="row mt-4 g-2 cyber-stats">
                     <div class="col-4">
                         <div class="cyber-stat-item">
                             <div class="cyber-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">33+</div>
@@ -108,17 +108,17 @@
 </section>
 
 <!-- ============================================ -->
-<!-- ACTIVITIES PREVIEW - CYBER THEME            -->
+<!-- ACTIVITIES PREVIEW                         -->
 <!-- ============================================ -->
-<section class="cyber-section py-5" style="background: #0d0d1f;">
+<section class="cyber-section py-5" style="background: #0d0d1f; padding-top: 40px !important;">
     <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
+        <div class="text-center mb-4" data-aos="fade-up">
             <div class="cyber-section-tag">✦ SERVICES ✦</div>
             <h2 class="fw-bold cyber-section-title">
                 <span class="text-gradient">Nos activités</span> principales
             </h2>
             <div class="cyber-section-line"></div>
-            <p class="text-muted" style="font-size: 1.1rem; color: #8899cc !important;">Découvrez l'étendue de nos compétences et services</p>
+            <p class="text-muted" style="font-size: 1rem; color: #8899cc !important;">Découvrez l'étendue de nos compétences et services</p>
         </div>
 
         <div class="row g-4">
@@ -139,7 +139,7 @@
             </div>
         </div>
 
-        <div class="text-center mt-5">
+        <div class="text-center mt-4">
             <a href="/activities" class="btn-cyber-outline">
                 <span class="btn-cyber-text">Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i></span>
             </a>
@@ -148,9 +148,9 @@
 </section>
 
 <!-- ============================================ -->
-<!-- ABOUT PREVIEW - CYBER THEME                 -->
+<!-- ABOUT PREVIEW                              -->
 <!-- ============================================ -->
-<section class="cyber-section py-5" style="background: #0a0a1a;">
+<section class="cyber-section py-5" style="background: #0a0a1a; padding-top: 40px !important;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
@@ -159,15 +159,15 @@
                     <span class="text-gradient">Qui sommes-</span>nous ?
                 </h2>
                 <div class="cyber-section-line" style="margin-left:0;"></div>
-                <p class="lead mt-3" style="font-size: 1.1rem; color: #b8c6ff;">
+                <p class="lead mt-3" style="font-size: 1.05rem; color: #b8c6ff; line-height: 1.7;">
                     African Mission Corporate SARL est une entreprise malienne polyvalente, engagée dans le développement
                     durable et l'excellence opérationnelle.
                 </p>
-                <ul class="list-unstyled mt-4 cyber-features">
-                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Plus de 33 activités variées</li>
-                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Présence au Mali et à l'international</li>
-                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Engagement pour le développement durable</li>
-                    <li><i class="fas fa-check-circle text-cyber-accent me-2"></i>Expertise multi-sectorielle</li>
+                <ul class="list-unstyled mt-3 cyber-features">
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Plus de 33 activités variées</li>
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Présence au Mali et à l'international</li>
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Engagement pour le développement durable</li>
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Expertise multi-sectorielle</li>
                 </ul>
                 <a href="/about" class="btn-cyber-primary mt-3">
                     <span class="btn-cyber-text">En savoir plus</span>
@@ -177,8 +177,8 @@
             <div class="col-lg-6 text-center" data-aos="fade-left">
                 <div class="cyber-image-frame">
                     <div class="cyber-image-glow"></div>
-                    <img src="https://via.placeholder.com/600x400/0a1628/ffc107?text=African+Mission"
-                         alt="African Mission" class="img-fluid rounded-4" style="max-height: 400px; position:relative; z-index:1;">
+                    <img src="https://via.placeholder.com/600x400/0a1628/4a7cff?text=African+Mission"
+                         alt="African Mission" class="img-fluid rounded-4" style="max-height: 350px; position:relative; z-index:1;">
                     <div class="cyber-image-corner corner-tl"></div>
                     <div class="cyber-image-corner corner-tr"></div>
                     <div class="cyber-image-corner corner-bl"></div>
@@ -190,18 +190,18 @@
 </section>
 
 <!-- ============================================ -->
-<!-- PARTNERS - CYBER THEME                     -->
+<!-- PARTNERS                                   -->
 <!-- ============================================ -->
-<section class="cyber-section py-5" style="background: #0d0d1f;">
+<section class="cyber-section py-5" style="background: #0d0d1f; padding-top: 40px !important;">
     <div class="container">
-        <div class="text-center mb-4" data-aos="fade-up">
+        <div class="text-center mb-3" data-aos="fade-up">
             <div class="cyber-section-tag">✦ PARTENAIRES ✦</div>
-            <h3 class="fw-bold cyber-section-title" style="color: #fff;">
+            <h3 class="fw-bold cyber-section-title" style="color: #fff; font-size: 1.8rem;">
                 <span class="text-gradient">Nos</span> partenaires
             </h3>
             <div class="cyber-section-line"></div>
         </div>
-        <div class="row align-items-center justify-content-center g-4">
+        <div class="row align-items-center justify-content-center g-3">
             <div class="col-md-2 col-4 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
                 <div class="cyber-partner-card">
                     <span class="cyber-partner-name" th:text="${partner.name}">Partenaire</span>
@@ -220,7 +220,7 @@
     AOS.init({
         duration: 800,
         once: true,
-        offset: 100
+        offset: 80
     });
 </script>
 

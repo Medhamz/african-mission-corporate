@@ -20,26 +20,24 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
 </head>
 <body>
 
 <!-- ============================================ -->
-<!-- LOADER PREMIUM (Animation de chargement)     -->
+<!-- LOADER PREMIUM                              -->
 <!-- ============================================ -->
-<div id="loader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0a1628; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; transition: opacity 0.5s ease;">
+<div id="loader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0a0a1a; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; transition: opacity 0.5s ease;">
     <div class="spinner-border text-warning" style="width:70px; height:70px;" role="status">
         <span class="visually-hidden">Chargement...</span>
     </div>
-    <p class="text-white mt-3" style="font-family:'Inter',sans-serif; letter-spacing:2px; font-weight:300;">CHARGEMENT</p>
+    <p class="text-white mt-3" style="font-family:'Inter',sans-serif; letter-spacing:2px; font-weight:300; color:#b8c6ff;">CHARGEMENT</p>
     <div style="width:200px; height:2px; background:rgba(255,255,255,0.1); margin-top:10px; border-radius:2px; overflow:hidden;">
         <div id="loaderProgress" style="width:0%; height:100%; background:#ffc107; border-radius:2px; transition:width 0.3s ease;"></div>
     </div>
 </div>
 
 <script>
-    // Loader avec progression simulée
     document.addEventListener('DOMContentLoaded', function() {
         const loader = document.getElementById('loader');
         const progress = document.getElementById('loaderProgress');
@@ -62,52 +60,82 @@
 </script>
 
 <!-- ============================================ -->
-<!-- NAVBAR PREMIUM AVEC BARRE DE RECHERCHE      -->
+<!-- NAVBAR CYBER - NOUVELLE DISPOSITION         -->
 <!-- ============================================ -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%); box-shadow: 0 2px 20px rgba(0,0,0,0.3);">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(10, 10, 26, 0.95) !important; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(74, 124, 255, 0.12); padding: 12px 0;">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand fw-bold" href="/">
-            <i class="fas fa-globe-africa me-2 text-warning"></i>
-            African Mission Corporate
+        <a class="navbar-brand fw-bold" href="/" style="font-size: 1.2rem; color: #fff !important;">
+            <i class="fas fa-globe-africa me-2" style="color: #4a7cff;"></i>
+            African Mission
         </a>
 
-        <!-- Toggler pour mobile -->
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
+        <!-- Toggler -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="padding: 6px 12px;">
+            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
         </button>
 
         <!-- Navigation -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+            <!-- Menu principal -->
+            <ul class="navbar-nav ms-auto me-3">
                 <li class="nav-item"><a class="nav-link" href="/" th:classappend="${#httpServletRequest.requestURI == '/' ? 'active' : ''}">Accueil</a></li>
                 <li class="nav-item"><a class="nav-link" href="/about" th:classappend="${#httpServletRequest.requestURI == '/about' ? 'active' : ''}">À propos</a></li>
-                <li class="nav-item"><a class="nav-link" href="/services" th:classappend="${#httpServletRequest.requestURI == '/services' ? 'active' : ''}">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="/activities" th:classappend="${#httpServletRequest.requestURI == '/activities' ? 'active' : ''}">Activités</a></li>
-                <li class="nav-item"><a class="nav-link" href="/projects" th:classappend="${#httpServletRequest.requestURI == '/projects' ? 'active' : ''}">Projets</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                        Services
+                    </a>
+                    <ul class="dropdown-menu" style="background: #111128; border: 1px solid rgba(74,124,255,0.2);">
+                        <li><a class="dropdown-item" href="/services" style="color: #b8c6ff;">Nos services</a></li>
+                        <li><a class="dropdown-item" href="/activities" style="color: #b8c6ff;">Activités</a></li>
+                        <li><a class="dropdown-item" href="/projects" style="color: #b8c6ff;">Projets</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item"><a class="nav-link" href="/team" th:classappend="${#httpServletRequest.requestURI == '/team' ? 'active' : ''}">Équipe</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact" th:classappend="${#httpServletRequest.requestURI == '/contact' ? 'active' : ''}">Contact</a></li>
             </ul>
 
-            <!-- Barre de recherche premium -->
-            <form class="d-flex" action="/search" method="get">
-                <div class="input-group" style="border-radius: 50px; overflow: hidden; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);">
-                    <input class="form-control" type="search" name="q" placeholder="Rechercher..."
-                           style="background: transparent; border: none; color: #fff; padding: 8px 16px; width: 180px; font-size: 0.9rem;"
-                           aria-label="Rechercher">
-                    <button class="btn" type="submit" style="background: #ffc107; color: #0a1628; border-radius: 0; padding: 8px 16px;">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+            <!-- Barre de recherche (visible sur desktop) -->
+            <form class="d-none d-lg-flex" action="/search" method="get" style="position: relative;">
+                <input class="form-control" type="search" name="q" placeholder="Rechercher..."
+                       style="background: rgba(255,255,255,0.06); border: 1px solid rgba(74,124,255,0.15); border-radius: 50px; color: #fff; padding: 6px 20px; width: 160px; font-size: 0.85rem; transition: all 0.3s ease;">
+                <button class="btn" type="submit" style="position: absolute; right: 4px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: #4a7cff; padding: 4px 12px;">
+                    <i class="fas fa-search"></i>
+                </button>
             </form>
         </div>
     </div>
 </nav>
 
 <!-- ============================================ -->
-<!-- SCRIPT POUR LA RECHERCHE                   -->
+<!-- RECHERCHE SUR MOBILE (hors navbar)          -->
 <!-- ============================================ -->
+<div class="d-lg-none px-3 py-2" style="background: rgba(10,10,26,0.8); border-bottom: 1px solid rgba(74,124,255,0.08); position: fixed; top: 68px; left: 0; width: 100%; z-index: 999;">
+    <form action="/search" method="get" class="d-flex">
+        <input class="form-control" type="search" name="q" placeholder="Rechercher..."
+               style="background: rgba(255,255,255,0.06); border: 1px solid rgba(74,124,255,0.15); border-radius: 50px; color: #fff; padding: 6px 16px; font-size: 0.85rem; flex:1;">
+        <button class="btn btn-sm" type="submit" style="background: #4a7cff; color: #fff; border-radius: 50px; margin-left: 8px; padding: 6px 16px;">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
 <script>
-    // Au cas où le formulaire de recherche est soumis sans JavaScript, il redirigera vers /search
-    // Vous pouvez ajouter une gestion AJAX ici si nécessaire
+    // Gestion du loader
+    document.addEventListener('DOMContentLoaded', function() {
+        // Déjà géré ci-dessus
+    });
+
+    // Gestion du scroll pour la barre de recherche mobile
+    window.addEventListener('scroll', function() {
+        const mobileSearch = document.querySelector('.d-lg-none.px-3.py-2');
+        if (mobileSearch) {
+            if (window.scrollY > 150) {
+                mobileSearch.style.transform = 'translateY(-100%)';
+                mobileSearch.style.transition = 'transform 0.3s ease';
+            } else {
+                mobileSearch.style.transform = 'translateY(0)';
+            }
+        }
+    });
 </script>

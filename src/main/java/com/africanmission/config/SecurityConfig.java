@@ -20,16 +20,25 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/about", "/activities", "/contact", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        // Pages publiques
+                        .requestMatchers("/", "/about", "/activities", "/contact",
+                                "/services", "/projects", "/team", "/faq",
+                                "/blog", "/legal", "/sitemap",
+                                "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        // Admin
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Tout le reste nécessite une authentification
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/admin/login")
+                        .loginProcessingUrl("/admin/login")
                         .defaultSuccessUrl("/admin/dashboard", true)
+                        .failureUrl("/admin/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
+                        .logoutUrl("/admin/logout")
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )
