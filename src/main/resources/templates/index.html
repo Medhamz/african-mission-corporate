@@ -37,7 +37,7 @@
                 <!-- Stats -->
                 <div class="row mt-5 g-3">
                     <div class="col-4">
-                        <div class="text-warning display-4 fw-bold">33+</div>
+                        <div class="text-warning display-4 fw-bold" th:text="${activities != null ? activities.size() : 0} + '+'">33+</div>
                         <div style="opacity: 0.8;">Activités</div>
                     </div>
                     <div class="col-4">
@@ -83,7 +83,7 @@
         </div>
 
         <div class="text-center mt-4">
-            <a href="/activities" class="btn btn-dark btn-lg px-5 py-3 fw-bold">
+            <a href="/activities" class="btn btn-dark btn-lg px-5 py-3 fw-bold" style="pointer-events: auto; position: relative; z-index: 10;">
                 Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>

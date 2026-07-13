@@ -38,16 +38,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Accueil</a>
+                    <a class="nav-link" href="/" th:classappend="${#httpServletRequest.requestURI == '/' ? 'active' : ''}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">À propos</a>
+                    <a class="nav-link" href="/about" th:classappend="${#httpServletRequest.requestURI == '/about' ? 'active' : ''}">À propos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/activities">Nos activités</a>
+                    <a class="nav-link" href="/activities" th:classappend="${#httpServletRequest.requestURI == '/activities' ? 'active' : ''}">Nos activités</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
+                    <a class="nav-link" href="/contact" th:classappend="${#httpServletRequest.requestURI == '/contact' ? 'active' : ''}">Contact</a>
                 </li>
             </ul>
         </div>
