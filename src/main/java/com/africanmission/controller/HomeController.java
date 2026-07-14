@@ -48,7 +48,31 @@ public class HomeController {
         return "activities";
     }
 
-    // Dans HomeController.java ou un nouveau controller
+    // ============================================
+    // SERVICES & PROJETS
+    // ============================================
+
+    @GetMapping("/services")
+    public String services(Model model) {
+        model.addAttribute("pageTitle", "Nos services - African Mission Corporate");
+        return "services";
+    }
+
+    @GetMapping("/projects")
+    public String projects(Model model) {
+        model.addAttribute("pageTitle", "Nos projets - African Mission Corporate");
+        return "projects";
+    }
+
+    // ============================================
+    // ÉQUIPE & CARRIÈRES
+    // ============================================
+
+    @GetMapping("/team")
+    public String team(Model model) {
+        model.addAttribute("pageTitle", "Notre équipe - African Mission Corporate");
+        return "team";
+    }
 
     @GetMapping("/careers")
     public String careers(Model model) {
@@ -56,11 +80,41 @@ public class HomeController {
         return "careers";
     }
 
+    // ============================================
+    // BLOG & FAQ
+    // ============================================
+
     @GetMapping("/blog")
     public String blog(Model model) {
         model.addAttribute("pageTitle", "Blog - African Mission Corporate");
         return "blog";
     }
+
+    @GetMapping("/faq")
+    public String faq(Model model) {
+        model.addAttribute("pageTitle", "FAQ - African Mission Corporate");
+        return "faq";
+    }
+
+    // ============================================
+    // MENTIONS LÉGALES & PLAN DU SITE
+    // ============================================
+
+    @GetMapping("/legal")
+    public String legal(Model model) {
+        model.addAttribute("pageTitle", "Mentions légales - African Mission Corporate");
+        return "legal";
+    }
+
+    @GetMapping("/sitemap")
+    public String sitemap(Model model) {
+        model.addAttribute("pageTitle", "Plan du site - African Mission Corporate");
+        return "sitemap";
+    }
+
+    // ============================================
+    // TÉMOIGNAGES, GALERIE & CHIFFRES CLÉS
+    // ============================================
 
     @GetMapping("/testimonials")
     public String testimonials(Model model) {
