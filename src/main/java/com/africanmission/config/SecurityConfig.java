@@ -20,15 +20,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        // Pages publiques
+                        // ✅ Pages publiques (TOUTES les pages accessibles sans login)
                         .requestMatchers("/", "/about", "/activities", "/contact",
                                 "/services", "/projects", "/team", "/faq",
-                                "/blog", "/legal", "/sitemap",
-                                "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                        // Admin
+                                "/blog", "/legal", "/sitemap", "/careers",
+                                "/testimonials", "/gallery", "/key-figures",
+                                "/css/**", "/js/**", "/images/**", "/webjars/**",
+                                "/newsletter/**", "/search").permitAll()
+                        // ✅ Admin (protégé)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // Tout le reste nécessite une authentification
-                        .anyRequest().authenticated()
+                        // ✅ Tout le reste est public (ou protégé si nécessaire)
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/admin/login")
@@ -43,7 +45,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/admin/**")
+                        .ignoringRequestMatchers("/admin/**", "/newsletter/**")
                 );
 
         return http.build();
