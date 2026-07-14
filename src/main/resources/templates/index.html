@@ -7,199 +7,187 @@
 
     <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome 6.5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
 </head>
 <body>
 
 <!-- ============================================ -->
-<!-- NAVBAR INTÉGRÉE DIRECTEMENT DANS INDEX      -->
+<!-- NAVBAR ULTRA-PREMIUM                        -->
 <!-- ============================================ -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: #0a0a1a !important; border-bottom: 2px solid #4a7cff; padding: 12px 0; box-shadow: 0 0 40px rgba(74,124,255,0.15); z-index: 1030;">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
-        <a class="navbar-brand" href="/" style="color: #fff; font-size: 1.3rem; font-weight: bold; text-decoration: none;">
-            <i class="fas fa-globe-africa" style="color: #4a7cff; margin-right: 10px;"></i>
-            <span style="color: #4a7cff;">African</span> Mission
-            <span style="font-size: 0.6rem; color: #4a7cff; border:1px solid #4a7cff; padding:2px 8px; border-radius:20px; margin-left:6px;">SARL</span>
+        <a class="logo-premium" href="/">
+            <span class="logo-premium-icon"><i class="fas fa-globe-africa"></i></span>
+            <span class="logo-premium-text">African <span>Mission</span></span>
+            <span class="logo-premium-badge">SARL</span>
         </a>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border: 1px solid #4a7cff; padding: 6px 12px;">
-            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto me-3" style="gap: 4px;">
-                <li class="nav-item"><a class="nav-link" href="/" style="color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 8px; transition: all 0.3s;">Accueil</a></li>
-                <li class="nav-item"><a class="nav-link" href="/about" style="color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 8px; transition: all 0.3s;">À propos</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" style="color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 8px; transition: all 0.3s;">
-                        Services
+            <ul class="navbar-nav ms-auto menu-premium">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">
+                        <span class="nav-dot"></span>Accueil
                     </a>
-                    <ul class="dropdown-menu" style="background: #111128; border: 1px solid #4a7cff;">
-                        <li><a class="dropdown-item" href="/services" style="color: #b8c6ff; transition: all 0.3s;">Nos services</a></li>
-                        <li><a class="dropdown-item" href="/activities" style="color: #b8c6ff; transition: all 0.3s;">Activités</a></li>
-                        <li><a class="dropdown-item" href="/projects" style="color: #b8c6ff; transition: all 0.3s;">Projets</a></li>
-                        <li><hr class="dropdown-divider" style="border-color: #4a7cff;"></li>
-                        <li><a class="dropdown-item" href="/faq" style="color: #b8c6ff; transition: all 0.3s;">FAQ</a></li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">
+                        <span class="nav-dot"></span>À propos
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                        <span class="nav-dot"></span>Services
+                    </a>
+                    <ul class="dropdown-menu dropdown-premium">
+                        <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase"></i>Nos services</a></li>
+                        <li><a class="dropdown-item" href="/activities"><i class="fas fa-tasks"></i>Activités</a></li>
+                        <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket"></i>Projets</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="/team" style="color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 8px; transition: all 0.3s;">Équipe</a></li>
-                <li class="nav-item"><a class="nav-link" href="/contact" style="color: rgba(255,255,255,0.7); padding: 8px 18px; border-radius: 8px; transition: all 0.3s;">Contact</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/team">
+                        <span class="nav-dot"></span>Équipe
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">
+                        <span class="nav-dot"></span>Contact
+                    </a>
+                </li>
             </ul>
 
-            <form action="/search" method="get" class="d-flex">
-                <div style="display: flex; align-items: center; background: rgba(255,255,255,0.05); border-radius: 50px; border: 1px solid rgba(74,124,255,0.2); padding: 2px;">
-                    <input type="search" name="q" placeholder="Rechercher..." style="background: transparent; border: none; color: #fff; padding: 6px 14px; width: 140px; font-size: 0.85rem;">
-                    <button type="submit" style="background: #4a7cff; border: none; color: #fff; border-radius: 50px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s;">
-                        <i class="fas fa-search"></i>
-                    </button>
+            <div class="nav-actions">
+                <div class="search-premium">
+                    <input type="search" placeholder="Rechercher...">
+                    <button><i class="fas fa-search"></i></button>
                 </div>
-            </form>
+                <a href="/contact" class="cta-premium">
+                    <i class="fas fa-paper-plane"></i> Devis
+                </a>
+            </div>
         </div>
     </div>
 </nav>
 
+<!-- Mobile Search -->
+<div class="mobile-search-premium" id="mobileSearch">
+    <form action="/search" method="get">
+        <input type="search" name="q" placeholder="Rechercher...">
+        <button type="submit"><i class="fas fa-search"></i> Rechercher</button>
+    </form>
+</div>
+
 <!-- ============================================ -->
-<!-- HERO SECTION                               -->
+<!-- HERO SECTION - COMPACTE                     -->
 <!-- ============================================ -->
-<section class="hero-section d-flex align-items-center" style="min-height: 90vh; position: relative; overflow: hidden; padding-top: 80px; background: #0a0a1a;">
+<section class="hero-premium">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
 
-    <div class="cyber-grid"></div>
-    <div class="particles-container">
-        <div class="particle" style="top:10%; left:5%; animation-delay:0s;"></div>
-        <div class="particle" style="top:20%; right:10%; animation-delay:1s;"></div>
-        <div class="particle" style="bottom:30%; left:15%; animation-delay:2s;"></div>
-        <div class="particle" style="top:60%; right:20%; animation-delay:0.5s;"></div>
-        <div class="particle" style="bottom:10%; right:5%; animation-delay:1.5s;"></div>
-        <div class="particle" style="top:40%; left:8%; animation-delay:2.5s;"></div>
-        <div class="particle" style="bottom:50%; right:12%; animation-delay:0.8s;"></div>
-        <div class="particle" style="top:80%; left:25%; animation-delay:1.8s;"></div>
-    </div>
+    <!-- Particles -->
+    <div class="hero-particle" style="top:15%; left:10%; animation-delay:0s;"></div>
+    <div class="hero-particle" style="top:25%; right:15%; animation-delay:1.5s;"></div>
+    <div class="hero-particle" style="bottom:30%; left:5%; animation-delay:3s;"></div>
+    <div class="hero-particle" style="top:60%; right:8%; animation-delay:0.8s;"></div>
+    <div class="hero-particle" style="bottom:15%; right:25%; animation-delay:2.2s;"></div>
 
-    <div class="neon-line neon-line-1"></div>
-    <div class="neon-line neon-line-2"></div>
-    <div class="neon-line neon-line-3"></div>
-
-    <div class="container" style="position: relative; z-index: 2; padding-top: 20px;">
+    <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-7 text-white" data-aos="fade-right" data-aos-duration="1000">
-                <div class="cyber-badge mb-3">
-                    <span class="cyber-badge-text">✦ ENTERPRISE ✦</span>
-                    <span class="cyber-badge-pulse"></span>
+            <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Entreprise de référence au Mali
                 </div>
 
-                <h1 class="display-3 fw-bold mb-3 cyber-title" style="font-size: calc(2.5rem + 1vw);">
-                    <span class="text-gradient">African Mission</span>
-                    <span class="text-cyber">Corporate</span>
+                <h1 class="hero-title">
+                    <span class="gradient-text">African Mission</span>
+                    <span class="light-text">Corporate</span>
                 </h1>
 
-                <div class="cyber-line mb-3"></div>
-
-                <p class="lead mb-4" style="opacity: 0.9; font-size: 1.1rem; color: #b8c6ff; line-height: 1.6;">
-                    SARL spécialisée dans les prestations de services, le BTP,
+                <p class="hero-subtitle">
+                    SARL polyvalente spécialisée dans les prestations de services, le BTP,
                     l'agrobusiness, l'import-export et le développement durable.
                 </p>
 
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="/activities" class="btn-cyber-primary">
-                        <span class="btn-cyber-text"><i class="fas fa-rocket me-2"></i>Nos activités</span>
-                        <span class="btn-cyber-glow"></span>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="/activities" class="btn-premium-primary">
+                        <i class="fas fa-rocket"></i> Nos activités
                     </a>
-                    <a href="/contact" class="btn-cyber-secondary">
-                        <span class="btn-cyber-text"><i class="fas fa-phone me-2"></i>Nous contacter</span>
+                    <a href="/contact" class="btn-premium-secondary">
+                        <i class="fas fa-phone"></i> Nous contacter
                     </a>
                 </div>
 
-                <div class="row mt-4 g-2 cyber-stats">
-                    <div class="col-4">
-                        <div class="cyber-stat-item">
-                            <div class="cyber-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">30+</div>
-                            <div class="cyber-stat-label">Activités</div>
-                            <div class="cyber-stat-line"></div>
-                        </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">30+</div>
+                        <div class="hero-stat-label">Activités</div>
                     </div>
-                    <div class="col-4">
-                        <div class="cyber-stat-item">
-                            <div class="cyber-stat-number">15+</div>
-                            <div class="cyber-stat-label">Domaines</div>
-                            <div class="cyber-stat-line"></div>
-                        </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">15+</div>
+                        <div class="hero-stat-label">Domaines</div>
                     </div>
-                    <div class="col-4">
-                        <div class="cyber-stat-item">
-                            <div class="cyber-stat-number">100%</div>
-                            <div class="cyber-stat-label">Engagement</div>
-                            <div class="cyber-stat-line"></div>
-                        </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">100%</div>
+                        <div class="hero-stat-label">Engagement</div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-5 text-center d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000">
-                <div class="cyber-globe-container">
-                    <i class="fas fa-globe-africa cyber-globe-icon"></i>
-                    <div class="cyber-globe-ring"></div>
-                    <div class="cyber-globe-ring ring-2"></div>
-                    <div class="cyber-globe-ring ring-3"></div>
+                <div class="hero-globe">
+                    <i class="fas fa-globe-africa hero-globe-icon"></i>
+                    <div class="hero-globe-ring"></div>
+                    <div class="hero-globe-ring"></div>
+                    <div class="hero-globe-ring"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="scroll-indicator">
-        <span class="scroll-text">SCROLL</span>
-        <div class="scroll-line"></div>
-        <div class="scroll-dot"></div>
     </div>
 </section>
 
 <!-- ============================================ -->
 <!-- ACTIVITIES PREVIEW                         -->
 <!-- ============================================ -->
-<section class="cyber-section py-5" style="background: #0d0d1f; padding-top: 40px !important;">
+<section class="py-5" style="background: var(--premium-dark); padding-top: 50px !important; padding-bottom: 50px !important;">
     <div class="container">
         <div class="text-center mb-4" data-aos="fade-up">
-            <div class="cyber-section-tag">✦ SERVICES ✦</div>
-            <h2 class="fw-bold cyber-section-title">
-                <span class="text-gradient">Nos activités</span> principales
+            <div class="section-premium-tag">✦ SERVICES ✦</div>
+            <h2 class="section-premium-title">
+                <span class="gradient-text">Nos activités</span> principales
             </h2>
-            <div class="cyber-section-line"></div>
-            <p class="text-muted" style="font-size: 1rem; color: #8899cc !important;">Découvrez l'étendue de nos compétences et services</p>
+            <div class="section-premium-line" style="margin: 8px auto 16px;"></div>
+            <p style="color: var(--premium-gray); font-size: 1rem;">Découvrez l'étendue de nos compétences et services</p>
         </div>
 
         <div class="row g-4">
             <div class="col-md-4" th:each="activity : ${activities}" th:if="${activityStat.index < 6}"
                  data-aos="fade-up" th:data-aos-delay="${100 * activityStat.index}">
-                <div class="cyber-card">
-                    <div class="cyber-card-glow"></div>
-                    <div class="cyber-card-content">
-                        <div class="cyber-card-icon">
-                            <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
-                        </div>
-                        <h5 class="cyber-card-title" th:text="${activity.title}">Titre</h5>
-                        <p class="cyber-card-text" th:text="${activity.description}">Description</p>
-                        <span class="cyber-card-badge" th:text="${activity.category}">Catégorie</span>
+                <div class="card-premium">
+                    <div class="card-premium-icon">
+                        <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
                     </div>
-                    <div class="cyber-card-border"></div>
+                    <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
+                    <p class="card-premium-text" th:text="${activity.description}">Description</p>
+                    <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
+                    <div class="card-premium-border"></div>
                 </div>
             </div>
         </div>
 
         <div class="text-center mt-4">
-            <a href="/activities" class="btn-cyber-outline">
-                <span class="btn-cyber-text">Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i></span>
+            <a href="/activities" class="btn-premium-outline">
+                Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>
     </div>
@@ -208,39 +196,33 @@
 <!-- ============================================ -->
 <!-- ABOUT PREVIEW                              -->
 <!-- ============================================ -->
-<section class="cyber-section py-5" style="background: #0a0a1a; padding-top: 40px !important;">
+<section class="py-5" style="background: var(--premium-black); padding-top: 50px !important; padding-bottom: 50px !important;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <div class="cyber-section-tag">✦ À PROPOS ✦</div>
-                <h2 class="fw-bold cyber-section-title" style="color: #fff;">
-                    <span class="text-gradient">Qui sommes-</span>nous ?
+                <div class="section-premium-tag">✦ À PROPOS ✦</div>
+                <h2 class="section-premium-title" style="color: #fff;">
+                    <span class="gradient-text">Qui sommes-</span>nous ?
                 </h2>
-                <div class="cyber-section-line" style="margin-left:0;"></div>
-                <p class="lead mt-3" style="font-size: 1.05rem; color: #b8c6ff; line-height: 1.7;">
+                <div class="section-premium-line" style="margin-left:0;"></div>
+                <p style="font-size: 1.05rem; color: var(--premium-gray); line-height: 1.8;">
                     African Mission Corporate SARL est une entreprise malienne polyvalente, engagée dans le développement
                     durable et l'excellence opérationnelle.
                 </p>
-                <ul class="list-unstyled mt-3 cyber-features">
-                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Plus de 33 activités variées</li>
-                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Présence au Mali et à l'international</li>
-                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Engagement pour le développement durable</li>
-                    <li style="padding: 4px 0;"><i class="fas fa-check-circle text-cyber-accent me-2"></i>Expertise multi-sectorielle</li>
+                <ul class="list-unstyled mt-3" style="color: var(--premium-gray);">
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle" style="color: var(--premium-glow-blue); margin-right: 10px;"></i>Plus de 33 activités variées</li>
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle" style="color: var(--premium-glow-blue); margin-right: 10px;"></i>Présence au Mali et à l'international</li>
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle" style="color: var(--premium-glow-blue); margin-right: 10px;"></i>Engagement pour le développement durable</li>
+                    <li style="padding: 4px 0;"><i class="fas fa-check-circle" style="color: var(--premium-glow-blue); margin-right: 10px;"></i>Expertise multi-sectorielle</li>
                 </ul>
-                <a href="/about" class="btn-cyber-primary mt-3">
-                    <span class="btn-cyber-text">En savoir plus</span>
-                    <span class="btn-cyber-glow"></span>
+                <a href="/about" class="btn-premium-primary mt-3">
+                    En savoir plus <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
             <div class="col-lg-6 text-center" data-aos="fade-left">
-                <div class="cyber-image-frame">
-                    <div class="cyber-image-glow"></div>
-                    <img src="https://via.placeholder.com/600x400/0a1628/4a7cff?text=African+Mission"
-                         alt="African Mission" class="img-fluid rounded-4" style="max-height: 350px; position:relative; z-index:1;">
-                    <div class="cyber-image-corner corner-tl"></div>
-                    <div class="cyber-image-corner corner-tr"></div>
-                    <div class="cyber-image-corner corner-bl"></div>
-                    <div class="cyber-image-corner corner-br"></div>
+                <div style="position:relative; display:inline-block; padding:8px; background: rgba(59,130,246,0.04); border-radius:16px; border:1px solid var(--premium-border);">
+                    <img src="https://via.placeholder.com/600x400/0a1628/3b82f6?text=African+Mission"
+                         alt="African Mission" class="img-fluid rounded-4" style="max-height:350px; position:relative; z-index:1;">
                 </div>
             </div>
         </div>
@@ -250,20 +232,19 @@
 <!-- ============================================ -->
 <!-- PARTNERS                                   -->
 <!-- ============================================ -->
-<section class="cyber-section py-5" style="background: #0d0d1f; padding-top: 40px !important;">
+<section class="py-5" style="background: var(--premium-dark); padding-top: 50px !important; padding-bottom: 50px !important;">
     <div class="container">
-        <div class="text-center mb-3" data-aos="fade-up">
-            <div class="cyber-section-tag">✦ PARTENAIRES ✦</div>
-            <h3 class="fw-bold cyber-section-title" style="color: #fff; font-size: 1.8rem;">
-                <span class="text-gradient">Nos</span> partenaires
+        <div class="text-center mb-4" data-aos="fade-up">
+            <div class="section-premium-tag">✦ PARTENAIRES ✦</div>
+            <h3 class="section-premium-title" style="font-size: 1.8rem; color: #fff;">
+                <span class="gradient-text">Nos</span> partenaires
             </h3>
-            <div class="cyber-section-line"></div>
+            <div class="section-premium-line" style="margin: 8px auto 16px;"></div>
         </div>
         <div class="row align-items-center justify-content-center g-3">
             <div class="col-md-2 col-4 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
-                <div class="cyber-partner-card">
-                    <span class="cyber-partner-name" th:text="${partner.name}">Partenaire</span>
-                    <div class="cyber-partner-glow"></div>
+                <div class="partner-premium">
+                    <span class="partner-premium-name" th:text="${partner.name}">Partenaire</span>
                 </div>
             </div>
         </div>
@@ -271,104 +252,102 @@
 </section>
 
 <!-- ============================================ -->
-<!-- FOOTER INTÉGRÉ DIRECTEMENT DANS INDEX      -->
+<!-- FOOTER PREMIUM                             -->
 <!-- ============================================ -->
-<footer class="text-white" style="background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%); padding: 60px 0 30px 0; margin-top: auto;">
+<footer class="footer-premium">
     <div class="container">
         <div class="row g-5">
             <div class="col-md-4">
                 <h4 class="fw-bold">
-                    <i class="fas fa-globe-africa me-2 text-warning"></i>
+                    <i class="fas fa-globe-africa me-2" style="color: var(--premium-glow-blue);"></i>
                     African Mission Corporate
                 </h4>
-                <p class="mt-3 text-light" style="opacity: 0.8; line-height: 1.8;">
-                    SARL spécialisée dans les prestations de services, le BTP, l'agrobusiness, l'import-export et bien plus. <br>
-                    <span style="color: #ffc107;">Excellence - Innovation - Durabilité</span>
+                <p class="mt-3" style="line-height: 1.8;">
+                    SARL spécialisée dans les prestations de services, le BTP, l'agrobusiness, l'import-export et bien plus.
                 </p>
                 <div class="mt-4">
-                    <a href="#" class="text-white me-3" style="opacity: 0.7; transition: 0.3s; display: inline-block;">
-                        <i class="fab fa-facebook fa-lg"></i>
-                    </a>
-                    <a href="#" class="text-white me-3" style="opacity: 0.7; transition: 0.3s; display: inline-block;">
-                        <i class="fab fa-linkedin fa-lg"></i>
-                    </a>
-                    <a href="#" class="text-white me-3" style="opacity: 0.7; transition: 0.3s; display: inline-block;">
-                        <i class="fab fa-twitter fa-lg"></i>
-                    </a>
-                    <a href="#" class="text-white me-3" style="opacity: 0.7; transition: 0.3s; display: inline-block;">
-                        <i class="fab fa-instagram fa-lg"></i>
-                    </a>
-                    <a href="#" class="text-white" style="opacity: 0.7; transition: 0.3s; display: inline-block;">
-                        <i class="fab fa-youtube fa-lg"></i>
-                    </a>
+                    <a href="#" class="me-3" style="color: var(--premium-gray);"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="me-3" style="color: var(--premium-gray);"><i class="fab fa-linkedin fa-lg"></i></a>
+                    <a href="#" class="me-3" style="color: var(--premium-gray);"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" style="color: var(--premium-gray);"><i class="fab fa-instagram fa-lg"></i></a>
                 </div>
             </div>
             <div class="col-md-4">
                 <h5 class="fw-bold mb-3">Liens rapides</h5>
                 <ul class="list-unstyled" style="columns: 2; column-gap: 20px;">
-                    <li class="mb-2"><a href="/" class="text-light text-decoration-none" style="opacity: 0.8;">Accueil</a></li>
-                    <li class="mb-2"><a href="/about" class="text-light text-decoration-none" style="opacity: 0.8;">À propos</a></li>
-                    <li class="mb-2"><a href="/services" class="text-light text-decoration-none" style="opacity: 0.8;">Services</a></li>
-                    <li class="mb-2"><a href="/activities" class="text-light text-decoration-none" style="opacity: 0.8;">Activités</a></li>
-                    <li class="mb-2"><a href="/projects" class="text-light text-decoration-none" style="opacity: 0.8;">Projets</a></li>
-                    <li class="mb-2"><a href="/team" class="text-light text-decoration-none" style="opacity: 0.8;">Équipe</a></li>
-                    <li class="mb-2"><a href="/faq" class="text-light text-decoration-none" style="opacity: 0.8;">FAQ</a></li>
-                    <li class="mb-2"><a href="/contact" class="text-light text-decoration-none" style="opacity: 0.8;">Contact</a></li>
-                    <li class="mb-2"><a href="/legal" class="text-light text-decoration-none" style="opacity: 0.8;">Mentions légales</a></li>
+                    <li class="mb-2"><a href="/">Accueil</a></li>
+                    <li class="mb-2"><a href="/about">À propos</a></li>
+                    <li class="mb-2"><a href="/services">Services</a></li>
+                    <li class="mb-2"><a href="/activities">Activités</a></li>
+                    <li class="mb-2"><a href="/projects">Projets</a></li>
+                    <li class="mb-2"><a href="/team">Équipe</a></li>
+                    <li class="mb-2"><a href="/faq">FAQ</a></li>
+                    <li class="mb-2"><a href="/contact">Contact</a></li>
+                    <li class="mb-2"><a href="/legal">Mentions légales</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
                 <h5 class="fw-bold mb-3">Contact</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2 text-light" style="opacity: 0.8;">
-                        <i class="fas fa-map-marker-alt me-2 text-warning"></i> Bamako, Mali
-                    </li>
-                    <li class="mb-2 text-light" style="opacity: 0.8;">
-                        <i class="fas fa-phone me-2 text-warning"></i> +223 XX XX XX XX
-                    </li>
-                    <li class="mb-2 text-light" style="opacity: 0.8;">
-                        <i class="fas fa-envelope me-2 text-warning"></i> contact@africanmission.com
-                    </li>
-                    <li class="mb-2 text-light" style="opacity: 0.8;">
-                        <i class="fas fa-clock me-2 text-warning"></i> Lun - Ven : 8h00 - 17h00
-                    </li>
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2" style="color: var(--premium-glow-blue);"></i> Bamako, Mali</li>
+                    <li class="mb-2"><i class="fas fa-phone me-2" style="color: var(--premium-glow-blue);"></i> +223 XX XX XX XX</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2" style="color: var(--premium-glow-blue);"></i> contact@africanmission.com</li>
+                    <li class="mb-2"><i class="fas fa-clock me-2" style="color: var(--premium-glow-blue);"></i> Lun - Ven : 8h00 - 17h00</li>
                 </ul>
                 <div class="mt-4">
-                    <h6 class="fw-bold" style="font-size: 0.9rem;">📩 Restez informé</h6>
+                    <h6 style="font-size: 0.9rem; font-weight: 600;">📩 Restez informé</h6>
                     <form action="/subscribe" method="post" class="d-flex" style="gap: 8px;">
                         <input type="email" name="email" class="form-control form-control-sm"
                                placeholder="Votre email" required
-                               style="border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; padding: 8px 16px;">
-                        <button type="submit" class="btn btn-warning btn-sm" style="border-radius: 50px; font-weight: 600; white-space: nowrap;">
+                               style="border-radius: 50px; border: 1px solid var(--premium-border); background: rgba(255,255,255,0.03); color: #fff; padding: 8px 16px;">
+                        <button type="submit" class="btn btn-sm" style="background: var(--premium-gradient-accent); border: none; color: #fff; border-radius: 50px; font-weight: 600; padding: 8px 20px; white-space: nowrap;">
                             S'abonner
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-        <hr class="mt-4" style="border-color: rgba(255,255,255,0.08);">
+        <hr class="mt-4" style="border-color: var(--premium-border);">
         <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start" style="opacity: 0.6;">
-                <small>&copy; 2026 African Mission Corporate SARL. Tous droits réservés.</small>
+            <div class="col-md-6 text-center text-md-start" style="color: var(--premium-gray); font-size: 0.85rem;">
+                &copy; 2026 African Mission Corporate SARL. Tous droits réservés.
             </div>
-            <div class="col-md-6 text-center text-md-end" style="opacity: 0.5;">
-                <small>
-                    <a href="/legal" class="text-light text-decoration-none me-3" style="opacity: 0.6;">Mentions légales</a>
-                    <a href="/sitemap" class="text-light text-decoration-none" style="opacity: 0.6;">Plan du site</a>
-                </small>
+            <div class="col-md-6 text-center text-md-end" style="color: var(--premium-gray); font-size: 0.85rem;">
+                <a href="/legal" class="text-decoration-none me-3" style="color: var(--premium-gray);">Mentions légales</a>
+                <a href="/sitemap" class="text-decoration-none" style="color: var(--premium-gray);">Plan du site</a>
             </div>
         </div>
     </div>
 </footer>
 
-<!-- AOS Init -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init({
-        duration: 800,
-        once: true,
-        offset: 80
-    });
-</script>
+    AOS.init({ duration: 800, once: true, offset: 80 });
 
+    // Scroll effect navbar
+    const navbar = document.getElementById('mainNav');
+    const mobileSearch = document.getElementById('mobileSearch');
+
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+
+        if (mobileSearch) {
+            if (window.scrollY > 150) {
+                mobileSearch.classList.remove('visible');
+            } else {
+                mobileSearch.classList.add('visible');
+            }
+        }
+    });
+
+    if (mobileSearch) {
+        mobileSearch.classList.add('visible');
+    }
+</script>
 </body>
 </html>
