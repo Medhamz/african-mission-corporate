@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie - African Mission Corporate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- ============================================ -->
+<!-- PAGE HEADER                                -->
+<!-- ============================================ -->
+<section class="py-5" style="background: var(--bg-secondary); padding-top: 100px; padding-bottom: 40px;">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <div class="section-tag">✦ GALERIE ✦</div>
+            <h1 class="section-title">
+                <span class="gradient-text">Nos</span> réalisations
+            </h1>
+            <div class="section-line centered"></div>
+            <p style="color: var(--text-secondary); font-size: 1.05rem;">Découvrez nos projets en images</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- GALERIE                                   -->
+<!-- ============================================ -->
+<section class="py-5" style="background: var(--bg-primary);">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Image 1 -->
+            <div class="col-md-4" data-aos="zoom-in">
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.3s ease;">
+                    <div style="background: var(--bg-secondary); padding: 80px 20px; text-align: center;">
+                        <i class="fas fa-building-construction" style="font-size: 4rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                    </div>
+                    <div style="padding: 16px;">
+                        <h6 style="color: var(--text-primary); font-weight: 600;">Construction BTP</h6>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">Complexe scolaire - Bamako</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image 2 -->
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.3s ease;">
+                    <div style="background: var(--bg-secondary); padding: 80px 20px; text-align: center;">
+                        <i class="fas fa-solar-panel" style="font-size: 4rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                    </div>
+                    <div style="padding: 16px;">
+                        <h6 style="color: var(--text-primary); font-weight: 600;">Énergie Solaire</h6>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">Installation panneaux - Koulikoro</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image 3 -->
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.3s ease;">
+                    <div style="background: var(--bg-secondary); padding: 80px 20px; text-align: center;">
+                        <i class="fas fa-water" style="font-size: 4rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                    </div>
+                    <div style="padding: 16px;">
+                        <h6 style="color: var(--text-primary); font-weight: 600;">Aménagement Hydro-agricole</h6>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">Office du Niger</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image 4 -->
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.3s ease;">
+                    <div style="background: var(--bg-secondary); padding: 80px 20px; text-align: center;">
+                        <i class="fas fa-road" style="font-size: 4rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                    </div>
+                    <div style="padding: 16px;">
+                        <h6 style="color: var(--text-primary); font-weight: 600;">Construction de Routes</h6>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">Route de désenclavement - Mopti</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image 5 -->
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.3s ease;">
+                    <div style="background: var(--bg-secondary); padding: 80px 20px; text-align: center;">
+                        <i class="fas fa-gem" style="font-size: 4rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                    </div>
+                    <div style="padding: 16px;">
+                        <h6 style="color: var(--text-primary); font-weight: 600;">Exploitation Minière</h6>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">Prospection - Kayes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image 6 -->
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="500">
+                <div style="background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); transition: all 0.3s ease;">
+                    <div style="background: var(--bg-secondary); padding: 80px 20px; text-align: center;">
+                        <i class="fas fa-handshake" style="font-size: 4rem; color: var(--primary-blue); opacity: 0.2;"></i>
+                    </div>
+                    <div style="padding: 16px;">
+                        <h6 style="color: var(--text-primary); font-weight: 600;">Partenariats</h6>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem;">Signature accords - Bamako</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({duration:800,once:true,offset:80});</script>
+</body>
+</html>

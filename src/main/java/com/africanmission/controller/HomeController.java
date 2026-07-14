@@ -47,4 +47,36 @@ public class HomeController {
 
         return "activities";
     }
+
+    // Dans HomeController.java ou un nouveau controller
+
+    @GetMapping("/careers")
+    public String careers(Model model) {
+        model.addAttribute("pageTitle", "Carrières - African Mission Corporate");
+        return "careers";
+    }
+
+    @GetMapping("/blog")
+    public String blog(Model model) {
+        model.addAttribute("pageTitle", "Blog - African Mission Corporate");
+        return "blog";
+    }
+
+    @GetMapping("/testimonials")
+    public String testimonials(Model model) {
+        model.addAttribute("pageTitle", "Témoignages - African Mission Corporate");
+        return "testimonials";
+    }
+
+    @GetMapping("/gallery")
+    public String gallery(Model model) {
+        model.addAttribute("pageTitle", "Galerie - African Mission Corporate");
+        return "gallery";
+    }
+
+    @GetMapping("/key-figures")
+    public String keyFigures(Model model) {
+        model.addAttribute("pageTitle", "Chiffres Clés - African Mission Corporate");
+        return "key-figures";
+    }
 }

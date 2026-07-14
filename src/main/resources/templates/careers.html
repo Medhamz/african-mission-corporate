@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrières - African Mission Corporate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav th:replace="~{fragments/header :: header}"></nav>
+
+<!-- ============================================ -->
+<!-- PAGE HEADER                                -->
+<!-- ============================================ -->
+<section class="py-5" style="background: var(--bg-secondary); padding-top: 100px; padding-bottom: 40px;">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <div class="section-tag">✦ CARRIÈRES ✦</div>
+            <h1 class="section-title">
+                <span class="gradient-text">Rejoignez</span> notre équipe
+            </h1>
+            <div class="section-line centered"></div>
+            <p style="color: var(--text-secondary); font-size: 1.05rem; max-width: 600px; margin: 0 auto;">
+                Construisons ensemble l'avenir du Mali et de l'Afrique
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!-- OFFRES D'EMPLOI                            -->
+<!-- ============================================ -->
+<section class="py-5" style="background: var(--bg-primary);">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Offre 1 -->
+            <div class="col-md-6" data-aos="fade-up">
+                <div class="card-premium" style="padding: 24px;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-premium-icon" style="font-size: 1.5rem; padding: 8px; background: rgba(59,130,246,0.04); border-radius: 8px;">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <h5 class="card-premium-title">Ingénieur BTP</h5>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Bamako, Mali</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">CDI - Expérience 5 ans minimum</p>
+                        </div>
+                        <span class="badge" style="background: rgba(59,130,246,0.06); color: var(--primary-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">Urgent</span>
+                    </div>
+                    <div class="mt-3">
+                        <a href="/contact" class="btn-outline-premium" style="padding: 8px 20px; font-size: 0.85rem;">
+                            Postuler <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offre 2 -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-premium" style="padding: 24px;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-premium-icon" style="font-size: 1.5rem; padding: 8px; background: rgba(59,130,246,0.04); border-radius: 8px;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h5 class="card-premium-title">Responsable Commercial</h5>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Bamako, Mali</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">CDI - Expérience 3 ans minimum</p>
+                        </div>
+                        <span class="badge" style="background: rgba(59,130,246,0.06); color: var(--primary-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">Urgent</span>
+                    </div>
+                    <div class="mt-3">
+                        <a href="/contact" class="btn-outline-premium" style="padding: 8px 20px; font-size: 0.85rem;">
+                            Postuler <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offre 3 -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-premium" style="padding: 24px;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-premium-icon" style="font-size: 1.5rem; padding: 8px; background: rgba(59,130,246,0.04); border-radius: 8px;">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h5 class="card-premium-title">Développeur Full Stack</h5>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Télétravail / Bamako</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">CDI - Expérience 3 ans minimum</p>
+                        </div>
+                        <span class="badge" style="background: rgba(59,130,246,0.06); color: var(--primary-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">Nouveau</span>
+                    </div>
+                    <div class="mt-3">
+                        <a href="/contact" class="btn-outline-premium" style="padding: 8px 20px; font-size: 0.85rem;">
+                            Postuler <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offre 4 -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-premium" style="padding: 24px;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="card-premium-icon" style="font-size: 1.5rem; padding: 8px; background: rgba(59,130,246,0.04); border-radius: 8px;">
+                                <i class="fas fa-tractor"></i>
+                            </div>
+                            <h5 class="card-premium-title">Ingénieur Agronome</h5>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">Région de Ségou, Mali</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">CDI - Expérience 4 ans minimum</p>
+                        </div>
+                        <span class="badge" style="background: rgba(59,130,246,0.06); color: var(--primary-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">Stage</span>
+                    </div>
+                    <div class="mt-3">
+                        <a href="/contact" class="btn-outline-premium" style="padding: 8px 20px; font-size: 0.85rem;">
+                            Postuler <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spontaneous application -->
+        <div class="text-center mt-5" data-aos="fade-up">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 40px;">
+                <h4 style="color: var(--text-primary);">Vous ne trouvez pas d'offre correspondante ?</h4>
+                <p style="color: var(--text-secondary);">Envoyez-nous votre candidature spontanée</p>
+                <a href="/contact" class="btn-primary-premium mt-3">
+                    <i class="fas fa-paper-plane"></i> Candidature spontanée
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({duration:800,once:true,offset:80});</script>
+</body>
+</html>
