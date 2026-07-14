@@ -15,6 +15,16 @@
 <body>
 
 <!-- ============================================ -->
+<!-- BARRE DE PROGRESSION DE SCROLL              -->
+<!-- ============================================ -->
+<div id="scrollProgress" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gradient-main); z-index: 9999; transition: width 0.1s ease; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);"></div>
+
+<!-- ============================================ -->
+<!-- TOAST NOTIFICATIONS CONTAINER              -->
+<!-- ============================================ -->
+<div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
+
+<!-- ============================================ -->
 <!-- NAVBAR - CORPORATE PREMIUM 3.0             -->
 <!-- ============================================ -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
@@ -33,18 +43,16 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto menu-premium">
-                <!-- Accueil -->
                 <li class="nav-item">
                     <a class="nav-link active" href="/">
                         <i class="fas fa-home nav-icon"></i>Accueil
                     </a>
                 </li>
-                <!-- À propos -->
                 <li class="nav-item">
                     <a class="nav-link" href="/about">
                         <i class="fas fa-info-circle nav-icon"></i>À propos
+                    </a>
                 </li>
-                <!-- Services (Dropdown) -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-cogs nav-icon"></i>Services
@@ -57,25 +65,21 @@
                         <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
                     </ul>
                 </li>
-                <!-- Équipe -->
                 <li class="nav-item">
                     <a class="nav-link" href="/team">
                         <i class="fas fa-users nav-icon"></i>Équipe
                     </a>
                 </li>
-                <!-- Carrières (NOUVEAU) -->
                 <li class="nav-item">
                     <a class="nav-link" href="/careers">
                         <i class="fas fa-briefcase nav-icon"></i>Carrières
                     </a>
                 </li>
-                <!-- Blog (NOUVEAU) -->
                 <li class="nav-item">
                     <a class="nav-link" href="/blog">
                         <i class="fas fa-newspaper nav-icon"></i>Blog
                     </a>
                 </li>
-                <!-- Contact -->
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">
                         <i class="fas fa-envelope nav-icon"></i>Contact
@@ -91,6 +95,10 @@
                 <a href="/contact" class="cta-premium">
                     <i class="fas fa-paper-plane"></i> Devis
                 </a>
+                <!-- Bouton toggle mode sombre/clair -->
+                <button onclick="toggleTheme()" style="background: transparent; border: 1px solid var(--border-light); color: var(--text-secondary); padding: 8px 14px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -342,12 +350,12 @@
                 </ul>
                 <div class="mt-4">
                     <h6 style="font-size: 0.9rem; font-weight: 600;">📩 Restez informé</h6>
-                    <form action="/subscribe" method="post" class="d-flex" style="gap: 8px;">
+                    <form action="/newsletter/subscribe" method="post" class="d-flex" style="gap: 8px;">
                         <input type="email" name="email" class="form-control form-control-sm"
                                placeholder="Votre email" required
                                style="border-radius: var(--radius-full); border: 1px solid var(--border-light); background: var(--bg-primary); color: var(--text-primary); padding: 8px 16px;">
                         <button type="submit" class="btn btn-sm" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); font-weight: 600; padding: 8px 20px; white-space: nowrap;">
-                            S'abonner
+                            <i class="fas fa-paper-plane"></i> S'abonner
                         </button>
                     </form>
                 </div>
@@ -369,8 +377,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+    // ============================================
+    // AOS INITIALIZATION
+    // ============================================
     AOS.init({ duration: 800, once: true, offset: 80, easing: 'ease-out-cubic' });
 
+    // ============================================
+    // NAVBAR SCROLL EFFECT
+    // ============================================
     const navbar = document.getElementById('mainNav');
     const mobileSearch = document.getElementById('mobileSearch');
 
@@ -392,6 +406,103 @@
     if (mobileSearch) {
         mobileSearch.classList.add('visible');
     }
+
+    // ============================================
+    // SCROLL PROGRESS BAR
+    // ============================================
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+    });
+
+    // ============================================
+    // THEME TOGGLE (DARK/LIGHT)
+    // ============================================
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('themeIcon');
+        const isDark = body.getAttribute('data-theme') !== 'light';
+
+        if (isDark) {
+            body.setAttribute('data-theme', 'light');
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.removeAttribute('data-theme');
+            icon.className = 'fas fa-moon';
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    // Charger la préférence enregistrée
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+    });
+
+    // ============================================
+    // TOAST NOTIFICATIONS SYSTEM
+    // ============================================
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        const isDark = document.body.getAttribute('data-theme') === 'light';
+        const bgColor = type === 'success' ? (isDark ? '#1e293b' : '#1e293b') : '#ef4444';
+        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+
+        toast.style.cssText = `
+            background: ${bgColor};
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-left: 4px solid ${type === 'success' ? '#3b82f6' : '#ef4444'};
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        `;
+        toast.innerHTML = `
+            <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
+            <span>${message}</span>
+        `;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // Afficher les toasts depuis les messages flash
+    document.addEventListener('DOMContentLoaded', function() {
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        const toastType = /*[[${toastType}]]*/ 'success';
+        if (toastMessage) {
+            showToast(toastMessage, toastType);
+        }
+    });
+
+    // ============================================
+    // STYLE POUR L'ANIMATION DES TOASTS
+    // ============================================
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>
