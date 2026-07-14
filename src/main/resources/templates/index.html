@@ -3,18 +3,15 @@
 <head th:replace="~{fragments/header :: header}"></head>
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR INCLUSE -->
 <nav th:replace="~{fragments/header :: header}"></nav>
 
 <!-- ============================================ -->
-<!-- HERO SECTION - ENTÊTE AJUSTÉE              -->
+<!-- HERO SECTION                               -->
 <!-- ============================================ -->
 <section class="hero-section d-flex align-items-center" style="min-height: 90vh; position: relative; overflow: hidden; padding-top: 60px; background: #0a0a1a;">
 
-    <!-- Grille cyberpunk -->
     <div class="cyber-grid"></div>
-
-    <!-- Particules -->
     <div class="particles-container">
         <div class="particle" style="top:10%; left:5%; animation-delay:0s;"></div>
         <div class="particle" style="top:20%; right:10%; animation-delay:1s;"></div>
@@ -26,7 +23,6 @@
         <div class="particle" style="top:80%; left:25%; animation-delay:1.8s;"></div>
     </div>
 
-    <!-- Lignes néon -->
     <div class="neon-line neon-line-1"></div>
     <div class="neon-line neon-line-2"></div>
     <div class="neon-line neon-line-3"></div>
@@ -34,7 +30,6 @@
     <div class="container" style="position: relative; z-index: 2; padding-top: 20px;">
         <div class="row align-items-center">
             <div class="col-lg-7 text-white" data-aos="fade-right" data-aos-duration="1000">
-                <!-- Badge cyber -->
                 <div class="cyber-badge mb-3">
                     <span class="cyber-badge-text">✦ ENTERPRISE ✦</span>
                     <span class="cyber-badge-pulse"></span>
@@ -62,7 +57,6 @@
                     </a>
                 </div>
 
-                <!-- Stats -->
                 <div class="row mt-4 g-2 cyber-stats">
                     <div class="col-4">
                         <div class="cyber-stat-item">
@@ -99,7 +93,6 @@
         </div>
     </div>
 
-    <!-- Scroll indicator -->
     <div class="scroll-indicator">
         <span class="scroll-text">SCROLL</span>
         <div class="scroll-line"></div>
@@ -212,7 +205,7 @@
     </div>
 </section>
 
-<!-- Footer -->
+<!-- FOOTER INCLUS -->
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <!-- AOS Init -->
