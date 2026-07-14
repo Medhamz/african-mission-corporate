@@ -17,11 +17,21 @@ public class PartnerService {
         return partnerRepository.findByIsActiveTrueOrderByDisplayOrderAsc();
     }
 
+    // ✅ Méthode ajoutée pour récupérer TOUS les partenaires (actifs et inactifs)
+    public List<Partner> getAllPartners() {
+        return partnerRepository.findAll();
+    }
+
     public Partner savePartner(Partner partner) {
         return partnerRepository.save(partner);
     }
 
     public void deletePartner(Long id) {
         partnerRepository.deleteById(id);
+    }
+
+    public Partner getPartnerById(Long id) {
+        return partnerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Partenaire non trouvé"));
     }
 }

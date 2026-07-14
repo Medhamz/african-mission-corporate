@@ -188,6 +188,45 @@
 </section>
 
 <!-- ============================================ -->
+<!-- CHAT PUBLIQUE                              -->
+<!-- ============================================ -->
+<section class="py-5" style="background: var(--bg-primary);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card-premium" style="padding: 32px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 style="color: var(--text-primary); font-weight: 700;">
+                            <i class="fas fa-comments" style="color: var(--primary-blue);"></i> Chat public
+                        </h4>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;"><i class="fas fa-circle" style="color: #22c55e; font-size: 0.5rem;"></i> En direct</span>
+                    </div>
+
+                    <!-- Zone des messages -->
+                    <div id="chatMessages" style="height: 300px; overflow-y: auto; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
+                        <!-- Messages chargés dynamiquement -->
+                    </div>
+
+                    <!-- Formulaire d'envoi -->
+                    <form id="chatForm" class="d-flex gap-2">
+                        <input type="text" id="chatUsername" placeholder="Votre pseudo" required
+                               style="flex: 0 0 150px; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--text-primary);">
+                        <input type="text" id="chatMessageInput" placeholder="Votre message..." required
+                               style="flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--text-primary);">
+                        <button type="submit" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-sm); padding: 10px 24px; font-weight: 600; transition: all 0.3s ease; white-space: nowrap;">
+                            <i class="fas fa-paper-plane"></i> Envoyer
+                        </button>
+                    </form>
+                    <p style="color: var(--text-muted); font-size: 0.7rem; margin-top: 8px;">
+                        <i class="fas fa-info-circle"></i> Les messages sont modérés avant d'être publiés.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
 <!-- FOOTER                                     -->
 <!-- ============================================ -->
 <footer class="footer-premium">
@@ -253,29 +292,186 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({ duration: 800, once: true, offset: 80 });
+
     const navbar = document.getElementById('mainNav');
     const mobileSearch = document.getElementById('mobileSearch');
+
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) navbar.classList.add('scrolled');
-        else navbar.classList.remove('scrolled');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
         if (mobileSearch) {
-            if (window.scrollY > 150) mobileSearch.classList.remove('visible');
-            else mobileSearch.classList.add('visible');
+            if (window.scrollY > 150) {
+                mobileSearch.classList.remove('visible');
+            } else {
+                mobileSearch.classList.add('visible');
+            }
         }
     });
-    if (mobileSearch) mobileSearch.classList.add('visible');
+
+    if (mobileSearch) {
+        mobileSearch.classList.add('visible');
+    }
+
     function toggleTheme() {
         const body = document.body, icon = document.getElementById('themeIcon');
         const isDark = body.getAttribute('data-theme') !== 'light';
-        if (isDark) { body.setAttribute('data-theme', 'light'); icon.className = 'fas fa-sun'; localStorage.setItem('theme', 'light'); }
-        else { body.removeAttribute('data-theme'); icon.className = 'fas fa-moon'; localStorage.setItem('theme', 'dark'); }
+        if (isDark) {
+            body.setAttribute('data-theme', 'light');
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.removeAttribute('data-theme');
+            icon.className = 'fas fa-moon';
+            localStorage.setItem('theme', 'dark');
+        }
     }
+
     document.addEventListener('DOMContentLoaded', function() {
         if (localStorage.getItem('theme') === 'light') {
             document.body.setAttribute('data-theme', 'light');
             document.getElementById('themeIcon').className = 'fas fa-sun';
         }
     });
+
+    // ============================================
+    // CHAT PUBLIQUE - AJAX
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatMessageInput');
+        const chatUsername = document.getElementById('chatUsername');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Fonction pour afficher un toast
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) return;
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? '#1e293b' : '#ef4444';
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.style.cssText = `
+                background: ${bgColor};
+                color: #fff;
+                padding: 16px 24px;
+                border-radius: 12px;
+                border-left: 4px solid ${type === 'success' ? '#3b82f6' : '#ef4444'};
+                box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+                animation: slideIn 0.3s ease;
+                font-family: 'Inter', sans-serif;
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+            `;
+            toast.innerHTML = `
+                <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
+                <span>${message}</span>
+            `;
+            toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Envoyer un message
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = chatUsername.value.trim();
+            const message = chatInput.value.trim();
+
+            if (!username || !message) {
+                showToast('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+
+            fetch('/chat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    chatInput.value = '';
+                    showToast('Message envoyé ! En attente de modération.', 'success');
+                } else {
+                    showToast('Erreur lors de l\'envoi', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showToast('Erreur de connexion', 'error');
+            });
+        });
+
+        // Charger les messages
+        function loadMessages() {
+            fetch('/chat/messages')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        chatMessages.innerHTML = '';
+                        data.forEach(msg => {
+                            const div = document.createElement('div');
+                            div.className = 'chat-message';
+                            div.style.cssText = 'margin-bottom: 12px; padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-blue);';
+                            div.innerHTML = `
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <strong style="color: var(--primary-blue);">${escapeHtml(msg.username)}</strong>
+                                    <span style="color: var(--text-muted); font-size: 0.65rem;">${new Date(msg.createdAt).toLocaleString()}</span>
+                                </div>
+                                <p style="color: var(--text-secondary); margin-bottom: 0; font-size: 0.9rem;">${escapeHtml(msg.message)}</p>
+                            `;
+                            chatMessages.appendChild(div);
+                        });
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } else {
+                        chatMessages.innerHTML = `
+                            <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
+                                <p style="margin-top: 8px;">Aucun message pour le moment. Soyez le premier à écrire !</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => console.error('Erreur de chargement:', error));
+        }
+
+        // Échapper les caractères HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Charger au démarrage et toutes les 10 secondes
+        loadMessages();
+        setInterval(loadMessages, 10000);
+    });
 </script>
+
+<!-- Conteneur pour les toasts -->
+<div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
+
+<style>
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+
 </body>
 </html>

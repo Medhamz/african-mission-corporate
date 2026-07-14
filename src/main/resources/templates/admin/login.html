@@ -24,64 +24,28 @@
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
-        .login-card h2 {
-            color: #fff;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .login-card p {
-            color: #8899cc;
-            margin-bottom: 24px;
-        }
-        .login-card .form-control {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(74,124,255,0.15);
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 8px;
-        }
-        .login-card .form-control:focus {
-            border-color: #4a7cff;
-            box-shadow: 0 0 0 3px rgba(74,124,255,0.15);
-        }
-        .login-card .btn-primary {
-            background: #4a7cff;
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            border-radius: 8px;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-        .login-card .btn-primary:hover {
-            background: #3a6bef;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(74,124,255,0.3);
-        }
-        .login-card .text-muted {
-            color: #8899cc !important;
-            font-size: 0.85rem;
-        }
-        .login-card .text-muted a {
-            color: #4a7cff;
-            text-decoration: none;
-        }
-        .login-card .text-muted a:hover {
-            text-decoration: underline;
-        }
-        .cyber-logo {
-            color: #4a7cff;
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-        }
+        .login-card h2 { color: #fff; font-weight: 700; margin-bottom: 8px; }
+        .login-card p { color: #8899cc; margin-bottom: 24px; }
+        .login-card .form-control { background: rgba(255,255,255,0.05); border: 1px solid rgba(74,124,255,0.15); color: #fff; padding: 12px 16px; border-radius: 8px; }
+        .login-card .form-control:focus { border-color: #4a7cff; box-shadow: 0 0 0 3px rgba(74,124,255,0.15); }
+        .login-card .btn-primary { background: #4a7cff; border: none; padding: 12px; font-weight: 600; border-radius: 8px; width: 100%; transition: all 0.3s ease; }
+        .login-card .btn-primary:hover { background: #3a6bef; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,124,255,0.3); }
+        .login-card .text-muted { color: #8899cc !important; font-size: 0.85rem; }
+        .login-card .text-muted a { color: #4a7cff; text-decoration: none; }
+        .cyber-logo { color: #4a7cff; font-size: 2.5rem; margin-bottom: 16px; }
+        .alert-danger { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; border-radius: 8px; padding: 10px 16px; font-size: 0.9rem; margin-bottom: 16px; }
     </style>
 </head>
 <body>
 <div class="login-card">
     <div class="text-center">
-        <i class="fas fa-globe-africa cyber-logo"></i>
+        <i class="fas fa-shield-alt cyber-logo"></i>
         <h2>Administration</h2>
         <p>Connectez-vous pour accéder au back-office</p>
+    </div>
+
+    <div th:if="${param.error}" class="alert-danger text-center">
+        <i class="fas fa-exclamation-circle"></i> Identifiants incorrects
     </div>
 
     <form method="post" action="/admin/login">

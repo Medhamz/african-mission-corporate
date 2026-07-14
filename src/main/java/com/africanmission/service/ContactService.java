@@ -21,14 +21,25 @@ public class ContactService {
         return contactRepository.findByIsReadFalseOrderByCreatedAtDesc();
     }
 
+    // ✅ Méthode ajoutée pour récupérer TOUS les messages
     public List<ContactMessage> getAllMessages() {
         return contactRepository.findAll();
     }
 
     public ContactMessage markAsRead(Long id) {
         ContactMessage message = contactRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found"));
+                .orElseThrow(() -> new RuntimeException("Message non trouvé"));
         message.setIsRead(true);
         return contactRepository.save(message);
+    }
+
+    // ✅ Méthode ajoutée pour supprimer un message
+    public void deleteMessage(Long id) {
+        contactRepository.deleteById(id);
+    }
+
+    public ContactMessage getMessageById(Long id) {
+        return contactRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Message non trouvé"));
     }
 }

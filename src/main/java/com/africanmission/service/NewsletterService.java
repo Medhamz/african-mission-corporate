@@ -32,10 +32,12 @@ public class NewsletterService {
         newsletterRepository.save(subscriber);
     }
 
+    // ✅ Méthode ajoutée pour récupérer tous les abonnés actifs
     public List<Newsletter> getAllActiveSubscribers() {
         return newsletterRepository.findByIsActiveTrue();
     }
 
+    // ✅ Méthode ajoutée pour compter les abonnés
     public long getSubscriberCount() {
         return newsletterRepository.count();
     }
