@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - African Mission Corporate</title>
+    <title th:text="${pageTitle}">African Mission Corporate</title>
+
+    <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -12,34 +14,113 @@
 </head>
 <body>
 
-<nav th:replace="~{fragments/header :: header}"></nav>
+<!-- ============================================ -->
+<!-- NAVBAR - CORPORATE PREMIUM 3.0             -->
+<!-- ============================================ -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
+    <div class="container">
+        <a class="logo-premium" href="/">
+            <span class="logo-premium-icon"><i class="fas fa-globe-africa"></i></span>
+            <div>
+                <span class="logo-premium-text">African <span class="highlight">Mission</span></span>
+                <span class="logo-premium-badge">SARL</span>
+            </div>
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto menu-premium">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-home nav-icon"></i>Accueil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">
+                        <i class="fas fa-info-circle nav-icon"></i>À propos
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-cogs nav-icon"></i>Services
+                    </a>
+                    <ul class="dropdown-menu dropdown-premium">
+                        <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase"></i>Nos services</a></li>
+                        <li><a class="dropdown-item" href="/activities"><i class="fas fa-tasks"></i>Activités</a></li>
+                        <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket"></i>Projets</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/team">
+                        <i class="fas fa-users nav-icon"></i>Équipe
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/careers">
+                        <i class="fas fa-briefcase nav-icon"></i>Carrières
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/blog">
+                        <i class="fas fa-newspaper nav-icon"></i>Blog
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">
+                        <i class="fas fa-envelope nav-icon"></i>Contact
+                    </a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-premium">
+                    <input type="search" placeholder="Rechercher...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <a href="/contact" class="cta-premium">
+                    <i class="fas fa-paper-plane"></i> Devis
+                </a>
+                <button onclick="toggleTheme()" style="background: transparent; border: 1px solid var(--border-light); color: var(--text-secondary); padding: 8px 14px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Search -->
+<div class="mobile-search-premium" id="mobileSearch">
+    <form action="/search" method="get">
+        <input type="search" name="q" placeholder="Rechercher...">
+        <button type="submit"><i class="fas fa-search"></i> Rechercher</button>
+    </form>
+</div>
 
 <!-- ============================================ -->
 <!-- PAGE HEADER                                -->
 <!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-secondary); padding-top: 100px; padding-bottom: 40px;">
-    <div class="container">
-        <div class="text-center" data-aos="fade-up">
-            <div class="section-tag">✦ BLOG ✦</div>
-            <h1 class="section-title">
-                <span class="gradient-text">Actualités</span> &amp; Insights
-            </h1>
-            <div class="section-line centered"></div>
-            <p style="color: var(--text-secondary); font-size: 1.05rem;">Suivez nos projets et nos réalisations</p>
-        </div>
+<section class="page-header">
+    <div class="container text-center" data-aos="fade-up">
+        <h1 class="display-4 fw-bold">Blog</h1>
+        <p class="lead">Suivez nos projets et nos réalisations</p>
     </div>
 </section>
 
 <!-- ============================================ -->
 <!-- ARTICLES DU BLOG                           -->
 <!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-primary);">
+<section class="py-5" style="background: var(--bg-secondary);">
     <div class="container">
         <div class="row g-4">
             <!-- Article 1 -->
             <div class="col-md-4" data-aos="fade-up">
                 <div class="card-premium" style="padding: 20px;">
-                    <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 60px 20px; text-align: center; margin-bottom: 16px;">
+                    <div style="background: var(--bg-primary); border-radius: var(--radius-sm); padding: 60px 20px; text-align: center; margin-bottom: 16px;">
                         <i class="fas fa-building" style="font-size: 3rem; color: var(--primary-blue); opacity: 0.3;"></i>
                     </div>
                     <h5 class="card-premium-title">Nouveau projet de construction</h5>
@@ -56,7 +137,7 @@
             <!-- Article 2 -->
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="card-premium" style="padding: 20px;">
-                    <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 60px 20px; text-align: center; margin-bottom: 16px;">
+                    <div style="background: var(--bg-primary); border-radius: var(--radius-sm); padding: 60px 20px; text-align: center; margin-bottom: 16px;">
                         <i class="fas fa-solar-panel" style="font-size: 3rem; color: var(--primary-blue); opacity: 0.3;"></i>
                     </div>
                     <h5 class="card-premium-title">Électrification rurale</h5>
@@ -73,7 +154,7 @@
             <!-- Article 3 -->
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                 <div class="card-premium" style="padding: 20px;">
-                    <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 60px 20px; text-align: center; margin-bottom: 16px;">
+                    <div style="background: var(--bg-primary); border-radius: var(--radius-sm); padding: 60px 20px; text-align: center; margin-bottom: 16px;">
                         <i class="fas fa-handshake" style="font-size: 3rem; color: var(--primary-blue); opacity: 0.3;"></i>
                     </div>
                     <h5 class="card-premium-title">Nouveau partenariat</h5>
@@ -90,10 +171,127 @@
     </div>
 </section>
 
-<footer th:replace="~{fragments/footer :: footer}"></footer>
+<!-- ============================================ -->
+<!-- FOOTER - CORPORATE PREMIUM 3.0             -->
+<!-- ============================================ -->
+<footer class="footer-premium">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-md-4">
+                <h4 class="fw-bold">
+                    <i class="fas fa-globe-africa me-2" style="color: var(--primary-blue);"></i>
+                    African Mission Corporate
+                </h4>
+                <p class="mt-3" style="line-height: 1.8;">
+                    SARL spécialisée dans les prestations de services, le BTP, l'agrobusiness, l'import-export et bien plus.
+                </p>
+                <div class="mt-4 d-flex gap-2">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-3">Liens rapides</h5>
+                <ul class="list-unstyled" style="columns: 2; column-gap: 20px;">
+                    <li class="mb-2"><a href="/">Accueil</a></li>
+                    <li class="mb-2"><a href="/about">À propos</a></li>
+                    <li class="mb-2"><a href="/services">Services</a></li>
+                    <li class="mb-2"><a href="/activities">Activités</a></li>
+                    <li class="mb-2"><a href="/projects">Projets</a></li>
+                    <li class="mb-2"><a href="/team">Équipe</a></li>
+                    <li class="mb-2"><a href="/careers">Carrières</a></li>
+                    <li class="mb-2"><a href="/blog">Blog</a></li>
+                    <li class="mb-2"><a href="/faq">FAQ</a></li>
+                    <li class="mb-2"><a href="/contact">Contact</a></li>
+                    <li class="mb-2"><a href="/legal">Mentions légales</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-3">Contact</h5>
+                <ul class="list-unstyled" style="color: var(--text-secondary);">
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2" style="color: var(--primary-blue);"></i> BAMAKO ACI 2000</li>
+                    <li class="mb-2"><i class="fas fa-phone me-2" style="color: var(--primary-blue);"></i> +223 44 39 12 03</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2" style="color: var(--primary-blue);"></i> Africanmissioncorporate@gmail.com</li>
+                    <li class="mb-2"><i class="fas fa-clock me-2" style="color: var(--primary-blue);"></i> Lun - Ven : 8h00 - 17h00</li>
+                </ul>
+                <div class="mt-4">
+                    <h6 style="font-size: 0.9rem; font-weight: 600;">📩 Restez informé</h6>
+                    <form action="/newsletter/subscribe" method="post" class="d-flex" style="gap: 8px;">
+                        <input type="email" name="email" class="form-control form-control-sm"
+                               placeholder="Votre email" required
+                               style="border-radius: var(--radius-full); border: 1px solid var(--border-light); background: var(--bg-primary); color: var(--text-primary); padding: 8px 16px;">
+                        <button type="submit" class="btn btn-sm" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); font-weight: 600; padding: 8px 20px; white-space: nowrap;">
+                            <i class="fas fa-paper-plane"></i> S'abonner
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-4" style="border-color: var(--border-light);">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start" style="color: var(--text-muted); font-size: 0.85rem;">
+                &copy; 2026 African Mission Corporate SARL. Tous droits réservés.
+            </div>
+            <div class="col-md-6 text-center text-md-end" style="color: var(--text-muted); font-size: 0.85rem;">
+                <a href="/legal" class="text-decoration-none me-3" style="color: var(--text-muted);">Mentions légales</a>
+                <a href="/sitemap" class="text-decoration-none" style="color: var(--text-muted);">Plan du site</a>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>AOS.init({duration:800,once:true,offset:80});</script>
+<script>
+    AOS.init({ duration: 800, once: true, offset: 80 });
+
+    const navbar = document.getElementById('mainNav');
+    const mobileSearch = document.getElementById('mobileSearch');
+
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        if (mobileSearch) {
+            if (window.scrollY > 150) {
+                mobileSearch.classList.remove('visible');
+            } else {
+                mobileSearch.classList.add('visible');
+            }
+        }
+    });
+
+    if (mobileSearch) {
+        mobileSearch.classList.add('visible');
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('themeIcon');
+        const isDark = body.getAttribute('data-theme') !== 'light';
+
+        if (isDark) {
+            body.setAttribute('data-theme', 'light');
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.removeAttribute('data-theme');
+            icon.className = 'fas fa-moon';
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+    });
+</script>
 </body>
 </html>
