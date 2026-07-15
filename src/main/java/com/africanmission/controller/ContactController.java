@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/contact")
@@ -36,5 +37,12 @@ public class ContactController {
                 "Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.");
 
         return "redirect:/contact";
+    }
+
+    @GetMapping("/contact")
+    public String showContactForm(Model model) {
+        model.addAttribute("contactMessage", new ContactMessage());
+        model.addAttribute("pageTitle", "Contact - African Mission Corporate");
+        return "contact";
     }
 }
