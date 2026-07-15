@@ -20,16 +20,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        // ✅ Pages publiques (TOUTES les pages accessibles sans login)
                         .requestMatchers("/", "/about", "/activities", "/contact",
                                 "/services", "/projects", "/team", "/faq",
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery", "/key-figures",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/newsletter/**", "/search", "/chat/**").permitAll()  // ⚠️ AJOUT DE /chat/**
-                        // ✅ Admin (protégé)
+                                "/newsletter/**", "/search", "/chat/**", "/contact/ajax").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // ✅ Tout le reste est public (ou protégé si nécessaire)
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
@@ -45,8 +42,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .csrf(csrf -> csrf
-                        // ⚠️ AJOUT DE /chat/** POUR IGNORER CSRF
-                        .ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**")
+                        .ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/ajax")
                 );
 
         return http.build();
@@ -59,7 +55,6 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("Admin@2026"))
                 .roles("ADMIN")
                 .build();
-
         return new InMemoryUserDetailsManager(admin);
     }
 
