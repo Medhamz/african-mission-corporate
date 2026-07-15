@@ -337,7 +337,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - AJAX
+    // CHAT PUBLIQUE - AJAX (CORRIGÉ)
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -392,6 +392,8 @@
                 return;
             }
 
+            console.log('📤 Envoi du message :', { username, message });
+
             fetch('/chat/send', {
                 method: 'POST',
                 headers: {
@@ -402,18 +404,22 @@
                     message: message
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('📥 Réponse reçue, status :', response.status);
+                return response.json();
+            })
             .then(data => {
+                console.log('📦 Données :', data);
                 if (data.success) {
                     chatInput.value = '';
                     showToast('Message envoyé ! En attente de modération.', 'success');
                 } else {
-                    showToast('Erreur lors de l\'envoi', 'error');
+                    showToast('Erreur : ' + data.message, 'error');
                 }
             })
             .catch(error => {
-                console.error('Erreur:', error);
-                showToast('Erreur de connexion', 'error');
+                console.error('❌ Erreur fetch :', error);
+                showToast('Erreur de connexion au serveur', 'error');
             });
         });
 
@@ -457,9 +463,9 @@
             return div.innerHTML;
         }
 
-        // Charger au démarrage et toutes les 10 secondes
+        // Charger au démarrage et toutes les 5 secondes
         loadMessages();
-        setInterval(loadMessages, 10000);
+        setInterval(loadMessages, 5000);
     });
 </script>
 

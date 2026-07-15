@@ -26,7 +26,7 @@ public class SecurityConfig {
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery", "/key-figures",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/newsletter/**", "/search").permitAll()
+                                "/newsletter/**", "/search", "/chat/**").permitAll()  // ⚠️ AJOUT DE /chat/**
                         // ✅ Admin (protégé)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         // ✅ Tout le reste est public (ou protégé si nécessaire)
@@ -45,7 +45,8 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/admin/**", "/newsletter/**")
+                        // ⚠️ AJOUT DE /chat/** POUR IGNORER CSRF
+                        .ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**")
                 );
 
         return http.build();
