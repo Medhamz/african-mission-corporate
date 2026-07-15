@@ -1187,6 +1187,7 @@ body {
     .hero-globe-icon { font-size: 60px; }
     .section-title { font-size: 1.4rem; }
 }
+
 /* ============================================
    ANIMATIONS LUMINEUSES AVANCÉES
 ============================================ */
@@ -1499,3 +1500,31 @@ section[data-aos] {
 .hero-particle:nth-child(4) { --tx: -40px; --ty: -80px; animation-delay: 3s; }
 .hero-particle:nth-child(5) { --tx: 60px; --ty: -30px; animation-delay: 4s; }
 .hero-particle:nth-child(6) { --tx: -50px; --ty: -50px; animation-delay: 5s; }
+
+/* ============================================
+   STYLES CHAT - CORRECTION DES CHAMPS BLOQUÉS
+============================================ */
+#chatForm input,
+#chatForm button {
+    pointer-events: auto !important;
+    cursor: text !important;
+    z-index: 10 !important;
+    position: relative !important;
+}
+
+#chatForm input:focus {
+    outline: 2px solid var(--primary-blue) !important;
+    outline-offset: 2px;
+}
+
+#chatForm button {
+    cursor: pointer !important;
+}
+
+.chat-message {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary-blue);
+}
