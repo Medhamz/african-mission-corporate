@@ -20,7 +20,7 @@ public class ChatMessage {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String sender;  // "visitor" ou "admin"
+    private String sender = "visitor";  // "visitor" ou "admin"
 
     @Column(nullable = false, length = 500)
     private String message;
@@ -30,6 +30,19 @@ public class ChatMessage {
 
     @Column(name = "is_from_admin")
     private Boolean isFromAdmin = false;
+
+    // ✅ CHAMPS POUR LA MODÉRATION (ANCIEN SYSTÈME)
+    @Column(name = "is_approved")
+    private Boolean isApproved = false;
+
+    @Column(name = "username", length = 100)
+    private String username;
+
+    @Column(name = "ip_address", length = 50)
+    private String ipAddress;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @CreationTimestamp
     @Column(name = "sent_at", updatable = false)
