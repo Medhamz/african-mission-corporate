@@ -92,32 +92,32 @@
                 <div class="card-premium" style="padding: 40px;">
                     <h3 class="fw-bold mb-4" style="color: var(--text-primary);">Envoyez-nous un message</h3>
 
-                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show">
+                    <div id="contactAlert" style="display: none;" class="alert alert-success alert-dismissible fade show">
                         <i class="fas fa-check-circle me-2"></i>
-                        <span th:text="${successMessage}"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <span id="contactAlertMessage">Votre message a été envoyé avec succès !</span>
+                        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'"></button>
                     </div>
 
-                    <form th:action="@{/contact}" th:object="${contactMessage}" method="post">
+                    <form id="contactForm">
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Nom complet</label>
-                            <input type="text" class="form-control form-control-lg" th:field="*{name}" required>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Email</label>
-                            <input type="email" class="form-control form-control-lg" th:field="*{email}" required>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Téléphone</label>
-                            <input type="tel" class="form-control form-control-lg" th:field="*{phone}">
+                            <input type="tel" class="form-control form-control-lg" id="phone" name="phone">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Sujet</label>
-                            <input type="text" class="form-control form-control-lg" th:field="*{subject}">
+                            <input type="text" class="form-control form-control-lg" id="subject" name="subject">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Message</label>
-                            <textarea class="form-control form-control-lg" rows="5" th:field="*{message}" required></textarea>
+                            <textarea class="form-control form-control-lg" rows="5" id="message" name="message" required></textarea>
                         </div>
                         <button type="submit" class="btn-primary-premium w-100" style="justify-content: center;">
                             <i class="fas fa-paper-plane me-2"></i>Envoyer
@@ -337,6 +337,53 @@
     });
 
     // ============================================
+    // FORMULAIRE DE CONTACT - AJAX
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        const contactAlert = document.getElementById('contactAlert');
+        const contactAlertMessage = document.getElementById('contactAlertMessage');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(contactForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                subject: formData.get('subject'),
+                message: formData.get('message')
+            };
+
+            fetch('/contact/ajax', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    contactAlert.style.display = 'block';
+                    contactAlertMessage.textContent = result.message;
+                    contactForm.reset();
+                    setTimeout(() => {
+                        contactAlert.style.display = 'none';
+                    }, 5000);
+                } else {
+                    alert('Erreur : ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            });
+        });
+    });
+
+    // ============================================
     // CHAT PUBLIQUE - AJAX
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
@@ -345,10 +392,9 @@
         const chatUsername = document.getElementById('chatUsername');
         const chatMessages = document.getElementById('chatMessages');
 
-        // Fonction pour afficher un toast
         function showToast(message, type) {
-            const toastContainer = document.getElementById('toastContainer');
-            if (!toastContainer) return;
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
             const toast = document.createElement('div');
             const bgColor = type === 'success' ? '#1e293b' : '#ef4444';
             const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
@@ -371,7 +417,7 @@
                 <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
                 <span>${message}</span>
             `;
-            toastContainer.appendChild(toast);
+            container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateX(100px)';
@@ -380,7 +426,6 @@
             }, 4000);
         }
 
-        // Envoyer un message
         chatForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -392,24 +437,13 @@
                 return;
             }
 
-            console.log('📤 Envoi du message :', { username, message });
-
             fetch('/chat/send', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    message: message
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, message })
             })
-            .then(response => {
-                console.log('📥 Réponse reçue, status :', response.status);
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('📦 Données :', data);
                 if (data.success) {
                     chatInput.value = '';
                     showToast('Message envoyé ! En attente de modération.', 'success');
@@ -418,12 +452,11 @@
                 }
             })
             .catch(error => {
-                console.error('❌ Erreur fetch :', error);
+                console.error('Erreur:', error);
                 showToast('Erreur de connexion au serveur', 'error');
             });
         });
 
-        // Charger les messages
         function loadMessages() {
             fetch('/chat/messages')
                 .then(response => response.json())
@@ -448,7 +481,7 @@
                         chatMessages.innerHTML = `
                             <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
                                 <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
-                                <p style="margin-top: 8px;">Aucun message pour le moment. Soyez le premier à écrire !</p>
+                                <p>Aucun message pour le moment. Soyez le premier à écrire !</p>
                             </div>
                         `;
                     }
@@ -456,14 +489,12 @@
                 .catch(error => console.error('Erreur de chargement:', error));
         }
 
-        // Échapper les caractères HTML
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // Charger au démarrage et toutes les 5 secondes
         loadMessages();
         setInterval(loadMessages, 5000);
     });
