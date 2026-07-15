@@ -188,7 +188,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - CORRIGÉ                    -->
+<!-- CHAT PUBLIQUE - AVEC SESSION              -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -199,7 +199,10 @@
                         <h4 style="color: var(--text-primary); font-weight: 700;">
                             <i class="fas fa-comments" style="color: var(--primary-blue);"></i> Chat public
                         </h4>
-                        <span style="color: var(--text-muted); font-size: 0.8rem;"><i class="fas fa-circle" style="color: #22c55e; font-size: 0.5rem;"></i> En direct</span>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">
+                            <i class="fas fa-circle" style="color: #22c55e; font-size: 0.5rem;"></i>
+                            <span id="chatStatus">Connexion...</span>
+                        </span>
                     </div>
 
                     <!-- Zone des messages -->
@@ -210,7 +213,7 @@
                         </div>
                     </div>
 
-                    <!-- Formulaire d'envoi du chat - CORRIGÉ -->
+                    <!-- Formulaire d'envoi du chat -->
                     <form id="chatForm" class="d-flex gap-2">
                         <input type="text" id="chatUsername" placeholder="Votre pseudo" required
                                style="flex: 0 0 150px; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--text-primary); pointer-events: auto !important; cursor: text !important; position: relative; z-index: 10;">
@@ -430,76 +433,92 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - AJAX (CORRIGÉ)
+    // CHAT PUBLIQUE - AVEC SESSION
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
         const chatInput = document.getElementById('chatMessageInput');
         const chatUsername = document.getElementById('chatUsername');
         const chatMessages = document.getElementById('chatMessages');
+        const chatStatus = document.getElementById('chatStatus');
 
-        // Vérifier que les éléments existent
-        if (!chatForm || !chatInput || !chatUsername || !chatMessages) {
-            console.error('❌ Éléments du chat non trouvés !');
-            return;
+        let chatSessionId = null;
+        let visitorName = null;
+
+        // ============================================
+        // INITIALISER LA SESSION CHAT
+        // ============================================
+        function initChatSession() {
+            fetch('/chat/session/init', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatSessionId = data.sessionId;
+                chatStatus.textContent = 'Connecté';
+                chatStatus.style.color = '#22c55e';
+                console.log('✅ Session chat initialisée:', chatSessionId);
+
+                // Si le visiteur a déjà un nom, le définir
+                if (visitorName) {
+                    setVisitorName(visitorName);
+                }
+
+                // Charger les messages
+                loadMessages();
+            })
+            .catch(error => {
+                console.error('❌ Erreur initialisation session:', error);
+                chatStatus.textContent = 'Erreur de connexion';
+                chatStatus.style.color = '#ef4444';
+            });
         }
 
-        console.log('✅ Chat initialisé');
+        // ============================================
+        // DÉFINIR LE NOM DU VISITEUR
+        // ============================================
+        function setVisitorName(name) {
+            if (!chatSessionId) return;
 
-        // Envoyer un message
-        chatForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            fetch('/chat/session/set-name?' + new URLSearchParams({
+                sessionId: chatSessionId,
+                name: name
+            }), {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    visitorName = name;
+                    console.log('✅ Nom du visiteur défini:', name);
+                }
+            })
+            .catch(error => console.error('❌ Erreur définition nom:', error));
+        }
 
-            const username = chatUsername.value.trim();
-            const message = chatInput.value.trim();
-
-            if (!username || !message) {
-                showToast('Veuillez remplir tous les champs', 'error');
+        // ============================================
+        // CHARGER LES MESSAGES
+        // ============================================
+        function loadMessages() {
+            if (!chatSessionId) {
+                console.log('⏳ En attente de session...');
                 return;
             }
 
-            console.log('📤 Envoi chat :', { username, message });
-
-            fetch('/chat/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, message })
-            })
-            .then(response => {
-                console.log('📥 Statut chat :', response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log('📦 Réponse chat :', data);
-                if (data.success) {
-                    chatInput.value = '';
-                    showToast('Message envoyé ! En attente de modération.', 'success');
-                } else {
-                    showToast('Erreur : ' + data.message, 'error');
-                }
-            })
-            .catch(error => {
-                console.error('❌ Erreur chat :', error);
-                showToast('Erreur de connexion au serveur', 'error');
-            });
-        });
-
-        // Charger les messages
-        function loadMessages() {
-            fetch('/chat/messages')
+            fetch('/chat/messages?sessionId=' + chatSessionId)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('📋 Messages chargés :', data.length);
-                    if (data && data.length > 0) {
+                    if (data.messages && data.messages.length > 0) {
                         chatMessages.innerHTML = '';
-                        data.forEach(msg => {
+                        data.messages.forEach(msg => {
                             const div = document.createElement('div');
                             div.className = 'chat-message';
-                            div.style.cssText = 'margin-bottom: 12px; padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-blue);';
+                            const isAdmin = msg.sender === 'admin';
+                            div.style.cssText = `margin-bottom: 12px; padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid ${isAdmin ? 'var(--primary-blue)' : 'var(--primary-gold)'};`;
                             div.innerHTML = `
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <strong style="color: var(--primary-blue);">${escapeHtml(msg.username)}</strong>
-                                    <span style="color: var(--text-muted); font-size: 0.65rem;">${new Date(msg.createdAt).toLocaleString()}</span>
+                                    <strong style="color: ${isAdmin ? 'var(--primary-blue)' : 'var(--primary-gold)'};">${isAdmin ? 'Admin' : (data.visitorName || 'Visiteur')}</strong>
+                                    <span style="color: var(--text-muted); font-size: 0.65rem;">${new Date(msg.sentAt).toLocaleTimeString()}</span>
                                 </div>
                                 <p style="color: var(--text-secondary); margin-bottom: 0; font-size: 0.9rem;">${escapeHtml(msg.message)}</p>
                             `;
@@ -515,18 +534,97 @@
                         `;
                     }
                 })
-                .catch(error => console.error('❌ Erreur chargement messages :', error));
+                .catch(error => console.error('❌ Erreur chargement messages:', error));
         }
 
+        // ============================================
+        // ENVOYER UN MESSAGE
+        // ============================================
+        function sendChatMessage() {
+            const username = chatUsername.value.trim();
+            const message = chatInput.value.trim();
+
+            if (!username || !message) {
+                showToast('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+
+            if (!chatSessionId) {
+                showToast('Connexion en cours, veuillez réessayer...', 'error');
+                return;
+            }
+
+            // Si le nom a changé, le mettre à jour
+            if (username !== visitorName) {
+                setVisitorName(username);
+            }
+
+            fetch('/chat/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: chatSessionId,
+                    message: message,
+                    sender: 'visitor'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    chatInput.value = '';
+                    showToast('Message envoyé !', 'success');
+                    // Recharger les messages après un court délai
+                    setTimeout(loadMessages, 500);
+                } else {
+                    showToast('Erreur: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('❌ Erreur envoi message:', error);
+                showToast('Erreur de connexion au serveur', 'error');
+            });
+        }
+
+        // ============================================
+        // ÉCHAPPER LE HTML
+        // ============================================
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // Charger au démarrage et toutes les 5 secondes
-        loadMessages();
-        setInterval(loadMessages, 5000);
+        // ============================================
+        // ÉVÉNEMENTS
+        // ============================================
+        if (chatForm) {
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                sendChatMessage();
+            });
+        }
+
+        if (chatInput) {
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+        }
+
+        // ============================================
+        // DÉMARRER LE CHAT
+        // ============================================
+        console.log('🚀 Initialisation du chat...');
+        initChatSession();
+
+        // Rafraîchir les messages toutes les 5 secondes
+        setInterval(() => {
+            if (chatSessionId) {
+                loadMessages();
+            }
+        }, 5000);
     });
 </script>
 
