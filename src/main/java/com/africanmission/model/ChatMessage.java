@@ -20,18 +20,22 @@ public class ChatMessage {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String username;
+    private String sender;  // "visitor" ou "admin"
 
     @Column(nullable = false, length = 500)
     private String message;
 
-    @Column(name = "is_approved")
-    private Boolean isApproved = false;
+    @Column(name = "is_read")
+    private Boolean isRead = false;
+
+    @Column(name = "is_from_admin")
+    private Boolean isFromAdmin = false;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "sent_at", updatable = false)
+    private LocalDateTime sentAt;
 
-    @Column(name = "ip_address", length = 50)
-    private String ipAddress;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id")
+    private ChatSession session;
 }
