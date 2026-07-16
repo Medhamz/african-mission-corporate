@@ -49,7 +49,7 @@ public class ChatController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            logger.info("📩 Message reçu - Session: {}, Sender: {}, Username: {}", sessionId, sender, username);
+            logger.info("📩 Message reçu - Session: {}, Sender: {}", sessionId, sender);
 
             ChatSession session = chatSessionService.getSessionById(sessionId);
             if (session == null) {
@@ -58,7 +58,6 @@ public class ChatController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // Mettre à jour le nom du visiteur si fourni
             if (username != null && !username.isEmpty()) {
                 session.setVisitorName(username);
                 chatSessionService.updateVisitorName(sessionId, username);
@@ -95,28 +94,39 @@ public class ChatController {
         try {
             logger.info("📋 Récupération des messages pour la session: {}", sessionId);
 
-            // Vérifier que la session existe
             ChatSession session = chatSessionService.getSessionById(sessionId);
             if (session == null) {
-                logger.warn("⚠️ Session non trouvée: {}", sessionId);
                 response.put("sessionId", sessionId);
                 response.put("messages", new ArrayList<>());
                 response.put("visitorName", null);
                 return ResponseEntity.ok(response);
             }
 
-            // Récupérer les messages de cette session
             List<ChatMessage> messages = chatService.getMessagesBySession(session.getId());
-
-            // Marquer les messages comme lus
             chatService.markAllAsRead(session.getId());
 
-            // Construire la réponse
+            // ✅ Construction correcte du tableau
+            List<Map<String, Object>> messageList = new ArrayList<>();
+            if (messages != null) {
+                for (ChatMessage msg : messages) {
+                    Map<String, Object> msgMap = new HashMap<>();
+                    msgMap.put("id", msg.getId());
+                    msgMap.put("sender", msg.getSender() != null ? msg.getSender() : "visitor");
+                    msgMap.put("message", msg.getMessage());
+                    msgMap.put("isRead", msg.getIsRead());
+                    msgMap.put("isFromAdmin", msg.getIsFromAdmin());
+                    msgMap.put("username", msg.getUsername());
+                    msgMap.put("sentAt", msg.getSentAt() != null ? msg.getSentAt().toString() : null);
+                    msgMap.put("createdAt", msg.getCreatedAt() != null ? msg.getCreatedAt().toString() : null);
+                    messageList.add(msgMap);
+                }
+            }
+
             response.put("sessionId", sessionId);
-            response.put("messages", messages != null ? messages : new ArrayList<>());
+            response.put("messages", messageList);
             response.put("visitorName", session.getVisitorName() != null ? session.getVisitorName() : "Visiteur");
 
-            logger.info("✅ {} messages récupérés pour la session {}", messages != null ? messages.size() : 0, sessionId);
+            logger.info("✅ {} messages récupérés", messageList.size());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("❌ Erreur récupération messages: {}", e.getMessage(), e);

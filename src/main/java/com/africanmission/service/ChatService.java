@@ -1,9 +1,10 @@
 package com.africanmission.service;
 
 import com.africanmission.model.ChatMessage;
-import com.africanmission.model.ChatSession;
 import com.africanmission.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +13,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
     private final ChatMessageRepository chatMessageRepository;
 
     public ChatMessage saveMessage(ChatMessage message) {
+        logger.info("💾 Sauvegarde du message: {}", message.getMessage());
         return chatMessageRepository.save(message);
     }
 
     public List<ChatMessage> getMessagesBySession(Long sessionId) {
+        logger.info("📋 Récupération des messages pour la session ID: {}", sessionId);
         return chatMessageRepository.findBySessionIdOrderBySentAtAsc(sessionId);
     }
 
@@ -35,8 +39,11 @@ public class ChatService {
 
     public void markAllAsRead(Long sessionId) {
         List<ChatMessage> unread = getUnreadMessages(sessionId);
-        unread.forEach(msg -> msg.setIsRead(true));
-        chatMessageRepository.saveAll(unread);
+        if (!unread.isEmpty()) {
+            unread.forEach(msg -> msg.setIsRead(true));
+            chatMessageRepository.saveAll(unread);
+            logger.info("✅ {} messages marqués comme lus", unread.size());
+        }
     }
 
     public List<ChatMessage> getRecentMessages(Long sessionId, int limit) {
