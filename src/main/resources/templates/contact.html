@@ -188,7 +188,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - SCROLL FIXÉ               -->
+<!-- CHAT PUBLIQUE - SCROLL CORRIGÉ             -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -206,7 +206,7 @@
                     </div>
 
                     <!-- Zone des messages -->
-                    <div id="chatMessages" style="height: 400px; overflow-y: scroll; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
+                    <div id="chatMessages" style="height: 400px; overflow-y: auto; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
                         <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
                             <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
                             <p>Chargement des messages...</p>
@@ -433,7 +433,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - SCROLL PERSISTANT
+    // CHAT PUBLIQUE - SCROLL CORRIGÉ
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -538,14 +538,16 @@
                                 `;
                                 chatMessages.appendChild(div);
                             });
-                            // Restaurer la position de scroll
-                            if (wasAtBottom) {
-                                chatMessages.scrollTop = chatMessages.scrollHeight;
-                            } else {
-                                // S'assurer que la position sauvegardée est valide
-                                const newScrollTop = Math.min(currentScrollTop, chatMessages.scrollHeight - chatMessages.clientHeight);
-                                chatMessages.scrollTop = Math.max(0, newScrollTop);
-                            }
+                            // Restaurer la position de scroll après le rendu
+                            requestAnimationFrame(() => {
+                                if (wasAtBottom) {
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                } else {
+                                    // S'assurer que la position sauvegardée est valide
+                                    const newScrollTop = Math.min(currentScrollTop, chatMessages.scrollHeight - chatMessages.clientHeight);
+                                    chatMessages.scrollTop = Math.max(0, newScrollTop);
+                                }
+                            });
                         } else {
                             chatMessages.innerHTML = `
                                 <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
@@ -653,12 +655,12 @@
         console.log('🚀 Initialisation du chat...');
         initChatSession();
 
-        // Rafraîchir les messages toutes les 3 secondes
+        // Rafraîchir les messages toutes les 5 secondes (au lieu de 3)
         setInterval(() => {
             if (chatSessionId) {
                 loadMessages();
             }
-        }, 3000);
+        }, 5000);
     });
 </script>
 
