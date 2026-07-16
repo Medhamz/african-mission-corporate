@@ -188,7 +188,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - SCROLL CORRIGÉ             -->
+<!-- CHAT PUBLIQUE - AJOUT DYNAMIQUE             -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -433,7 +433,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - SCROLL CORRIGÉ
+    // CHAT PUBLIQUE - AJOUT DYNAMIQUE
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -444,6 +444,7 @@
 
         let chatSessionId = null;
         let visitorName = null;
+        let displayedMessageIds = new Set(); // Ensemble des IDs déjà affichés
 
         // ============================================
         // INITIALISER LA SESSION CHAT
@@ -463,7 +464,8 @@
                     setVisitorName(visitorName);
                 }
 
-                setTimeout(loadMessages, 500);
+                // Charger les messages pour la première fois
+                loadMessages(true);
             })
             .catch(error => {
                 console.error('❌ Erreur initialisation session:', error);
@@ -495,9 +497,29 @@
         }
 
         // ============================================
-        // CHARGER LES MESSAGES - CORRIGÉ
+        // AJOUTER UN MESSAGE DANS LE DOM
         // ============================================
-        function loadMessages() {
+        function appendMessage(msg, visitorName) {
+            const isAdmin = msg.sender === 'admin';
+            const senderName = isAdmin ? 'Admin' : (visitorName || msg.username || 'Visiteur');
+            const div = document.createElement('div');
+            div.className = 'chat-message';
+            div.style.cssText = `margin-bottom: 12px; padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid ${isAdmin ? 'var(--primary-blue)' : 'var(--primary-gold)'};`;
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: ${isAdmin ? 'var(--primary-blue)' : 'var(--primary-gold)'};">${escapeHtml(senderName)}</strong>
+                    <span style="color: var(--text-muted); font-size: 0.65rem;">${new Date(msg.sentAt || msg.createdAt).toLocaleTimeString()}</span>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 0; font-size: 0.9rem;">${escapeHtml(msg.message)}</p>
+            `;
+            chatMessages.appendChild(div);
+            displayedMessageIds.add(msg.id);
+        }
+
+        // ============================================
+        // CHARGER LES MESSAGES
+        // ============================================
+        function loadMessages(initialLoad = false) {
             if (!chatSessionId) {
                 console.log('⏳ En attente de session...');
                 return;
@@ -506,8 +528,7 @@
             console.log('📋 Chargement des messages pour la session:', chatSessionId);
 
             // Sauvegarder la position de scroll actuelle
-            const currentScrollTop = chatMessages.scrollTop;
-            const wasAtBottom = currentScrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 20;
+            const wasAtBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 20;
 
             fetch('/chat/messages?sessionId=' + chatSessionId)
                 .then(response => {
@@ -521,51 +542,59 @@
                     console.log('📦 Messages reçus:', data);
                     if (data && data.messages) {
                         const messages = data.messages || [];
-                        if (messages.length > 0) {
+                        const visitorNameFromServer = data.visitorName || visitorName || 'Visiteur';
+
+                        if (initialLoad) {
+                            // Premier chargement : on vide et on affiche tous les messages
                             chatMessages.innerHTML = '';
-                            messages.forEach(msg => {
-                                const div = document.createElement('div');
-                                div.className = 'chat-message';
-                                const isAdmin = msg.sender === 'admin';
-                                const senderName = isAdmin ? 'Admin' : (data.visitorName || msg.username || 'Visiteur');
-                                div.style.cssText = `margin-bottom: 12px; padding: 8px 12px; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid ${isAdmin ? 'var(--primary-blue)' : 'var(--primary-gold)'};`;
-                                div.innerHTML = `
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <strong style="color: ${isAdmin ? 'var(--primary-blue)' : 'var(--primary-gold)'};">${escapeHtml(senderName)}</strong>
-                                        <span style="color: var(--text-muted); font-size: 0.65rem;">${new Date(msg.sentAt || msg.createdAt).toLocaleTimeString()}</span>
+                            displayedMessageIds.clear();
+                            if (messages.length > 0) {
+                                messages.forEach(msg => {
+                                    appendMessage(msg, visitorNameFromServer);
+                                });
+                                // Scroller en bas
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            } else {
+                                chatMessages.innerHTML = `
+                                    <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                        <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
+                                        <p>Aucun message pour le moment. Soyez le premier à écrire !</p>
                                     </div>
-                                    <p style="color: var(--text-secondary); margin-bottom: 0; font-size: 0.9rem;">${escapeHtml(msg.message)}</p>
                                 `;
-                                chatMessages.appendChild(div);
-                            });
-                            // Restaurer la position de scroll après le rendu
-                            requestAnimationFrame(() => {
+                            }
+                            initialLoad = false;
+                        } else {
+                            // Rechargement incrémental : ajouter les nouveaux messages
+                            const existingIds = displayedMessageIds;
+                            const newMessages = messages.filter(msg => !existingIds.has(msg.id));
+
+                            if (newMessages.length > 0) {
+                                // Trier par date (les plus anciens d'abord pour l'ordre chronologique)
+                                newMessages.sort((a, b) => new Date(a.sentAt || a.createdAt) - new Date(b.sentAt || b.createdAt));
+                                newMessages.forEach(msg => {
+                                    appendMessage(msg, visitorNameFromServer);
+                                });
+                                // Si l'utilisateur était en bas, scroller vers le bas
                                 if (wasAtBottom) {
                                     chatMessages.scrollTop = chatMessages.scrollHeight;
-                                } else {
-                                    // S'assurer que la position sauvegardée est valide
-                                    const newScrollTop = Math.min(currentScrollTop, chatMessages.scrollHeight - chatMessages.clientHeight);
-                                    chatMessages.scrollTop = Math.max(0, newScrollTop);
                                 }
-                            });
-                        } else {
-                            chatMessages.innerHTML = `
-                                <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
-                                    <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
-                                    <p>Aucun message pour le moment. Soyez le premier à écrire !</p>
-                                </div>
-                            `;
+                                console.log(`✅ ${newMessages.length} nouveaux messages ajoutés.`);
+                            } else {
+                                console.log('📭 Aucun nouveau message.');
+                            }
                         }
                     }
                 })
                 .catch(error => {
                     console.error('❌ Erreur chargement messages:', error);
-                    chatMessages.innerHTML = `
-                        <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
-                            <i class="fas fa-exclamation-circle" style="font-size: 2rem; opacity: 0.3;"></i>
-                            <p>Erreur de chargement des messages</p>
-                        </div>
-                    `;
+                    if (initialLoad) {
+                        chatMessages.innerHTML = `
+                            <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                <i class="fas fa-exclamation-circle" style="font-size: 2rem; opacity: 0.3;"></i>
+                                <p>Erreur de chargement des messages</p>
+                            </div>
+                        `;
+                    }
                 });
         }
 
@@ -609,8 +638,9 @@
                 if (data.success) {
                     chatInput.value = '';
                     showToast('Message envoyé !', 'success');
-                    setTimeout(loadMessages, 300);
-                    setTimeout(loadMessages, 800);
+                    // Recharger les messages après un court délai
+                    setTimeout(() => loadMessages(false), 500);
+                    setTimeout(() => loadMessages(false), 1000);
                 } else {
                     showToast('Erreur: ' + data.message, 'error');
                 }
@@ -655,12 +685,12 @@
         console.log('🚀 Initialisation du chat...');
         initChatSession();
 
-        // Rafraîchir les messages toutes les 5 secondes (au lieu de 3)
+        // Rafraîchir les messages toutes les 3 secondes (mais sans recréer le DOM)
         setInterval(() => {
             if (chatSessionId) {
-                loadMessages();
+                loadMessages(false);
             }
-        }, 5000);
+        }, 3000);
     });
 </script>
 
