@@ -188,7 +188,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - CORRIGÉ (SCROLL FIX)       -->
+<!-- CHAT PUBLIQUE - SCROLL FIXÉ               -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -205,7 +205,7 @@
                         </span>
                     </div>
 
-                    <!-- Zone des messages - SCROLL FIX -->
+                    <!-- Zone des messages -->
                     <div id="chatMessages" style="height: 400px; overflow-y: scroll; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
                         <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
                             <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
@@ -433,7 +433,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - CORRIGÉ (SCROLL FIX)
+    // CHAT PUBLIQUE - SCROLL PERSISTANT
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -495,7 +495,7 @@
         }
 
         // ============================================
-        // CHARGER LES MESSAGES - CORRIGÉ (SCROLL)
+        // CHARGER LES MESSAGES - CORRIGÉ
         // ============================================
         function loadMessages() {
             if (!chatSessionId) {
@@ -504,6 +504,10 @@
             }
 
             console.log('📋 Chargement des messages pour la session:', chatSessionId);
+
+            // Sauvegarder la position de scroll actuelle
+            const currentScrollTop = chatMessages.scrollTop;
+            const wasAtBottom = currentScrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 20;
 
             fetch('/chat/messages?sessionId=' + chatSessionId)
                 .then(response => {
@@ -517,9 +521,6 @@
                     console.log('📦 Messages reçus:', data);
                     if (data && data.messages) {
                         const messages = data.messages || [];
-                        // Vérifier si l'utilisateur est en bas AVANT de modifier le contenu
-                        const wasAtBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 20;
-
                         if (messages.length > 0) {
                             chatMessages.innerHTML = '';
                             messages.forEach(msg => {
@@ -537,11 +538,13 @@
                                 `;
                                 chatMessages.appendChild(div);
                             });
-                            // Si l'utilisateur était en bas, scroller en bas après un court délai pour laisser le DOM se mettre à jour
+                            // Restaurer la position de scroll
                             if (wasAtBottom) {
-                                setTimeout(() => {
-                                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                                }, 50);
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            } else {
+                                // S'assurer que la position sauvegardée est valide
+                                const newScrollTop = Math.min(currentScrollTop, chatMessages.scrollHeight - chatMessages.clientHeight);
+                                chatMessages.scrollTop = Math.max(0, newScrollTop);
                             }
                         } else {
                             chatMessages.innerHTML = `
