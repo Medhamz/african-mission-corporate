@@ -188,7 +188,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - CORRIGÉ                    -->
+<!-- CHAT PUBLIQUE - AVEC PERSISTANCE           -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -205,12 +205,9 @@
                         </span>
                     </div>
 
-                    <!-- Zone des messages -->
-                    <div id="chatMessages" style="height: 300px; overflow-y: auto; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
-                        <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
-                            <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
-                            <p>Chargement des messages...</p>
-                        </div>
+                    <!-- Zone des messages avec scroll -->
+                    <div id="chatMessages" style="height: 300px; overflow-y: auto; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light); display: flex; flex-direction: column-reverse;">
+                        <!-- Les messages seront chargés ici -->
                     </div>
 
                     <!-- Formulaire d'envoi du chat -->
@@ -433,7 +430,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - CORRIGÉ
+    // CHAT PUBLIQUE - AVEC PERSISTANCE
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -442,8 +439,12 @@
         const chatMessages = document.getElementById('chatMessages');
         const chatStatus = document.getElementById('chatStatus');
 
-        let chatSessionId = null;
-        let visitorName = null;
+        // Récupérer les données sauvegardées
+        const savedSessionId = localStorage.getItem('chatSessionId');
+        const savedUsername = localStorage.getItem('chatUsername');
+
+        let chatSessionId = savedSessionId || null;
+        let visitorName = savedUsername || null;
 
         // ============================================
         // INITIALISER LA SESSION CHAT
@@ -455,12 +456,16 @@
             .then(response => response.json())
             .then(data => {
                 chatSessionId = data.sessionId;
+                // Sauvegarder dans localStorage
+                localStorage.setItem('chatSessionId', chatSessionId);
                 chatStatus.textContent = 'Connecté';
                 chatStatus.style.color = '#22c55e';
                 console.log('✅ Session chat initialisée:', chatSessionId);
 
+                // Si le visiteur a déjà un nom (sauvegardé ou entré), le définir
                 if (visitorName) {
                     setVisitorName(visitorName);
+                    chatUsername.value = visitorName;
                 }
 
                 setTimeout(loadMessages, 500);
@@ -488,6 +493,7 @@
             .then(data => {
                 if (data.success) {
                     visitorName = name;
+                    localStorage.setItem('chatUsername', name);
                     console.log('✅ Nom du visiteur défini:', name);
                 }
             })
@@ -495,7 +501,7 @@
         }
 
         // ============================================
-        // CHARGER LES MESSAGES - CORRIGÉ
+        // CHARGER LES MESSAGES
         // ============================================
         function loadMessages() {
             if (!chatSessionId) {
@@ -517,9 +523,11 @@
                     console.log('📦 Messages reçus:', data);
                     if (data && data.messages) {
                         const messages = data.messages || [];
+                        chatMessages.innerHTML = ''; // On vide avant de remplir
                         if (messages.length > 0) {
-                            chatMessages.innerHTML = '';
-                            messages.forEach(msg => {
+                            // On affiche les messages dans l'ordre chronologique (du plus ancien au plus récent)
+                            // En utilisant flex-direction: column, on les met dans l'ordre normal
+                            messages.reverse().forEach(msg => {
                                 const div = document.createElement('div');
                                 div.className = 'chat-message';
                                 const isAdmin = msg.sender === 'admin';
@@ -534,6 +542,7 @@
                                 `;
                                 chatMessages.appendChild(div);
                             });
+                            // Scroller en bas
                             chatMessages.scrollTop = chatMessages.scrollHeight;
                         } else {
                             chatMessages.innerHTML = `
@@ -557,7 +566,7 @@
         }
 
         // ============================================
-        // ENVOYER UN MESSAGE - CORRIGÉ
+        // ENVOYER UN MESSAGE
         // ============================================
         function sendChatMessage() {
             const username = chatUsername.value.trim();
@@ -637,10 +646,36 @@
         }
 
         // ============================================
-        // DÉMARRER LE CHAT
+        // DÉMARRER LE CHAT AVEC PERSISTANCE
         // ============================================
         console.log('🚀 Initialisation du chat...');
-        initChatSession();
+        // Si une session est sauvegardée, on la réutilise
+        if (savedSessionId) {
+            chatSessionId = savedSessionId;
+            if (savedUsername) {
+                visitorName = savedUsername;
+                chatUsername.value = savedUsername;
+            }
+            // On vérifie que la session existe encore côté serveur
+            fetch('/chat/session-info')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sessionId) {
+                        chatStatus.textContent = 'Connecté';
+                        chatStatus.style.color = '#22c55e';
+                        console.log('✅ Session existante récupérée:', data.sessionId);
+                        loadMessages();
+                    } else {
+                        // Session expirée, on en crée une nouvelle
+                        initChatSession();
+                    }
+                })
+                .catch(() => {
+                    initChatSession();
+                });
+        } else {
+            initChatSession();
+        }
 
         // Rafraîchir les messages toutes les 3 secondes
         setInterval(() => {
