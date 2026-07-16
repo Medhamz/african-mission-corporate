@@ -188,7 +188,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - CORRIGÉ (SCROLL)           -->
+<!-- CHAT PUBLIQUE - CORRIGÉ (SCROLL FIX)       -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -205,8 +205,8 @@
                         </span>
                     </div>
 
-                    <!-- Zone des messages -->
-                    <div id="chatMessages" style="height: 300px; overflow-y: auto; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
+                    <!-- Zone des messages - SCROLL FIX -->
+                    <div id="chatMessages" style="height: 400px; overflow-y: scroll; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-light);">
                         <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
                             <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3;"></i>
                             <p>Chargement des messages...</p>
@@ -433,7 +433,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - CORRIGÉ (SCROLL)
+    // CHAT PUBLIQUE - CORRIGÉ (SCROLL FIX)
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -517,7 +517,7 @@
                     console.log('📦 Messages reçus:', data);
                     if (data && data.messages) {
                         const messages = data.messages || [];
-                        // Vérifier si l'utilisateur est actuellement en bas (avant de modifier le contenu)
+                        // Vérifier si l'utilisateur est en bas AVANT de modifier le contenu
                         const wasAtBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 20;
 
                         if (messages.length > 0) {
@@ -537,9 +537,11 @@
                                 `;
                                 chatMessages.appendChild(div);
                             });
-                            // Si l'utilisateur était en bas, on scrolle en bas, sinon on garde la position
+                            // Si l'utilisateur était en bas, scroller en bas après un court délai pour laisser le DOM se mettre à jour
                             if (wasAtBottom) {
-                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                                setTimeout(() => {
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                }, 50);
                             }
                         } else {
                             chatMessages.innerHTML = `
@@ -602,7 +604,6 @@
                 if (data.success) {
                     chatInput.value = '';
                     showToast('Message envoyé !', 'success');
-                    // Recharger les messages immédiatement
                     setTimeout(loadMessages, 300);
                     setTimeout(loadMessages, 800);
                 } else {
