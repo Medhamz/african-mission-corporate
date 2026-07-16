@@ -37,23 +37,20 @@ public class ChatController {
             String message = payload.get("message");
             String sender = payload.get("sender") != null ? payload.get("sender") : "visitor";
 
-            // Si pas de sessionId, on utilise la session HTTP
             if (sessionId == null || sessionId.isEmpty()) {
                 sessionId = (String) httpSession.getAttribute("chatSessionId");
             }
 
             if (sessionId == null || sessionId.isEmpty()) {
-                logger.error("❌ Session non initialisée");
                 response.put("success", false);
                 response.put("message", "Session non initialisée");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            logger.info("📩 Message reçu - Session: {}, Sender: {}, Message: {}", sessionId, sender, message);
+            logger.info("📩 Message reçu - Session: {}, Sender: {}", sessionId, sender);
 
             ChatSession session = chatSessionService.getSessionById(sessionId);
             if (session == null) {
-                logger.error("❌ Session non trouvée: {}", sessionId);
                 response.put("success", false);
                 response.put("message", "Session non trouvée");
                 return ResponseEntity.badRequest().body(response);
@@ -67,6 +64,7 @@ public class ChatController {
             chatMessage.setSender(sender);
             chatMessage.setIsFromAdmin("admin".equals(sender));
             chatMessage.setIsRead(false);
+            chatMessage.setUsername(payload.get("username"));
 
             chatService.saveMessage(chatMessage);
 
@@ -82,8 +80,7 @@ public class ChatController {
 
     @GetMapping("/messages")
     public ResponseEntity<Map<String, Object>> getMessages(
-            @RequestParam String sessionId,
-            @RequestParam(defaultValue = "50") int limit) {
+            @RequestParam String sessionId) {
 
         Map<String, Object> response = new HashMap<>();
         try {
@@ -91,7 +88,6 @@ public class ChatController {
 
             ChatSession session = chatSessionService.getSessionById(sessionId);
             if (session == null) {
-                logger.error("❌ Session non trouvée: {}", sessionId);
                 response.put("sessionId", sessionId);
                 response.put("messages", List.of());
                 response.put("visitorName", null);
@@ -99,13 +95,11 @@ public class ChatController {
             }
 
             List<ChatMessage> messages = chatService.getMessagesBySession(session.getId());
-
-            // Marquer les messages comme lus
             chatService.markAllAsRead(session.getId());
 
             response.put("sessionId", sessionId);
             response.put("messages", messages);
-            response.put("visitorName", session.getVisitorName());
+            response.put("visitorName", session.getVisitorName() != null ? session.getVisitorName() : "Visiteur");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("❌ Erreur récupération messages: {}", e.getMessage(), e);
