@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class ChatController {
             String sessionId = payload.get("sessionId");
             String message = payload.get("message");
             String sender = payload.get("sender") != null ? payload.get("sender") : "visitor";
+            String username = payload.get("username");
 
             if (sessionId == null || sessionId.isEmpty()) {
                 sessionId = (String) httpSession.getAttribute("chatSessionId");
@@ -47,13 +49,19 @@ public class ChatController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            logger.info("📩 Message reçu - Session: {}, Sender: {}", sessionId, sender);
+            logger.info("📩 Message reçu - Session: {}, Sender: {}, Username: {}", sessionId, sender, username);
 
             ChatSession session = chatSessionService.getSessionById(sessionId);
             if (session == null) {
                 response.put("success", false);
                 response.put("message", "Session non trouvée");
                 return ResponseEntity.badRequest().body(response);
+            }
+
+            // Mettre à jour le nom du visiteur si fourni
+            if (username != null && !username.isEmpty()) {
+                session.setVisitorName(username);
+                chatSessionService.updateVisitorName(sessionId, username);
             }
 
             chatSessionService.updateActivity(sessionId);
@@ -64,7 +72,8 @@ public class ChatController {
             chatMessage.setSender(sender);
             chatMessage.setIsFromAdmin("admin".equals(sender));
             chatMessage.setIsRead(false);
-            chatMessage.setUsername(payload.get("username"));
+            chatMessage.setUsername(username);
+            chatMessage.setIpAddress(request.getRemoteAddr());
 
             chatService.saveMessage(chatMessage);
 
@@ -86,25 +95,33 @@ public class ChatController {
         try {
             logger.info("📋 Récupération des messages pour la session: {}", sessionId);
 
+            // Vérifier que la session existe
             ChatSession session = chatSessionService.getSessionById(sessionId);
             if (session == null) {
+                logger.warn("⚠️ Session non trouvée: {}", sessionId);
                 response.put("sessionId", sessionId);
-                response.put("messages", List.of());
+                response.put("messages", new ArrayList<>());
                 response.put("visitorName", null);
                 return ResponseEntity.ok(response);
             }
 
+            // Récupérer les messages de cette session
             List<ChatMessage> messages = chatService.getMessagesBySession(session.getId());
+
+            // Marquer les messages comme lus
             chatService.markAllAsRead(session.getId());
 
+            // Construire la réponse
             response.put("sessionId", sessionId);
-            response.put("messages", messages);
+            response.put("messages", messages != null ? messages : new ArrayList<>());
             response.put("visitorName", session.getVisitorName() != null ? session.getVisitorName() : "Visiteur");
+
+            logger.info("✅ {} messages récupérés pour la session {}", messages != null ? messages.size() : 0, sessionId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("❌ Erreur récupération messages: {}", e.getMessage(), e);
             response.put("sessionId", sessionId);
-            response.put("messages", List.of());
+            response.put("messages", new ArrayList<>());
             response.put("visitorName", null);
             return ResponseEntity.ok(response);
         }

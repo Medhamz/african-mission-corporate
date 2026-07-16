@@ -19,8 +19,8 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String sender = "visitor";  // "visitor" ou "admin"
+    @Column(name = "sender", length = 100)
+    private String sender = "visitor";
 
     @Column(nullable = false, length = 500)
     private String message;
@@ -31,7 +31,6 @@ public class ChatMessage {
     @Column(name = "is_from_admin")
     private Boolean isFromAdmin = false;
 
-    // ✅ CHAMPS POUR LA MODÉRATION (ANCIEN SYSTÈME)
     @Column(name = "is_approved")
     private Boolean isApproved = false;
 
