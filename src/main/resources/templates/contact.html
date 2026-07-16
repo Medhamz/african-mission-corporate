@@ -14,7 +14,7 @@
 <body>
 
 <!-- ============================================ -->
-<!-- NAVBAR                                     -->
+<!-- NAVBAR (inchangée)                          -->
 <!-- ============================================ -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
@@ -87,17 +87,15 @@
 <section class="py-5" style="background: var(--bg-secondary);">
     <div class="container">
         <div class="row g-5">
-            <!-- Formulaire de contact -->
+            <!-- Formulaire de contact (inchangé) -->
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="card-premium" style="padding: 40px;">
                     <h3 class="fw-bold mb-4" style="color: var(--text-primary);">Envoyez-nous un message</h3>
-
                     <div id="contactAlert" style="display: none;" class="alert alert-success alert-dismissible fade show">
                         <i class="fas fa-check-circle me-2"></i>
                         <span id="contactAlertMessage">Votre message a été envoyé avec succès !</span>
                         <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'"></button>
                     </div>
-
                     <form id="contactForm">
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Nom complet</label>
@@ -126,11 +124,11 @@
                 </div>
             </div>
 
-            <!-- Informations de contact -->
+            <!-- Informations de contact (inchangé) -->
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="card-premium" style="padding: 40px;">
                     <h3 class="fw-bold mb-4" style="color: var(--text-primary);">Informations de contact</h3>
-
+                    <!-- ... contenu identique ... -->
                     <div class="mb-4">
                         <div style="display: flex; align-items: start; gap: 16px; padding: 16px; background: var(--bg-primary); border-radius: var(--radius-sm);">
                             <div style="width: 48px; height: 48px; background: rgba(59, 130, 246, 0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -142,7 +140,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="mb-4">
                         <div style="display: flex; align-items: start; gap: 16px; padding: 16px; background: var(--bg-primary); border-radius: var(--radius-sm);">
                             <div style="width: 48px; height: 48px; background: rgba(59, 130, 246, 0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -156,7 +153,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="mb-4">
                         <div style="display: flex; align-items: start; gap: 16px; padding: 16px; background: var(--bg-primary); border-radius: var(--radius-sm);">
                             <div style="width: 48px; height: 48px; background: rgba(59, 130, 246, 0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -168,7 +164,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div>
                         <div style="display: flex; align-items: start; gap: 16px; padding: 16px; background: var(--bg-primary); border-radius: var(--radius-sm);">
                             <div style="width: 48px; height: 48px; background: rgba(59, 130, 246, 0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -188,7 +183,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE - AJOUT DYNAMIQUE             -->
+<!-- CHAT PUBLIQUE - SCROLL LIBRE               -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -300,7 +295,7 @@
     AOS.init({ duration: 800, once: true, offset: 80 });
 
     // ============================================
-    // THEME TOGGLE
+    // THEME TOGGLE (inchangé)
     // ============================================
     const navbar = document.getElementById('mainNav');
     const mobileSearch = document.getElementById('mobileSearch');
@@ -433,7 +428,7 @@
     });
 
     // ============================================
-    // CHAT PUBLIQUE - AJOUT DYNAMIQUE
+    // CHAT PUBLIQUE - SCROLL LIBRE
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
@@ -444,7 +439,8 @@
 
         let chatSessionId = null;
         let visitorName = null;
-        let displayedMessageIds = new Set(); // Ensemble des IDs déjà affichés
+        let displayedMessageIds = new Set();
+        let isInitialLoad = true; // pour savoir si c'est le premier chargement
 
         // ============================================
         // INITIALISER LA SESSION CHAT
@@ -464,7 +460,7 @@
                     setVisitorName(visitorName);
                 }
 
-                // Charger les messages pour la première fois
+                // Charger les messages pour la première fois (scroll en bas)
                 loadMessages(true);
             })
             .catch(error => {
@@ -519,16 +515,13 @@
         // ============================================
         // CHARGER LES MESSAGES
         // ============================================
-        function loadMessages(initialLoad = false) {
+        function loadMessages(initial = false) {
             if (!chatSessionId) {
                 console.log('⏳ En attente de session...');
                 return;
             }
 
             console.log('📋 Chargement des messages pour la session:', chatSessionId);
-
-            // Sauvegarder la position de scroll actuelle
-            const wasAtBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 20;
 
             fetch('/chat/messages?sessionId=' + chatSessionId)
                 .then(response => {
@@ -544,15 +537,15 @@
                         const messages = data.messages || [];
                         const visitorNameFromServer = data.visitorName || visitorName || 'Visiteur';
 
-                        if (initialLoad) {
-                            // Premier chargement : on vide et on affiche tous les messages
+                        if (initial) {
+                            // PREMIER CHARGEMENT : on vide et on affiche tous les messages, puis on scroll en bas
                             chatMessages.innerHTML = '';
                             displayedMessageIds.clear();
                             if (messages.length > 0) {
                                 messages.forEach(msg => {
                                     appendMessage(msg, visitorNameFromServer);
                                 });
-                                // Scroller en bas
+                                // SCROLL EN BAS UNIQUEMENT AU PREMIER CHARGEMENT
                                 chatMessages.scrollTop = chatMessages.scrollHeight;
                             } else {
                                 chatMessages.innerHTML = `
@@ -562,23 +555,18 @@
                                     </div>
                                 `;
                             }
-                            initialLoad = false;
+                            isInitialLoad = false;
                         } else {
-                            // Rechargement incrémental : ajouter les nouveaux messages
-                            const existingIds = displayedMessageIds;
-                            const newMessages = messages.filter(msg => !existingIds.has(msg.id));
-
+                            // CHARGEMENTS SUIVANTS : ajouter les nouveaux messages SANS toucher au scroll
+                            const newMessages = messages.filter(msg => !displayedMessageIds.has(msg.id));
                             if (newMessages.length > 0) {
-                                // Trier par date (les plus anciens d'abord pour l'ordre chronologique)
+                                // Trier par date pour garder l'ordre chronologique
                                 newMessages.sort((a, b) => new Date(a.sentAt || a.createdAt) - new Date(b.sentAt || b.createdAt));
                                 newMessages.forEach(msg => {
                                     appendMessage(msg, visitorNameFromServer);
                                 });
-                                // Si l'utilisateur était en bas, scroller vers le bas
-                                if (wasAtBottom) {
-                                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                                }
                                 console.log(`✅ ${newMessages.length} nouveaux messages ajoutés.`);
+                                // On ne touche PAS au scroll, l'utilisateur garde sa position.
                             } else {
                                 console.log('📭 Aucun nouveau message.');
                             }
@@ -587,7 +575,7 @@
                 })
                 .catch(error => {
                     console.error('❌ Erreur chargement messages:', error);
-                    if (initialLoad) {
+                    if (initial) {
                         chatMessages.innerHTML = `
                             <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
                                 <i class="fas fa-exclamation-circle" style="font-size: 2rem; opacity: 0.3;"></i>
@@ -638,7 +626,7 @@
                 if (data.success) {
                     chatInput.value = '';
                     showToast('Message envoyé !', 'success');
-                    // Recharger les messages après un court délai
+                    // Recharger les messages (sans forcer le scroll)
                     setTimeout(() => loadMessages(false), 500);
                     setTimeout(() => loadMessages(false), 1000);
                 } else {
@@ -685,7 +673,7 @@
         console.log('🚀 Initialisation du chat...');
         initChatSession();
 
-        // Rafraîchir les messages toutes les 3 secondes (mais sans recréer le DOM)
+        // Rafraîchir les messages toutes les 3 secondes (sans forcer le scroll)
         setInterval(() => {
             if (chatSessionId) {
                 loadMessages(false);
