@@ -87,35 +87,39 @@
 <section class="py-5" style="background: var(--bg-secondary);">
     <div class="container">
         <div class="row g-5">
-            <!-- Formulaire de contact -->
+            <!-- Formulaire de contact - CORRIGÉ AVEC THYMELEAF -->
             <div class="col-lg-6" data-aos="fade-right">
                 <div class="card-premium" style="padding: 40px;">
                     <h3 class="fw-bold mb-4" style="color: var(--text-primary);">Envoyez-nous un message</h3>
-                    <div id="contactAlert" style="display: none;" class="alert alert-success alert-dismissible fade show">
+
+                    <!-- Message de succès (affiché après soumission standard) -->
+                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show">
                         <i class="fas fa-check-circle me-2"></i>
-                        <span id="contactAlertMessage">Votre message a été envoyé avec succès !</span>
-                        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none'"></button>
+                        <span th:text="${successMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <form id="contactForm">
+
+                    <!-- Formulaire Thymeleaf standard -->
+                    <form th:action="@{/contact}" th:object="${contactMessage}" method="post">
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Nom complet</label>
-                            <input type="text" class="form-control form-control-lg" id="name" name="name" required>
+                            <input type="text" class="form-control form-control-lg" th:field="*{name}" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Email</label>
-                            <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                            <input type="email" class="form-control form-control-lg" th:field="*{email}" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Téléphone</label>
-                            <input type="tel" class="form-control form-control-lg" id="phone" name="phone">
+                            <input type="tel" class="form-control form-control-lg" th:field="*{phone}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Sujet</label>
-                            <input type="text" class="form-control form-control-lg" id="subject" name="subject">
+                            <input type="text" class="form-control form-control-lg" th:field="*{subject}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" style="color: var(--text-secondary);">Message</label>
-                            <textarea class="form-control form-control-lg" rows="5" id="message" name="message" required></textarea>
+                            <textarea class="form-control form-control-lg" rows="5" th:field="*{message}" required></textarea>
                         </div>
                         <button type="submit" class="btn-primary-premium w-100" style="justify-content: center;">
                             <i class="fas fa-paper-plane me-2"></i>Envoyer
@@ -375,57 +379,10 @@
     }
 
     // ============================================
-    // FORMULAIRE DE CONTACT - AJAX
+    // FORMULAIRE DE CONTACT - SUPPRESSION AJAX
+    // Le formulaire utilise maintenant l'action standard de Thymeleaf.
+    // Le script AJAX a été supprimé pour éviter les conflits.
     // ============================================
-    document.addEventListener('DOMContentLoaded', function() {
-        const contactForm = document.getElementById('contactForm');
-        const contactAlert = document.getElementById('contactAlert');
-        const contactAlertMessage = document.getElementById('contactAlertMessage');
-
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(contactForm);
-                const data = {
-                    name: formData.get('name'),
-                    email: formData.get('email'),
-                    phone: formData.get('phone') || '',
-                    subject: formData.get('subject') || '',
-                    message: formData.get('message')
-                };
-
-                console.log('📤 Envoi du formulaire :', data);
-
-                fetch('/contact/ajax', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    console.log('📥 Statut :', response.status);
-                    return response.json();
-                })
-                .then(result => {
-                    console.log('📦 Réponse :', result);
-                    if (result.success) {
-                        contactAlert.style.display = 'block';
-                        contactAlertMessage.textContent = result.message;
-                        contactForm.reset();
-                        setTimeout(() => {
-                            contactAlert.style.display = 'none';
-                        }, 5000);
-                    } else {
-                        alert('Erreur : ' + result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Erreur fetch :', error);
-                    alert('Erreur de connexion au serveur');
-                });
-            });
-        }
-    });
 
     // ============================================
     // CHAT PUBLIQUE - SCROLL COMME ADMIN
