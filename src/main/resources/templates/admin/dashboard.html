@@ -10,24 +10,25 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
         body { background: var(--bg-primary); padding-top: 20px; font-family: 'Inter', sans-serif; }
-        .admin-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .admin-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px; }
         .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border-light); margin-bottom: 30px; }
         .admin-header h1 { color: var(--text-primary); font-weight: 700; font-size: 1.5rem; }
         .admin-header h1 i { color: var(--primary-blue); margin-right: 10px; }
-        .stat-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px; transition: all 0.3s ease; text-align: center; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px; transition: all 0.3s ease; text-align: center; height: 100%; }
         .stat-card:hover { border-color: rgba(59,130,246,0.15); transform: translateY(-4px); box-shadow: var(--shadow-sm); }
         .stat-card .stat-icon { font-size: 2rem; color: var(--primary-blue); margin-bottom: 12px; }
         .stat-card .stat-number { font-size: 2.2rem; font-weight: 700; color: var(--text-primary); }
         .stat-card .stat-label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
         .stat-card .stat-badge { display: inline-block; padding: 2px 10px; border-radius: 50px; font-size: 0.65rem; font-weight: 600; margin-top: 4px; }
-        .stat-card .stat-badge.online { background: rgba(34,197,94,0.1); color: #22c55e; }
-        .quick-action { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; text-align: center; transition: all 0.3s ease; text-decoration: none; display: block; color: var(--text-primary); }
+        .stat-card .stat-badge.pending { background: rgba(245,158,11,0.1); color: #f59e0b; }
+        .quick-action { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; text-align: center; transition: all 0.3s ease; text-decoration: none; display: block; color: var(--text-primary); height: 100%; }
         .quick-action:hover { border-color: rgba(59,130,246,0.2); transform: translateY(-4px); box-shadow: var(--shadow-sm); color: var(--text-primary); }
         .quick-action .qa-icon { font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 8px; }
         .quick-action .qa-label { font-weight: 500; font-size: 0.9rem; }
         .quick-action .qa-badge { background: #ef4444; color: #fff; border-radius: 50%; padding: 2px 8px; font-size: 0.6rem; font-weight: 600; margin-left: 4px; display: inline-block; }
         .btn-logout { background: transparent; border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 8px 20px; border-radius: var(--radius-full); transition: all 0.3s ease; cursor: pointer; }
         .btn-logout:hover { background: rgba(239,68,68,0.05); border-color: #ef4444; }
+        .section-title { color: var(--text-primary); font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
     </style>
 </head>
 <body>
@@ -75,42 +76,110 @@
         </div>
     </div>
 
-    <!-- Actions rapides -->
+    <!-- Statistiques avancées -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-comments"></i></div>
+                <div class="stat-number" th:text="${activeChatSessions}">0</div>
+                <div class="stat-label">Chat en direct</div>
+                <div class="stat-badge pending" th:if="${activeChatSessions > 0}">En ligne</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-number" th:text="${pendingTestimonials}">0</div>
+                <div class="stat-label">Témoignages en attente</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users-cog"></i></div>
+                <div class="stat-number" th:text="${adminUsersCount}">0</div>
+                <div class="stat-label">Administrateurs</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-history"></i></div>
+                <div class="stat-number" th:text="${recentLogs != null ? recentLogs.size() : 0}">0</div>
+                <div class="stat-label">Logs récents</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides - version complète -->
     <div class="row g-4">
         <div class="col-12">
-            <h5 style="color: var(--text-primary); font-weight: 600; margin-bottom: 16px;">
-                <i class="fas fa-bolt" style="color: var(--primary-blue);"></i> Actions rapides
-            </h5>
+            <h5 class="section-title"><i class="fas fa-bolt" style="color: var(--primary-blue);"></i> Gestion du contenu</h5>
         </div>
         <div class="col-md-3">
             <a href="/admin/activities" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-plus-circle"></i></div>
-                <div class="qa-label">Gérer les activités</div>
+                <div class="qa-icon"><i class="fas fa-tasks"></i></div>
+                <div class="qa-label">Activités</div>
             </a>
         </div>
         <div class="col-md-3">
             <a href="/admin/partners" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-user-plus"></i></div>
-                <div class="qa-label">Gérer les partenaires</div>
+                <div class="qa-icon"><i class="fas fa-handshake"></i></div>
+                <div class="qa-label">Partenaires</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/projects-admin" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-rocket"></i></div>
+                <div class="qa-label">Projets</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/testimonials" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-star"></i></div>
+                <div class="qa-label">Témoignages</div>
+            </a>
+        </div>
+
+        <div class="col-12 mt-4">
+            <h5 class="section-title"><i class="fas fa-users" style="color: var(--primary-blue);"></i> Gestion des utilisateurs</h5>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/users" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-users-cog"></i></div>
+                <div class="qa-label">Utilisateurs</div>
             </a>
         </div>
         <div class="col-md-3">
             <a href="/admin/messages" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-eye"></i></div>
-                <div class="qa-label">Voir les messages</div>
+                <div class="qa-icon"><i class="fas fa-envelope"></i></div>
+                <div class="qa-label">Messages</div>
             </a>
         </div>
         <div class="col-md-3">
-            <a href="/admin/chat" class="quick-action">
+            <a href="/admin/chat-sessions" class="quick-action">
                 <div class="qa-icon"><i class="fas fa-comments"></i></div>
-                <div class="qa-label">
-                    Chat en direct
-                    <span th:if="${activeChatSessions > 0}" class="qa-badge" th:text="${activeChatSessions}">0</span>
-                </div>
-                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">
-                    <span th:if="${activeChatSessions > 0}" style="color: #22c55e;">● En ligne</span>
-                    <span th:unless="${activeChatSessions > 0}" style="color: var(--text-muted);">● Aucun visiteur</span>
-                </div>
+                <div class="qa-label">Chat en direct</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/newsletter" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-envelope-open-text"></i></div>
+                <div class="qa-label">Newsletter</div>
+            </a>
+        </div>
+
+        <div class="col-12 mt-4">
+            <h5 class="section-title"><i class="fas fa-cog" style="color: var(--primary-blue);"></i> Configuration &amp; supervision</h5>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/settings" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-sliders-h"></i></div>
+                <div class="qa-label">Paramètres</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/logs" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-history"></i></div>
+                <div class="qa-label">Journal d'activité</div>
             </a>
         </div>
     </div>
@@ -118,14 +187,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Afficher les toasts
+    // Gestion des toasts
     document.addEventListener('DOMContentLoaded', function() {
         const toastMessage = /*[[${toastMessage}]]*/ null;
         const toastType = /*[[${toastType}]]*/ 'success';
-        if (toastMessage) {
-            if (typeof showToast === 'function') {
-                showToast(toastMessage, toastType);
-            }
+        if (toastMessage && typeof showToast === 'function') {
+            showToast(toastMessage, toastType);
         }
     });
 </script>
