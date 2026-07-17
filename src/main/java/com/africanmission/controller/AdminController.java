@@ -29,6 +29,8 @@ public class AdminController {
     private final SiteSettingService siteSettingService;
     private final TestimonialService testimonialService;
     private final ProjectService projectService;
+    private final TeamMemberService teamMemberService;
+    private final FaqService faqService;
 
     @GetMapping("/login")
     public String login() {
@@ -373,5 +375,102 @@ public class AdminController {
     private String getCurrentUsername() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth != null ? auth.getName() : "system";
+    }
+
+    // ============================================
+// GESTION DES MEMBRES DE L'ÉQUIPE
+// ============================================
+    @GetMapping("/team-members")
+    public String manageTeamMembers(Model model) {
+        model.addAttribute("members", teamMemberService.getAllMembers());
+        model.addAttribute("pageTitle", "Gestion de l'équipe");
+        return "admin/team-members";
+    }
+
+    @PostMapping("/team-members/add")
+    public String addTeamMember(@RequestParam String name,
+                                @RequestParam String position,
+                                @RequestParam(required = false) String bio,
+                                @RequestParam(required = false) String photoUrl,
+                                @RequestParam(required = false) String linkedinUrl,
+                                @RequestParam(required = false) String twitterUrl,
+                                @RequestParam(defaultValue = "0") Integer displayOrder,
+                                HttpServletRequest request,
+                                RedirectAttributes redirectAttributes) {
+        TeamMember member = new TeamMember();
+        member.setName(name);
+        member.setPosition(position);
+        member.setBio(bio);
+        member.setPhotoUrl(photoUrl);
+        member.setLinkedinUrl(linkedinUrl);
+        member.setTwitterUrl(twitterUrl);
+        member.setDisplayOrder(displayOrder);
+        member.setIsActive(true);
+        teamMemberService.save(member);
+        redirectAttributes.addFlashAttribute("toastMessage", "Membre ajouté !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "ADD_TEAM_MEMBER", "Ajout du membre: " + name, request.getRemoteAddr());
+        return "redirect:/admin/team-members";
+    }
+
+    @PostMapping("/team-members/delete/{id}")
+    public String deleteTeamMember(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        TeamMember member = teamMemberService.getMemberById(id);
+        teamMemberService.delete(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Membre supprimé !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "DELETE_TEAM_MEMBER", "Suppression du membre: " + member.getName(), request.getRemoteAddr());
+        return "redirect:/admin/team-members";
+    }
+
+    @PostMapping("/team-members/toggle/{id}")
+    public String toggleTeamMember(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        TeamMember member = teamMemberService.getMemberById(id);
+        member.setIsActive(!member.getIsActive());
+        teamMemberService.save(member);
+        redirectAttributes.addFlashAttribute("toastMessage", "Statut du membre mis à jour");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/team-members";
+    }
+
+    // ============================================
+// GESTION DES FAQ
+// ============================================
+    @GetMapping("/faqs")
+    public String manageFaqs(Model model) {
+        model.addAttribute("faqs", faqService.getAllFaqs());
+        model.addAttribute("categories", faqService.getAllCategories());
+        model.addAttribute("pageTitle", "Gestion des FAQ");
+        return "admin/faqs";
+    }
+
+    @PostMapping("/faqs/add")
+    public String addFaq(@RequestParam String question,
+                         @RequestParam String answer,
+                         @RequestParam(required = false) String category,
+                         @RequestParam(defaultValue = "0") Integer displayOrder,
+                         HttpServletRequest request,
+                         RedirectAttributes redirectAttributes) {
+        Faq faq = new Faq();
+        faq.setQuestion(question);
+        faq.setAnswer(answer);
+        faq.setCategory(category);
+        faq.setDisplayOrder(displayOrder);
+        faq.setIsActive(true);
+        faqService.save(faq);
+        redirectAttributes.addFlashAttribute("toastMessage", "FAQ ajoutée !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "ADD_FAQ", "Ajout de la FAQ: " + question, request.getRemoteAddr());
+        return "redirect:/admin/faqs";
+    }
+
+    @PostMapping("/faqs/delete/{id}")
+    public String deleteFaq(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Faq faq = faqService.getFaqById(id);
+        faqService.delete(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "FAQ supprimée !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "DELETE_FAQ", "Suppression de la FAQ: " + faq.getQuestion(), request.getRemoteAddr());
+        return "redirect:/admin/faqs";
     }
 }
