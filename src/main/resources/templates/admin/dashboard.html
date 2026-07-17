@@ -109,8 +109,11 @@
         </div>
     </div>
 
-    <!-- Actions rapides - version complète -->
+    <!-- ============================================ -->
+    <!-- ACTIONS RAPIDES - COMPLÈTES                -->
+    <!-- ============================================ -->
     <div class="row g-4">
+        <!-- Section 1 : Gestion du contenu -->
         <div class="col-12">
             <h5 class="section-title"><i class="fas fa-bolt" style="color: var(--primary-blue);"></i> Gestion du contenu</h5>
         </div>
@@ -138,7 +141,20 @@
                 <div class="qa-label">Témoignages</div>
             </a>
         </div>
+        <div class="col-md-3">
+            <a href="/admin/team-members" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-users"></i></div>
+                <div class="qa-label">Équipe</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/faqs" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="qa-label">FAQ</div>
+            </a>
+        </div>
 
+        <!-- Section 2 : Gestion des utilisateurs -->
         <div class="col-12 mt-4">
             <h5 class="section-title"><i class="fas fa-users" style="color: var(--primary-blue);"></i> Gestion des utilisateurs</h5>
         </div>
@@ -167,6 +183,7 @@
             </a>
         </div>
 
+        <!-- Section 3 : Configuration & Supervision -->
         <div class="col-12 mt-4">
             <h5 class="section-title"><i class="fas fa-cog" style="color: var(--primary-blue);"></i> Configuration &amp; supervision</h5>
         </div>
@@ -182,18 +199,40 @@
                 <div class="qa-label">Journal d'activité</div>
             </a>
         </div>
-        <!-- Gestion de l'équipe -->
         <div class="col-md-3">
-            <a href="/admin/team-members" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-users"></i></div>
-                <div class="qa-label">Équipe</div>
+            <a href="/admin/roles" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-user-tag"></i></div>
+                <div class="qa-label">Rôles</div>
             </a>
         </div>
-        <!-- Gestion des FAQ -->
         <div class="col-md-3">
-            <a href="/admin/faqs" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-question-circle"></i></div>
-                <div class="qa-label">FAQ</div>
+            <a href="/admin/notifications" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-bell"></i></div>
+                <div class="qa-label">Notifications</div>
+                <span th:if="${unreadNotifications > 0}" class="qa-badge" th:text="${unreadNotifications}">0</span>
+            </a>
+        </div>
+
+        <!-- Section 4 : Export des données -->
+        <div class="col-12 mt-4">
+            <h5 class="section-title"><i class="fas fa-file-export" style="color: var(--primary-blue);"></i> Export des données</h5>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/export/messages" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-envelope"></i></div>
+                <div class="qa-label">Export messages</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/export/activities" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-tasks"></i></div>
+                <div class="qa-label">Export activités</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/export/subscribers" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-users"></i></div>
+                <div class="qa-label">Export newsletter</div>
             </a>
         </div>
     </div>

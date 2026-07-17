@@ -3,6 +3,7 @@ package com.africanmission.controller;
 import com.africanmission.model.*;
 import com.africanmission.service.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
@@ -31,6 +34,8 @@ public class AdminController {
     private final ProjectService projectService;
     private final TeamMemberService teamMemberService;
     private final FaqService faqService;
+    private final AdminRoleService adminRoleService;
+    private final NotificationService notificationService;
 
     @GetMapping("/login")
     public String login() {
@@ -479,5 +484,150 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("toastType", "success");
         adminLogService.log(getCurrentUsername(), "DELETE_FAQ", "Suppression de la FAQ: " + faq.getQuestion(), request.getRemoteAddr());
         return "redirect:/admin/faqs";
+    }
+
+    // ============================================
+// GESTION DES RÔLES
+// ============================================
+    @GetMapping("/roles")
+    public String manageRoles(Model model) {
+        model.addAttribute("roles", adminRoleService.getAllRoles());
+        model.addAttribute("pageTitle", "Gestion des rôles");
+        return "admin/roles";
+    }
+
+    @PostMapping("/roles/add")
+    public String addRole(@RequestParam String name,
+                          @RequestParam String description,
+                          @RequestParam(required = false) String permissions,
+                          HttpServletRequest request,
+                          RedirectAttributes redirectAttributes) {
+        AdminRole role = new AdminRole();
+        role.setName(name.toUpperCase());
+        role.setDescription(description);
+        role.setPermissions(permissions);
+        adminRoleService.save(role);
+        redirectAttributes.addFlashAttribute("toastMessage", "Rôle ajouté !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "ADD_ROLE", "Ajout du rôle: " + name, request.getRemoteAddr());
+        return "redirect:/admin/roles";
+    }
+
+    @PostMapping("/roles/delete/{id}")
+    public String deleteRole(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        AdminRole role = adminRoleService.getRoleById(id);
+        adminRoleService.delete(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Rôle supprimé !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "DELETE_ROLE", "Suppression du rôle: " + role.getName(), request.getRemoteAddr());
+        return "redirect:/admin/roles";
+    }
+
+    // ============================================
+// NOTIFICATIONS
+// ============================================
+    @GetMapping("/notifications")
+    public String getNotifications(Model model) {
+        model.addAttribute("notifications", notificationService.getUnreadNotifications());
+        model.addAttribute("unreadCount", notificationService.getUnreadCount());
+        model.addAttribute("pageTitle", "Notifications");
+        return "admin/notifications";
+    }
+
+    @PostMapping("/notifications/mark-read/{id}")
+    public String markNotificationRead(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        notificationService.markAsRead(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Notification marquée comme lue");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/notifications";
+    }
+
+    @PostMapping("/notifications/dismiss/{id}")
+    public String dismissNotification(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        notificationService.dismiss(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Notification supprimée");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/notifications";
+    }
+
+    @PostMapping("/notifications/dismiss-all")
+    public String dismissAllNotifications(RedirectAttributes redirectAttributes) {
+        notificationService.dismissAll();
+        redirectAttributes.addFlashAttribute("toastMessage", "Toutes les notifications supprimées");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/notifications";
+    }
+
+    @PostMapping("/notifications/mark-all-read")
+    public String markAllNotificationsRead(RedirectAttributes redirectAttributes) {
+        notificationService.markAllAsRead();
+        redirectAttributes.addFlashAttribute("toastMessage", "Toutes les notifications marquées comme lues");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/notifications";
+    }
+
+    // ============================================
+// EXPORT DES DONNÉES
+// ============================================
+    @GetMapping("/export/messages")
+    public void exportMessages(HttpServletResponse response) throws IOException {
+        List<ContactMessage> messages = contactService.getAllMessages();
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=messages_export.csv");
+
+        PrintWriter writer = response.getWriter();
+        writer.println("ID,Nom,Email,Téléphone,Sujet,Message,Lu,Date");
+        for (ContactMessage msg : messages) {
+            writer.printf("%d,%s,%s,%s,%s,%s,%s,%s%n",
+                    msg.getId(),
+                    msg.getName(),
+                    msg.getEmail(),
+                    msg.getPhone() != null ? msg.getPhone() : "",
+                    msg.getSubject() != null ? msg.getSubject() : "",
+                    msg.getMessage().replace(",", " "),
+                    msg.getIsRead() ? "Oui" : "Non",
+                    msg.getCreatedAt()
+            );
+        }
+        writer.flush();
+    }
+
+    @GetMapping("/export/activities")
+    public void exportActivities(HttpServletResponse response) throws IOException {
+        List<Activity> activities = activityService.getAllActiveActivities();
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=activities_export.csv");
+
+        PrintWriter writer = response.getWriter();
+        writer.println("ID,Titre,Description,Catégorie,Ordre,Actif");
+        for (Activity activity : activities) {
+            writer.printf("%d,%s,%s,%s,%d,%s%n",
+                    activity.getId(),
+                    activity.getTitle(),
+                    activity.getDescription() != null ? activity.getDescription().replace(",", " ") : "",
+                    activity.getCategory(),
+                    activity.getDisplayOrder(),
+                    activity.getIsActive() ? "Oui" : "Non"
+            );
+        }
+        writer.flush();
+    }
+
+    @GetMapping("/export/subscribers")
+    public void exportSubscribers(HttpServletResponse response) throws IOException {
+        List<Newsletter> subscribers = newsletterService.getAllActiveSubscribers();
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=subscribers_export.csv");
+
+        PrintWriter writer = response.getWriter();
+        writer.println("ID,Email,Date d'inscription");
+        for (Newsletter sub : subscribers) {
+            writer.printf("%d,%s,%s%n",
+                    sub.getId(),
+                    sub.getEmail(),
+                    sub.getSubscribedAt()
+            );
+        }
+        writer.flush();
     }
 }
