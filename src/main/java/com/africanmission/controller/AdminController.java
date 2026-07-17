@@ -52,6 +52,7 @@ public class AdminController {
         model.addAttribute("pendingTestimonials", testimonialService.countPending());
         model.addAttribute("adminUsersCount", adminUserService.countActiveUsers());
         model.addAttribute("recentLogs", adminLogService.getRecentLogs());
+        model.addAttribute("unreadNotifications", notificationService.getUnreadCount());
         model.addAttribute("pageTitle", "Dashboard - Administration");
         return "admin/dashboard";
     }
@@ -249,7 +250,7 @@ public class AdminController {
     }
 
     // ============================================
-    // ACTIVITÉS (déjà existant)
+    // ACTIVITÉS
     // ============================================
     @GetMapping("/activities")
     public String manageActivities(Model model) {
@@ -288,7 +289,7 @@ public class AdminController {
     }
 
     // ============================================
-    // PARTENAIRES (déjà existant)
+    // PARTENAIRES
     // ============================================
     @GetMapping("/partners")
     public String managePartners(Model model) {
@@ -323,7 +324,7 @@ public class AdminController {
     }
 
     // ============================================
-    // MESSAGES DE CONTACT (déjà existant)
+    // MESSAGES DE CONTACT
     // ============================================
     @GetMapping("/messages")
     public String manageMessages(Model model) {
@@ -351,7 +352,7 @@ public class AdminController {
     }
 
     // ============================================
-    // CHAT (déjà existant)
+    // CHAT
     // ============================================
     @GetMapping("/chat")
     public String manageChat() {
@@ -365,7 +366,7 @@ public class AdminController {
     }
 
     // ============================================
-    // NEWSLETTER (déjà existant)
+    // NEWSLETTER
     // ============================================
     @GetMapping("/newsletter")
     public String manageNewsletter(Model model) {
@@ -383,8 +384,8 @@ public class AdminController {
     }
 
     // ============================================
-// GESTION DES MEMBRES DE L'ÉQUIPE
-// ============================================
+    // GESTION DES MEMBRES DE L'ÉQUIPE
+    // ============================================
     @GetMapping("/team-members")
     public String manageTeamMembers(Model model) {
         model.addAttribute("members", teamMemberService.getAllMembers());
@@ -439,8 +440,8 @@ public class AdminController {
     }
 
     // ============================================
-// GESTION DES FAQ
-// ============================================
+    // GESTION DES FAQ
+    // ============================================
     @GetMapping("/faqs")
     public String manageFaqs(Model model) {
         try {
@@ -487,8 +488,8 @@ public class AdminController {
     }
 
     // ============================================
-// GESTION DES RÔLES
-// ============================================
+    // GESTION DES RÔLES
+    // ============================================
     @GetMapping("/roles")
     public String manageRoles(Model model) {
         model.addAttribute("roles", adminRoleService.getAllRoles());
@@ -524,8 +525,8 @@ public class AdminController {
     }
 
     // ============================================
-// NOTIFICATIONS
-// ============================================
+    // NOTIFICATIONS
+    // ============================================
     @GetMapping("/notifications")
     public String getNotifications(Model model) {
         model.addAttribute("notifications", notificationService.getUnreadNotifications());
@@ -567,8 +568,8 @@ public class AdminController {
     }
 
     // ============================================
-// EXPORT DES DONNÉES
-// ============================================
+    // EXPORT DES DONNÉES
+    // ============================================
     @GetMapping("/export/messages")
     public void exportMessages(HttpServletResponse response) throws IOException {
         List<ContactMessage> messages = contactService.getAllMessages();
