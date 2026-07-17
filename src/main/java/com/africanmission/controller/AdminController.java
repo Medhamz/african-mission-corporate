@@ -438,8 +438,15 @@ public class AdminController {
 // ============================================
     @GetMapping("/faqs")
     public String manageFaqs(Model model) {
-        model.addAttribute("faqs", faqService.getAllFaqs());
-        model.addAttribute("categories", faqService.getAllCategories());
+        try {
+            model.addAttribute("faqs", faqService.getAllFaqs());
+            model.addAttribute("categories", faqService.getAllCategories());
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Erreur : " + e.getMessage());
+            model.addAttribute("faqs", List.of());
+            model.addAttribute("categories", List.of());
+        }
         model.addAttribute("pageTitle", "Gestion des FAQ");
         return "admin/faqs";
     }
