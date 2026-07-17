@@ -10,4 +10,6 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> findByIsActiveTrueOrderByDisplayOrderAsc();
     List<Activity> findByCategoryAndIsActiveTrue(String category);
+
+    List<Activity> findByTitleContainingIgnoreCase(String query);
 }

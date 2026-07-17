@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Administration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { background: var(--bg-primary); padding-top: 20px; font-family: 'Inter', sans-serif; }
+        .admin-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border-light); margin-bottom: 30px; }
+        .admin-header h1 { color: var(--text-primary); font-weight: 700; font-size: 1.5rem; }
+        .btn-back { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease; }
+        .btn-back:hover { color: var(--primary-blue); }
+        .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+        .media-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 12px; text-align: center; transition: all 0.3s ease; }
+        .media-item:hover { border-color: rgba(59,130,246,0.15); transform: translateY(-4px); box-shadow: var(--shadow-sm); }
+        .media-item .preview { width: 100%; height: 120px; background: var(--bg-secondary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 8px; }
+        .media-item .preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .media-item .filename { font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .btn-danger-sm { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; font-size: 0.8rem; border-radius: 6px; }
+        .btn-danger-sm:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .upload-area { border: 2px dashed var(--border-light); border-radius: var(--radius-md); padding: 40px; text-align: center; color: var(--text-muted); transition: all 0.3s ease; cursor: pointer; }
+        .upload-area:hover { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.02); }
+        .upload-area i { font-size: 3rem; opacity: 0.3; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+    <header class="admin-header">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <a href="/admin/dashboard" class="btn-back"><i class="fas fa-arrow-left"></i></a>
+            <h1><i class="fas fa-images" style="color: var(--primary-blue);"></i> Bibliothèque de médias</h1>
+        </div>
+    </header>
+
+    <!-- Upload -->
+    <div class="mb-4">
+        <form method="post" action="/admin/media/upload" enctype="multipart/form-data">
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Cliquez pour sélectionner un fichier ou glissez-déposez</p>
+                <input type="file" name="file" id="fileInput" style="display:none;" onchange="this.form.submit()">
+                <div class="mt-2">
+                    <input type="text" name="altText" placeholder="Texte alternatif" class="form-control form-control-sm" style="max-width: 300px; margin: 0 auto;">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Liste -->
+    <div class="media-grid">
+        <div th:each="m : ${media}" class="media-item">
+            <div class="preview">
+                <img th:src="@{/uploads/ + ${m.filename}}" alt="Media" th:if="${m.fileType != null && m.fileType.startsWith('image/')}">
+                <i class="fas fa-file" style="font-size: 2rem; opacity: 0.3;" th:unless="${m.fileType != null && m.fileType.startsWith('image/')}"></i>
+            </div>
+            <div class="filename" th:text="${m.filename}">filename</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);" th:text="${#strings.format('%.0f KB', m.fileSize / 1024)}">size</div>
+            <form method="post" th:action="@{/admin/media/delete/{id}(id=${m.id})}" style="display:inline;" onsubmit="return confirm('Supprimer ce média ?')">
+                <button type="submit" class="btn-danger-sm btn-sm"><i class="fas fa-trash"></i></button>
+            </form>
+        </div>
+        <div th:if="${media.isEmpty()}" class="text-center text-muted" style="grid-column: 1 / -1; padding: 40px;">
+            <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
+            <p>Aucun média</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        const toastType = /*[[${toastType}]]*/ 'success';
+        if (toastMessage && typeof showToast === 'function') {
+            showToast(toastMessage, toastType);
+        }
+    });
+</script>
+</body>
+</html>

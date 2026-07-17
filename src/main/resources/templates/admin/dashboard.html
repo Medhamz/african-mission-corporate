@@ -13,9 +13,11 @@
     <style>
         body { background: var(--bg-primary); padding-top: 20px; font-family: 'Inter', sans-serif; }
         .admin-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border-light); margin-bottom: 30px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border-light); margin-bottom: 30px; flex-wrap: wrap; gap: 16px; }
         .admin-header h1 { color: var(--text-primary); font-weight: 700; font-size: 1.5rem; }
         .admin-header h1 i { color: var(--primary-blue); margin-right: 10px; }
+        .admin-header .search-wrapper { flex: 1; max-width: 400px; min-width: 200px; }
+        .admin-header .right-section { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
         .stat-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px; transition: all 0.3s ease; text-align: center; height: 100%; }
         .stat-card:hover { border-color: rgba(59,130,246,0.15); transform: translateY(-4px); box-shadow: var(--shadow-sm); }
         .stat-card .stat-icon { font-size: 2rem; color: var(--primary-blue); margin-bottom: 12px; }
@@ -29,6 +31,18 @@
         .btn-logout { background: transparent; border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 8px 20px; border-radius: var(--radius-full); transition: all 0.3s ease; cursor: pointer; }
         .btn-logout:hover { background: rgba(239,68,68,0.05); border-color: #ef4444; }
         .section-title { color: var(--text-primary); font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
+        .quick-action { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; text-align: center; transition: all 0.3s ease; text-decoration: none; display: block; color: var(--text-primary); height: 100%; }
+        .quick-action:hover { border-color: rgba(59,130,246,0.2); transform: translateY(-4px); box-shadow: var(--shadow-sm); color: var(--text-primary); }
+        .quick-action .qa-icon { font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 8px; }
+        .quick-action .qa-label { font-weight: 500; font-size: 0.9rem; }
+        .quick-action .qa-badge { background: #ef4444; color: #fff; border-radius: 50%; padding: 2px 8px; font-size: 0.6rem; font-weight: 600; margin-left: 4px; display: inline-block; }
+        .search-premium { display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 3px; transition: all 0.3s ease; width: 100%; }
+        .search-premium:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 30px rgba(59,130,246,0.04); background: rgba(255,255,255,0.05); }
+        .search-premium input { background: transparent; border: none; color: var(--text-primary); padding: 6px 16px; font-size: 0.85rem; width: 100%; outline: none; }
+        .search-premium input::placeholder { color: var(--text-muted); font-weight: 300; }
+        .search-premium .search-btn { background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); padding: 6px 18px; font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; }
+        .search-premium .search-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(59,130,246,0.25); }
+        @media (max-width: 768px) { .admin-header { flex-direction: column; align-items: stretch; } .admin-header .search-wrapper { max-width: 100%; } }
     </style>
 </head>
 <body>
@@ -37,7 +51,15 @@
     <!-- Header -->
     <header class="admin-header">
         <h1><i class="fas fa-shield-alt"></i> Administration</h1>
-        <div style="display: flex; align-items: center; gap: 16px;">
+        <div class="search-wrapper">
+            <form action="/admin/search" method="get" class="d-flex" style="width: 100%;">
+                <div class="search-premium">
+                    <input type="search" name="q" placeholder="Rechercher dans l'admin...">
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="right-section">
             <span style="color: var(--text-secondary);">Bienvenue, Admin</span>
             <form method="post" action="/admin/logout">
                 <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
@@ -87,14 +109,12 @@
 
     <!-- Graphiques -->
     <div class="row g-4 mb-4">
-        <!-- Graphique 1 : Activités par catégorie -->
         <div class="col-md-6">
             <div class="chart-container">
                 <h6><i class="fas fa-chart-bar" style="color: var(--primary-blue);"></i> Activités par catégorie</h6>
                 <canvas id="activityChart" style="max-height: 250px;"></canvas>
             </div>
         </div>
-        <!-- Graphique 2 : Évolution des messages -->
         <div class="col-md-6">
             <div class="chart-container">
                 <h6><i class="fas fa-chart-line" style="color: var(--primary-blue);"></i> Évolution des messages (7 jours)</h6>
@@ -104,14 +124,12 @@
     </div>
 
     <div class="row g-4 mb-4">
-        <!-- Graphique 3 : Répartition des messages -->
         <div class="col-md-6">
             <div class="chart-container">
                 <h6><i class="fas fa-chart-pie" style="color: var(--primary-blue);"></i> Répartition des messages</h6>
                 <canvas id="pieChart" style="max-height: 250px;"></canvas>
             </div>
         </div>
-        <!-- Graphique 4 : Sessions de chat -->
         <div class="col-md-6">
             <div class="chart-container">
                 <h6><i class="fas fa-comments" style="color: var(--primary-blue);"></i> Sessions de chat (7 jours)</h6>
@@ -208,6 +226,24 @@
                 <div class="qa-icon"><i class="fas fa-bell"></i></div>
                 <div class="qa-label">Notifications</div>
                 <span th:if="${unreadNotifications > 0}" class="qa-badge" th:text="${unreadNotifications}">0</span>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/media" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-images"></i></div>
+                <div class="qa-label">Médias</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/pages" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="qa-label">Pages statiques</div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="/admin/maintenance" class="quick-action">
+                <div class="qa-icon"><i class="fas fa-tools"></i></div>
+                <div class="qa-label">Maintenance</div>
             </a>
         </div>
     </div>

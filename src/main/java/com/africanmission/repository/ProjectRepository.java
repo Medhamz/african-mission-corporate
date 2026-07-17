@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByIsActiveTrueOrderByDisplayOrderAsc();
     List<Project> findByCategoryAndIsActiveTrue(String category);
+
+    List<Project> findByTitleContainingIgnoreCase(String query);
 }

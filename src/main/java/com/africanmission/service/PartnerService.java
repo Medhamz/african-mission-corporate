@@ -34,4 +34,8 @@ public class PartnerService {
         return partnerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Partenaire non trouvé"));
     }
+
+    public List<Partner> searchByName(String query) {
+        return partnerRepository.findByTitleContainingIgnoreCase(query);
+    }
 }

@@ -41,4 +41,8 @@ public class ActivityService {
                 .filter(category -> category != null && !category.isEmpty())
                 .toList();
     }
+
+    public List<Activity> searchByName(String query) {
+        return activityRepository.findByTitleContainingIgnoreCase(query);
+    }
 }

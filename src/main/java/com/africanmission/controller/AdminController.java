@@ -11,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.africanmission.service.MediaService;
+import com.africanmission.service.PageService;
+import com.africanmission.service.MaintenanceService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,6 +43,9 @@ public class AdminController {
     private final FaqService faqService;
     private final AdminRoleService adminRoleService;
     private final NotificationService notificationService;
+    private final MediaService mediaService;
+    private final PageService pageService;
+    private final MaintenanceService maintenanceService;
 
     @GetMapping("/login")
     public String login() {
@@ -694,5 +701,131 @@ public class AdminController {
             );
         }
         writer.flush();
+    }
+
+    // ============================================
+// GESTION DES MÉDIAS
+// ============================================
+    @GetMapping("/media")
+    public String manageMedia(Model model) {
+        model.addAttribute("media", mediaService.getAllActive());
+        model.addAttribute("pageTitle", "Bibliothèque de médias");
+        return "admin/media";
+    }
+
+    @PostMapping("/media/upload")
+    public String uploadMedia(@RequestParam("file") MultipartFile file,
+                              @RequestParam(required = false) String altText,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            mediaService.uploadFile(file, altText);
+            redirectAttributes.addFlashAttribute("toastMessage", "Fichier uploadé avec succès !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/media";
+    }
+
+    @PostMapping("/media/delete/{id}")
+    public String deleteMedia(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            mediaService.delete(id);
+            redirectAttributes.addFlashAttribute("toastMessage", "Média supprimé !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/media";
+    }
+
+    // ============================================
+// GESTION DES PAGES STATIQUES
+// ============================================
+    @GetMapping("/pages")
+    public String managePages(Model model) {
+        model.addAttribute("pages", pageService.getAllPages());
+        model.addAttribute("pageTitle", "Gestion des pages");
+        return "admin/pages";
+    }
+
+    @GetMapping("/pages/edit/{id}")
+    public String editPage(@PathVariable Long id, Model model) {
+        Page page = pageService.getById(id);
+        model.addAttribute("page", page);
+        model.addAttribute("pageTitle", "Modifier la page");
+        return "admin/page-edit";
+    }
+
+    @PostMapping("/pages/update/{id}")
+    public String updatePage(@PathVariable Long id,
+                             @RequestParam String title,
+                             @RequestParam String content,
+                             RedirectAttributes redirectAttributes) {
+        Page page = pageService.getById(id);
+        page.setTitle(title);
+        page.setContent(content);
+        pageService.save(page);
+        redirectAttributes.addFlashAttribute("toastMessage", "Page mise à jour !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/pages";
+    }
+
+    @PostMapping("/pages/toggle/{id}")
+    public String togglePage(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Page page = pageService.getById(id);
+        page.setIsActive(!page.getIsActive());
+        pageService.save(page);
+        redirectAttributes.addFlashAttribute("toastMessage", "Statut de la page modifié");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/pages";
+    }
+
+    // ============================================
+// MAINTENANCE MODE
+// ============================================
+    @GetMapping("/maintenance")
+    public String maintenanceMode(Model model) {
+        model.addAttribute("isEnabled", maintenanceService.isMaintenanceMode());
+        model.addAttribute("pageTitle", "Mode maintenance");
+        return "admin/maintenance";
+    }
+
+    @PostMapping("/maintenance/enable")
+    public String enableMaintenance(RedirectAttributes redirectAttributes) {
+        maintenanceService.enableMaintenance();
+        redirectAttributes.addFlashAttribute("toastMessage", "Mode maintenance activé !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/maintenance";
+    }
+
+    @PostMapping("/maintenance/disable")
+    public String disableMaintenance(RedirectAttributes redirectAttributes) {
+        maintenanceService.disableMaintenance();
+        redirectAttributes.addFlashAttribute("toastMessage", "Mode maintenance désactivé !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        return "redirect:/admin/maintenance";
+    }
+
+    // ============================================
+// RECHERCHE GLOBALE
+// ============================================
+    @GetMapping("/search")
+    public String globalSearch(@RequestParam String q, Model model) {
+        // Recherche dans les activités, partenaires, projets, pages
+        List<Activity> activities = activityService.searchByName(q);
+        List<Partner> partners = partnerService.searchByName(q);
+        List<Project> projects = projectService.searchByTitle(q);
+        List<Page> pages = pageService.searchByTitle(q);
+
+        model.addAttribute("query", q);
+        model.addAttribute("activities", activities);
+        model.addAttribute("partners", partners);
+        model.addAttribute("projects", projects);
+        model.addAttribute("pages", pages);
+        model.addAttribute("pageTitle", "Résultats de recherche");
+        return "admin/search-results";
     }
 }

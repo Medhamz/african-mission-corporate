@@ -45,4 +45,8 @@ public class ProjectService {
                 .distinct()
                 .toList();
     }
+
+    public List<Project> searchByTitle(String query) {
+        return projectRepository.findByTitleContainingIgnoreCase(query);
+    }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
     List<Partner> findByIsActiveTrueOrderByDisplayOrderAsc();
+
+    List<Partner> findByTitleContainingIgnoreCase(String query);
 }

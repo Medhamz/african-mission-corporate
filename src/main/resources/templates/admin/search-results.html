@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Administration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { background: var(--bg-primary); padding-top: 20px; font-family: 'Inter', sans-serif; }
+        .admin-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border-light); margin-bottom: 30px; }
+        .admin-header h1 { color: var(--text-primary); font-weight: 700; font-size: 1.5rem; }
+        .btn-back { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease; }
+        .btn-back:hover { color: var(--primary-blue); }
+        .result-section { margin-bottom: 24px; }
+        .result-section h5 { color: var(--text-secondary); font-weight: 600; margin-bottom: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 8px; }
+        .result-item { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .result-item .title { color: var(--text-primary); font-weight: 500; }
+        .result-item .link { color: var(--primary-blue); font-size: 0.85rem; }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+        .empty-state i { font-size: 3rem; opacity: 0.3; margin-bottom: 16px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+    <header class="admin-header">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <a href="/admin/dashboard" class="btn-back"><i class="fas fa-arrow-left"></i></a>
+            <h1><i class="fas fa-search" style="color: var(--primary-blue);"></i> Résultats pour "<span th:text="${query}">query</span>"</h1>
+        </div>
+    </header>
+
+    <div class="result-section">
+        <h5>Activités (<span th:text="${activities.size()}">0</span>)</h5>
+        <div th:each="a : ${activities}" class="result-item">
+            <span class="title" th:text="${a.title}">Titre</span>
+            <a th:href="@{/admin/activities}" class="link">Voir</a>
+        </div>
+        <div th:if="${activities.isEmpty()}" class="empty-state">
+            <p>Aucune activité trouvée</p>
+        </div>
+    </div>
+
+    <div class="result-section">
+        <h5>Partenaires (<span th:text="${partners.size()}">0</span>)</h5>
+        <div th:each="p : ${partners}" class="result-item">
+            <span class="title" th:text="${p.name}">Nom</span>
+            <a th:href="@{/admin/partners}" class="link">Voir</a>
+        </div>
+        <div th:if="${partners.isEmpty()}" class="empty-state">
+            <p>Aucun partenaire trouvé</p>
+        </div>
+    </div>
+
+    <div class="result-section">
+        <h5>Projets (<span th:text="${projects.size()}">0</span>)</h5>
+        <div th:each="pr : ${projects}" class="result-item">
+            <span class="title" th:text="${pr.title}">Titre</span>
+            <a th:href="@{/admin/projects-admin}" class="link">Voir</a>
+        </div>
+        <div th:if="${projects.isEmpty()}" class="empty-state">
+            <p>Aucun projet trouvé</p>
+        </div>
+    </div>
+
+    <div class="result-section">
+        <h5>Pages (<span th:text="${pages.size()}">0</span>)</h5>
+        <div th:each="pa : ${pages}" class="result-item">
+            <span class="title" th:text="${pa.title}">Titre</span>
+            <a th:href="@{/admin/pages}" class="link">Voir</a>
+        </div>
+        <div th:if="${pages.isEmpty()}" class="empty-state">
+            <p>Aucune page trouvée</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        const toastType = /*[[${toastType}]]*/ 'success';
+        if (toastMessage && typeof showToast === 'function') {
+            showToast(toastMessage, toastType);
+        }
+    });
+</script>
+</body>
+</html>
