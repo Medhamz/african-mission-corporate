@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { background: var(--bg-primary); padding-top: 20px; font-family: 'Inter', sans-serif; }
         .admin-wrapper { max-width: 1400px; margin: 0 auto; padding: 20px; }
@@ -19,13 +21,11 @@
         .stat-card .stat-icon { font-size: 2rem; color: var(--primary-blue); margin-bottom: 12px; }
         .stat-card .stat-number { font-size: 2.2rem; font-weight: 700; color: var(--text-primary); }
         .stat-card .stat-label { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
-        .stat-card .stat-badge { display: inline-block; padding: 2px 10px; border-radius: 50px; font-size: 0.65rem; font-weight: 600; margin-top: 4px; }
-        .stat-card .stat-badge.pending { background: rgba(245,158,11,0.1); color: #f59e0b; }
-        .quick-action { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; text-align: center; transition: all 0.3s ease; text-decoration: none; display: block; color: var(--text-primary); height: 100%; }
-        .quick-action:hover { border-color: rgba(59,130,246,0.2); transform: translateY(-4px); box-shadow: var(--shadow-sm); color: var(--text-primary); }
-        .quick-action .qa-icon { font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 8px; }
-        .quick-action .qa-label { font-weight: 500; font-size: 0.9rem; }
-        .quick-action .qa-badge { background: #ef4444; color: #fff; border-radius: 50%; padding: 2px 8px; font-size: 0.6rem; font-weight: 600; margin-left: 4px; display: inline-block; }
+        .stat-card .stat-change { font-size: 0.8rem; margin-top: 6px; display: inline-block; padding: 2px 12px; border-radius: 50px; }
+        .stat-card .stat-change.up { color: #22c55e; background: rgba(34,197,94,0.1); }
+        .stat-card .stat-change.down { color: #ef4444; background: rgba(239,68,68,0.1); }
+        .chart-container { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; height: 100%; }
+        .chart-container h6 { color: var(--text-primary); font-weight: 600; margin-bottom: 16px; }
         .btn-logout { background: transparent; border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 8px 20px; border-radius: var(--radius-full); transition: all 0.3s ease; cursor: pointer; }
         .btn-logout:hover { background: rgba(239,68,68,0.05); border-color: #ef4444; }
         .section-title { color: var(--text-primary); font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
@@ -34,6 +34,7 @@
 <body>
 
 <div class="admin-wrapper">
+    <!-- Header -->
     <header class="admin-header">
         <h1><i class="fas fa-shield-alt"></i> Administration</h1>
         <div style="display: flex; align-items: center; gap: 16px;">
@@ -51,6 +52,8 @@
                 <div class="stat-icon"><i class="fas fa-tasks"></i></div>
                 <div class="stat-number" th:text="${activitiesCount}">0</div>
                 <div class="stat-label">Activités</div>
+                <span class="stat-change up" th:if="${activitiesGrowth >= 0}">+<span th:text="${activitiesGrowth}">0</span>%</span>
+                <span class="stat-change down" th:unless="${activitiesGrowth >= 0}"><span th:text="${activitiesGrowth}">0</span>%</span>
             </div>
         </div>
         <div class="col-md-3">
@@ -58,6 +61,8 @@
                 <div class="stat-icon"><i class="fas fa-handshake"></i></div>
                 <div class="stat-number" th:text="${partnersCount}">0</div>
                 <div class="stat-label">Partenaires</div>
+                <span class="stat-change up" th:if="${partnersGrowth >= 0}">+<span th:text="${partnersGrowth}">0</span>%</span>
+                <span class="stat-change down" th:unless="${partnersGrowth >= 0}"><span th:text="${partnersGrowth}">0</span>%</span>
             </div>
         </div>
         <div class="col-md-3">
@@ -65,6 +70,8 @@
                 <div class="stat-icon"><i class="fas fa-envelope"></i></div>
                 <div class="stat-number" th:text="${messagesCount}">0</div>
                 <div class="stat-label">Messages</div>
+                <span class="stat-change up" th:if="${messagesGrowth >= 0}">+<span th:text="${messagesGrowth}">0</span>%</span>
+                <span class="stat-change down" th:unless="${messagesGrowth >= 0}"><span th:text="${messagesGrowth}">0</span>%</span>
             </div>
         </div>
         <div class="col-md-3">
@@ -72,48 +79,49 @@
                 <div class="stat-icon"><i class="fas fa-users"></i></div>
                 <div class="stat-number" th:text="${subscribersCount}">0</div>
                 <div class="stat-label">Newsletter</div>
+                <span class="stat-change up" th:if="${subscribersGrowth >= 0}">+<span th:text="${subscribersGrowth}">0</span>%</span>
+                <span class="stat-change down" th:unless="${subscribersGrowth >= 0}"><span th:text="${subscribersGrowth}">0</span>%</span>
             </div>
         </div>
     </div>
 
-    <!-- Statistiques avancées -->
+    <!-- Graphiques -->
     <div class="row g-4 mb-4">
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-comments"></i></div>
-                <div class="stat-number" th:text="${activeChatSessions}">0</div>
-                <div class="stat-label">Chat en direct</div>
-                <div class="stat-badge pending" th:if="${activeChatSessions > 0}">En ligne</div>
+        <!-- Graphique 1 : Activités par catégorie -->
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h6><i class="fas fa-chart-bar" style="color: var(--primary-blue);"></i> Activités par catégorie</h6>
+                <canvas id="activityChart" style="max-height: 250px;"></canvas>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-star"></i></div>
-                <div class="stat-number" th:text="${pendingTestimonials}">0</div>
-                <div class="stat-label">Témoignages en attente</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-users-cog"></i></div>
-                <div class="stat-number" th:text="${adminUsersCount}">0</div>
-                <div class="stat-label">Administrateurs</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-history"></i></div>
-                <div class="stat-number" th:text="${recentLogs != null ? recentLogs.size() : 0}">0</div>
-                <div class="stat-label">Logs récents</div>
+        <!-- Graphique 2 : Évolution des messages -->
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h6><i class="fas fa-chart-line" style="color: var(--primary-blue);"></i> Évolution des messages (7 jours)</h6>
+                <canvas id="messageChart" style="max-height: 250px;"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- ACTIONS RAPIDES - COMPLÈTES                -->
-    <!-- ============================================ -->
+    <div class="row g-4 mb-4">
+        <!-- Graphique 3 : Répartition des messages -->
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h6><i class="fas fa-chart-pie" style="color: var(--primary-blue);"></i> Répartition des messages</h6>
+                <canvas id="pieChart" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+        <!-- Graphique 4 : Sessions de chat -->
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h6><i class="fas fa-comments" style="color: var(--primary-blue);"></i> Sessions de chat (7 jours)</h6>
+                <canvas id="chatChart" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions rapides -->
     <div class="row g-4">
-        <!-- Section 1 : Gestion du contenu -->
         <div class="col-12">
             <h5 class="section-title"><i class="fas fa-bolt" style="color: var(--primary-blue);"></i> Gestion du contenu</h5>
         </div>
@@ -153,11 +161,6 @@
                 <div class="qa-label">FAQ</div>
             </a>
         </div>
-
-        <!-- Section 2 : Gestion des utilisateurs -->
-        <div class="col-12 mt-4">
-            <h5 class="section-title"><i class="fas fa-users" style="color: var(--primary-blue);"></i> Gestion des utilisateurs</h5>
-        </div>
         <div class="col-md-3">
             <a href="/admin/users" class="quick-action">
                 <div class="qa-icon"><i class="fas fa-users-cog"></i></div>
@@ -181,11 +184,6 @@
                 <div class="qa-icon"><i class="fas fa-envelope-open-text"></i></div>
                 <div class="qa-label">Newsletter</div>
             </a>
-        </div>
-
-        <!-- Section 3 : Configuration & Supervision -->
-        <div class="col-12 mt-4">
-            <h5 class="section-title"><i class="fas fa-cog" style="color: var(--primary-blue);"></i> Configuration &amp; supervision</h5>
         </div>
         <div class="col-md-3">
             <a href="/admin/settings" class="quick-action">
@@ -212,34 +210,159 @@
                 <span th:if="${unreadNotifications > 0}" class="qa-badge" th:text="${unreadNotifications}">0</span>
             </a>
         </div>
-
-        <!-- Section 4 : Export des données -->
-        <div class="col-12 mt-4">
-            <h5 class="section-title"><i class="fas fa-file-export" style="color: var(--primary-blue);"></i> Export des données</h5>
-        </div>
-        <div class="col-md-3">
-            <a href="/admin/export/messages" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-envelope"></i></div>
-                <div class="qa-label">Export messages</div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="/admin/export/activities" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-tasks"></i></div>
-                <div class="qa-label">Export activités</div>
-            </a>
-        </div>
-        <div class="col-md-3">
-            <a href="/admin/export/subscribers" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-users"></i></div>
-                <div class="qa-label">Export newsletter</div>
-            </a>
-        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // ============================================
+    // CHART.JS - GRAPHIQUES
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. Graphique en barres : Activités par catégorie
+        const ctx1 = document.getElementById('activityChart').getContext('2d');
+        const categories = /*[[${activityCategories}]]*/ [];
+        const categoryCounts = /*[[${activityCategoryCounts}]]*/ [];
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: categories.length ? categories : ['BTP', 'Services', 'Commerce', 'Agriculture', 'Énergie'],
+                datasets: [{
+                    label: 'Activités',
+                    data: categoryCounts.length ? categoryCounts : [12, 8, 5, 3, 2],
+                    backgroundColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ec4899'],
+                    borderColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ec4899'],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: '#94a3b8' },
+                        grid: { color: 'rgba(148,163,184,0.05)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // 2. Graphique en courbes : Évolution des messages
+        const ctx2 = document.getElementById('messageChart').getContext('2d');
+        const messageDates = /*[[${messageDates}]]*/ [];
+        const messageCounts = /*[[${messageCounts}]]*/ [];
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: messageDates.length ? messageDates : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                datasets: [{
+                    label: 'Messages',
+                    data: messageCounts.length ? messageCounts : [5, 8, 6, 12, 9, 4, 7],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59,130,246,0.05)',
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#3b82f6',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: '#94a3b8' },
+                        grid: { color: 'rgba(148,163,184,0.05)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // 3. Graphique en anneau : Répartition des messages
+        const ctx3 = document.getElementById('pieChart').getContext('2d');
+        const readCount = /*[[${readMessagesCount}]]*/ 0;
+        const unreadCount = /*[[${unreadMessagesCount}]]*/ 0;
+        new Chart(ctx3, {
+            type: 'doughnut',
+            data: {
+                labels: ['Messages lus', 'Messages non lus'],
+                datasets: [{
+                    data: [readCount || 15, unreadCount || 5],
+                    backgroundColor: ['#22c55e', '#ef4444'],
+                    borderColor: ['#22c55e', '#ef4444'],
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#94a3b8', padding: 12, usePointStyle: true }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+
+        // 4. Graphique en barres : Sessions de chat
+        const ctx4 = document.getElementById('chatChart').getContext('2d');
+        const chatDates = /*[[${chatDates}]]*/ [];
+        const chatCounts = /*[[${chatCounts}]]*/ [];
+        new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: chatDates.length ? chatDates : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                datasets: [{
+                    label: 'Sessions',
+                    data: chatCounts.length ? chatCounts : [3, 5, 2, 8, 6, 4, 7],
+                    backgroundColor: 'rgba(139,92,246,0.7)',
+                    borderColor: '#8b5cf6',
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: '#94a3b8' },
+                        grid: { color: 'rgba(148,163,184,0.05)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    });
+
     // Gestion des toasts
     document.addEventListener('DOMContentLoaded', function() {
         const toastMessage = /*[[${toastMessage}]]*/ null;

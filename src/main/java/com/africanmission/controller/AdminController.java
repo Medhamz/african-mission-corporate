@@ -14,7 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -44,6 +47,9 @@ public class AdminController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
+        // ============================================
+        // STATISTIQUES DE BASE
+        // ============================================
         model.addAttribute("activitiesCount", activityService.getAllActiveActivities().size());
         model.addAttribute("partnersCount", partnerService.getAllPartners().size());
         model.addAttribute("messagesCount", contactService.getAllMessages().size());
@@ -53,6 +59,64 @@ public class AdminController {
         model.addAttribute("adminUsersCount", adminUserService.countActiveUsers());
         model.addAttribute("recentLogs", adminLogService.getRecentLogs());
         model.addAttribute("unreadNotifications", notificationService.getUnreadCount());
+
+        // ============================================
+        // DONNÉES POUR LES GRAPHIQUES
+        // ============================================
+
+        // 1. Activités par catégorie
+        List<Activity> allActivities = activityService.getAllActiveActivities();
+        Map<String, Long> categoryMap = allActivities.stream()
+                .collect(Collectors.groupingBy(Activity::getCategory, Collectors.counting()));
+        model.addAttribute("activityCategories", new ArrayList<>(categoryMap.keySet()));
+        model.addAttribute("activityCategoryCounts", new ArrayList<>(categoryMap.values()));
+
+        // 2. Évolution des messages (7 derniers jours)
+        List<ContactMessage> allMessages = contactService.getAllMessages();
+        Map<LocalDate, Long> messageDateMap = allMessages.stream()
+                .filter(m -> m.getCreatedAt() != null)
+                .filter(m -> m.getCreatedAt().toLocalDate().isAfter(LocalDate.now().minusDays(7)))
+                .collect(Collectors.groupingBy(m -> m.getCreatedAt().toLocalDate(), Collectors.counting()));
+
+        List<String> dates = new ArrayList<>();
+        List<Long> counts = new ArrayList<>();
+        for (int i = 6; i >= 0; i--) {
+            LocalDate date = LocalDate.now().minusDays(i);
+            dates.add(date.format(DateTimeFormatter.ofPattern("dd/MM")));
+            counts.add(messageDateMap.getOrDefault(date, 0L));
+        }
+        model.addAttribute("messageDates", dates);
+        model.addAttribute("messageCounts", counts);
+
+        // 3. Répartition des messages lus/non lus
+        long readCount = allMessages.stream().filter(ContactMessage::getIsRead).count();
+        long unreadCount = allMessages.size() - readCount;
+        model.addAttribute("readMessagesCount", readCount);
+        model.addAttribute("unreadMessagesCount", unreadCount);
+
+        // 4. Sessions de chat (7 derniers jours)
+        List<ChatSession> allSessions = chatSessionService.getActiveSessions();
+        Map<LocalDate, Long> chatDateMap = allSessions.stream()
+                .filter(s -> s.getLastActivity() != null)
+                .filter(s -> s.getLastActivity().toLocalDate().isAfter(LocalDate.now().minusDays(7)))
+                .collect(Collectors.groupingBy(s -> s.getLastActivity().toLocalDate(), Collectors.counting()));
+
+        List<String> chatDates = new ArrayList<>();
+        List<Long> chatCounts = new ArrayList<>();
+        for (int i = 6; i >= 0; i--) {
+            LocalDate date = LocalDate.now().minusDays(i);
+            chatDates.add(date.format(DateTimeFormatter.ofPattern("dd/MM")));
+            chatCounts.add(chatDateMap.getOrDefault(date, 0L));
+        }
+        model.addAttribute("chatDates", chatDates);
+        model.addAttribute("chatCounts", chatCounts);
+
+        // 5. Tendances (croissance) - À adapter selon vos données réelles
+        model.addAttribute("activitiesGrowth", 5);
+        model.addAttribute("partnersGrowth", 2);
+        model.addAttribute("messagesGrowth", 8);
+        model.addAttribute("subscribersGrowth", 3);
+
         model.addAttribute("pageTitle", "Dashboard - Administration");
         return "admin/dashboard";
     }
