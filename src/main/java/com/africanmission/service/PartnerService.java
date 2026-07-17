@@ -17,7 +17,6 @@ public class PartnerService {
         return partnerRepository.findByIsActiveTrueOrderByDisplayOrderAsc();
     }
 
-    // ✅ Méthode ajoutée pour récupérer TOUS les partenaires (actifs et inactifs)
     public List<Partner> getAllPartners() {
         return partnerRepository.findAll();
     }
@@ -36,6 +35,7 @@ public class PartnerService {
     }
 
     public List<Partner> searchByName(String query) {
-        return partnerRepository.findByTitleContainingIgnoreCase(query);
+        // ✅ CORRIGÉ : appel à findByNameContainingIgnoreCase
+        return partnerRepository.findByNameContainingIgnoreCase(query);
     }
 }

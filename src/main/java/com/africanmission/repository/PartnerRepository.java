@@ -10,5 +10,6 @@ import java.util.List;
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
     List<Partner> findByIsActiveTrueOrderByDisplayOrderAsc();
 
-    List<Partner> findByTitleContainingIgnoreCase(String query);
+    // ✅ CORRIGÉ : title → name
+    List<Partner> findByNameContainingIgnoreCase(String query);
 }
