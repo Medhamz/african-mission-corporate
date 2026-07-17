@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Administration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { background: var(--bg-primary); padding-top: 20px; font-family: 'Inter', sans-serif; }
+        .admin-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border-light); margin-bottom: 30px; }
+        .admin-header h1 { color: var(--text-primary); font-weight: 700; font-size: 1.5rem; }
+        .btn-back { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease; }
+        .btn-back:hover { color: var(--primary-blue); }
+        .table { color: var(--text-secondary); }
+        .table th { color: var(--text-primary); border-color: var(--border-light); }
+        .table td { border-color: var(--border-light); vertical-align: middle; }
+        .btn-danger-sm { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; font-size: 0.8rem; border-radius: 6px; }
+        .btn-danger-sm:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .badge-role { padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; }
+        .badge-role.admin { background: rgba(59,130,246,0.1); color: var(--primary-blue); }
+        .badge-role.super { background: rgba(139,92,246,0.1); color: #8b5cf6; }
+    </style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+    <header class="admin-header">
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <a href="/admin/dashboard" class="btn-back"><i class="fas fa-arrow-left"></i></a>
+            <h1><i class="fas fa-users-cog" style="color: var(--primary-blue);"></i> Utilisateurs</h1>
+        </div>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addUserModal" style="background: var(--gradient-main); border: none;">
+            <i class="fas fa-plus"></i> Ajouter
+        </button>
+    </header>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Nom complet</th>
+                <th>Rôle</th>
+                <th>Statut</th>
+                <th>Dernière connexion</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.username}" style="color: var(--primary-blue); font-weight: 500;">username</td>
+                <td th:text="${user.email}">email@example.com</td>
+                <td th:text="${user.fullName}">Nom complet</td>
+                <td><span class="badge-role admin" th:text="${user.role}">ADMIN</span></td>
+                <td>
+                    <span th:if="${user.isActive}" style="color: #22c55e;">● Actif</span>
+                    <span th:unless="${user.isActive}" style="color: #ef4444;">● Inactif</span>
+                </td>
+                <td th:text="${user.lastLogin != null ? #temporals.format(user.lastLogin, 'dd/MM/yyyy HH:mm') : 'Jamais'}">Date</td>
+                <td>
+                    <form method="post" th:action="@{/admin/users/delete/{id}(id=${user.id})}" style="display:inline;" onsubmit="return confirm('Supprimer cet utilisateur ?')">
+                        <button type="submit" class="btn-danger-sm" th:disabled="${user.username == 'admin'}"><i class="fas fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${users.isEmpty()}">
+                <td colspan="8" class="text-center text-muted" style="padding: 40px;">
+                    <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
+                    <p>Aucun utilisateur</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Ajout Utilisateur -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background: var(--bg-card); border: 1px solid var(--border-light);">
+            <div class="modal-header" style="border-color: var(--border-light);">
+                <h5 class="modal-title" style="color: var(--text-primary);">Ajouter un utilisateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+            </div>
+            <form method="post" action="/admin/users/add">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label style="color: var(--text-secondary);">Nom d'utilisateur</label>
+                        <input type="text" name="username" class="form-control" required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: var(--text-secondary);">Mot de passe</label>
+                        <input type="password" name="password" class="form-control" required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: var(--text-secondary);">Email</label>
+                        <input type="email" name="email" class="form-control" required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: var(--text-secondary);">Nom complet</label>
+                        <input type="text" name="fullName" class="form-control" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: var(--text-secondary);">Rôle</label>
+                        <select name="role" class="form-control" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-color: var(--border-light);">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background: var(--bg-secondary); color: var(--text-secondary); border: none;">Annuler</button>
+                    <button type="submit" class="btn" style="background: var(--gradient-main); border: none; color: #fff;">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toastMessage = /*[[${toastMessage}]]*/ null;
+        const toastType = /*[[${toastType}]]*/ 'success';
+        if (toastMessage && typeof showToast === 'function') {
+            showToast(toastMessage, toastType);
+        }
+    });
+</script>
+</body>
+</html>
