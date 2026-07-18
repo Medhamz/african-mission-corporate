@@ -1815,3 +1815,53 @@ body[data-theme="light"] .chatbot-input input {
     color: #0f172a;
     border-color: #e2e8f0;
 }
+
+/* ============================================ */
+/* CHATBOT - SUGGESTIONS                       */
+/* ============================================ */
+.suggestion-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 6px 0;
+    justify-content: flex-start;
+}
+
+.suggestion-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+}
+
+.suggestion-btn:hover {
+    background: var(--gradient-main);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.suggestion-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Style pour les liens dans les messages du bot */
+.message.bot a {
+    color: var(--primary-blue);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.message.bot a:hover {
+    text-decoration: none;
+}
