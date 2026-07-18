@@ -17,15 +17,20 @@ public class MaintenanceInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // Ignorer les requêtes vers /admin et /css, /js, /images, /webjars, /error
         String uri = request.getRequestURI();
-        if (uri.startsWith("/admin") || uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/images") || uri.startsWith("/webjars") || uri.startsWith("/error")) {
+
+        // Exclure les chemins qui ne doivent pas être bloqués
+        if (uri.startsWith("/admin") || uri.startsWith("/css") || uri.startsWith("/js") ||
+                uri.startsWith("/images") || uri.startsWith("/webjars") || uri.startsWith("/error") ||
+                uri.startsWith("/maintenance") || uri.startsWith("/uploads")) {  // ⬅️ AJOUT de /maintenance
             return true;
         }
 
         if (maintenanceService.isMaintenanceMode()) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            boolean isAdmin = auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_SUPER_ADMIN"));
+            boolean isAdmin = auth != null && auth.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") ||
+                            a.getAuthority().equals("ROLE_SUPER_ADMIN"));
             if (!isAdmin) {
                 response.sendRedirect("/maintenance");
                 return false;
