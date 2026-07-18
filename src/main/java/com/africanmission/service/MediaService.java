@@ -29,7 +29,9 @@ public class MediaService {
 
         // Générer un nom unique
         String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename != null ? originalFilename.substring(originalFilename.lastIndexOf(".")) : "";
+        String extension = originalFilename != null && originalFilename.contains(".")
+                ? originalFilename.substring(originalFilename.lastIndexOf("."))
+                : "";
         String uniqueFilename = UUID.randomUUID().toString() + extension;
 
         // Sauvegarder le fichier
@@ -38,7 +40,7 @@ public class MediaService {
 
         // Enregistrer en base
         Media media = new Media();
-        media.setFilename(originalFilename);
+        media.setFilename(originalFilename != null ? originalFilename : uniqueFilename);
         media.setFilePath(UPLOAD_DIR + uniqueFilename);
         media.setFileType(file.getContentType());
         media.setFileSize(file.getSize());
