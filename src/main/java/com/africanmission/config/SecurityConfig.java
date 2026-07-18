@@ -26,7 +26,9 @@ public class SecurityConfig {
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery", "/key-figures",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/newsletter/**", "/search", "/chat/**", "/contact/**").permitAll()
+                                "/newsletter/**", "/search", "/chat/**", "/contact/**",
+                                "/maintenance" // ⬅️ AJOUT ICI : page de maintenance publique
+                        ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
                                 "/admin/projects-admin", "/admin/testimonials", "/admin/team-members",
