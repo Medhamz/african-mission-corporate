@@ -338,7 +338,6 @@
                     <li class="mb-2"><a href="/faq">FAQ</a></li>
                     <li class="mb-2"><a href="/contact">Contact</a></li>
                     <li class="mb-2"><a href="/legal">Mentions légales</a></li>
-                    <!-- ⬇️ NOUVEAU LIEN VERS LA PAGE MAINTENANCE -->
                     <li class="mb-2"><a href="/maintenance">🔧 Maintenance</a></li>
                 </ul>
             </div>
@@ -376,8 +375,32 @@
     </div>
 </footer>
 
+<!-- ============================================ -->
+<!-- CHATBOT WIDGET                              -->
+<!-- ============================================ -->
+<div id="chatbotWidget">
+    <button id="chatbotToggle" class="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+    <div id="chatbotWindow" class="chatbot-window" style="display:none;">
+        <div class="chatbot-header">
+            <span>Assistant African Mission</span>
+            <button id="chatbotClose" class="chatbot-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chatbotMessages" class="chatbot-messages">
+            <div class="message bot">Bonjour ! Je suis votre assistant. Comment puis-je vous aider ?</div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Posez votre question...">
+            <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/js/micro-interactions.js}"></script>
 <script>
     // ============================================
     // AOS INITIALIZATION
