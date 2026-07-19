@@ -1,8 +1,9 @@
 // ============================================
-// AR HELPER - Réalité Augmentée (version Bootstrap native)
+// AR HELPER - Réalité Augmentée (version clic explicite)
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
+    const arTriggers = document.querySelectorAll('.ar-trigger');
     const arModal = document.getElementById('arModal');
     const arViewer = document.getElementById('arViewer');
     const arLabel = document.getElementById('arModalLabel');
@@ -12,30 +13,27 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Écouter l'événement d'ouverture du modal
-    arModal.addEventListener('show.bs.modal', function(event) {
-        // Récupérer le bouton qui a déclenché l'ouverture
-        const button = event.relatedTarget;
-        if (!button) {
-            console.warn('⚠️ Aucun bouton déclencheur trouvé');
-            return;
-        }
-
-        // Récupérer les données du bouton
-        const modelUrl = button.dataset.model || '/models/activity.glb';
-        const title = button.dataset.title || 'Visualisation 3D';
-
-        // Mettre à jour le viewer et le titre
-        arViewer.setAttribute('src', modelUrl);
-        arLabel.textContent = title;
-
-        console.log(`📦 Modèle chargé : ${modelUrl}`);
+    // Supprimer les attributs data-bs-toggle et data-bs-target pour éviter les conflits
+    arTriggers.forEach(btn => {
+        btn.removeAttribute('data-bs-toggle');
+        btn.removeAttribute('data-bs-target');
     });
 
-    // (Optionnel) Réinitialisation à la fermeture
-    arModal.addEventListener('hidden.bs.modal', function () {
-        arViewer.setAttribute('camera-controls', '');
+    // Attacher un écouteur de clic explicite
+    arTriggers.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modelUrl = this.dataset.model || '/models/activity.glb';
+            const title = this.dataset.title || 'Visualisation 3D';
+            // Mettre à jour le viewer
+            arViewer.setAttribute('src', modelUrl);
+            arLabel.textContent = title;
+            // Ouvrir le modal avec Bootstrap
+            const modal = new bootstrap.Modal(arModal);
+            modal.show();
+            console.log('✅ Modal AR ouvert');
+        });
     });
 
-    console.log('✅ AR Helper initialisé (mode Bootstrap)');
+    console.log('✅ AR Helper initialisé (mode clic explicite)');
 });
