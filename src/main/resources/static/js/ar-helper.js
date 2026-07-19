@@ -3,39 +3,60 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Gérer les boutons "Voir en AR"
+    console.log('🚀 ar-helper.js chargé');
+
+    // Récupérer les éléments
     const arTriggers = document.querySelectorAll('.ar-trigger');
     const arModal = document.getElementById('arModal');
     const arViewer = document.getElementById('arViewer');
     const arLabel = document.getElementById('arModalLabel');
 
-    // Vérifier que tous les éléments existent
+    console.log(`🔍 Boutons AR trouvés : ${arTriggers.length}`);
+    console.log('Modal trouvé :', arModal ? '✅' : '❌');
+    console.log('Viewer trouvé :', arViewer ? '✅' : '❌');
+    console.log('Label trouvé :', arLabel ? '✅' : '❌');
+
     if (!arModal || !arViewer || !arLabel) {
-        console.warn('AR : éléments manquants (modal, viewer ou label)');
+        console.warn('⚠️ AR : éléments manquants, abandon.');
         return;
     }
 
-    arTriggers.forEach(btn => {
+    if (arTriggers.length === 0) {
+        console.warn('⚠️ Aucun bouton .ar-trigger trouvé.');
+        return;
+    }
+
+    // Attacher les événements
+    arTriggers.forEach((btn, index) => {
+        console.log(`📌 Attachement événement au bouton ${index + 1}`);
         btn.addEventListener('click', function(e) {
-            e.preventDefault(); // Empêche tout comportement par défaut
+            e.preventDefault();
+            console.log('🖱️ Clic sur le bouton AR');
 
             const modelUrl = this.dataset.model || '/models/activity.glb';
             const title = this.dataset.title || 'Visualisation 3D';
 
-            // Mettre à jour le model-viewer (ne pas toucher à innerHTML)
+            // Mettre à jour le viewer
             arViewer.setAttribute('src', modelUrl);
             arLabel.textContent = title;
+            console.log(`📦 Modèle chargé : ${modelUrl}`);
 
-            // Ouvrir le modal avec Bootstrap
-            const modal = new bootstrap.Modal(arModal);
-            modal.show();
+            // Ouvrir le modal
+            try {
+                const modal = new bootstrap.Modal(arModal);
+                modal.show();
+                console.log('✅ Modal ouvert');
+            } catch (error) {
+                console.error('❌ Erreur lors de l\'ouverture du modal :', error);
+            }
         });
     });
 
-    // Réinitialisation à la fermeture du modal (optionnel)
+    // Réinitialisation à la fermeture
     arModal.addEventListener('hidden.bs.modal', function () {
-        // Remettre le viewer dans son état initial
+        console.log('🔒 Modal fermé, réinitialisation');
         arViewer.setAttribute('camera-controls', '');
-        // Le slot poster sera automatiquement réaffiché par model-viewer
     });
+
+    console.log('✅ AR Helper initialisé avec succès');
 });
