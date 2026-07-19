@@ -223,11 +223,9 @@
                     <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
                     <p class="card-premium-text" th:text="${activity.description}">Description</p>
                     <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
-                    <!-- BOUTON AR - avec data-bs-toggle et data-bs-target -->
+                    <!-- BOUTON AR - SANS data-bs-toggle (géré par JavaScript) -->
                     <div class="mt-3">
                         <button class="btn btn-sm btn-outline-primary ar-trigger"
-                                data-bs-toggle="modal"
-                                data-bs-target="#arModal"
                                 data-model="/models/activity.glb"
                                 data-title="Modèle 3D de l'activité"
                                 style="border-radius: 50px; font-size: 0.8rem; padding: 4px 16px;">
