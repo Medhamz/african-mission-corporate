@@ -1921,3 +1921,55 @@ body[data-theme="light"] #three-container canvas,
 body[data-theme="light"] #ar-container canvas {
     background: #f8fafc;
 }
+
+/* ============================================ */
+/* THREE.JS CONTAINER                          */
+/* ============================================ */
+#three-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    max-height: 450px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05), rgba(10, 10, 26, 0.8));
+}
+
+#three-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ============================================ */
+/* MODEL-VIEWER AR                             */
+/* ============================================ */
+model-viewer {
+    width: 100%;
+    height: 500px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+}
+
+/* ============================================ */
+/* BOUTON AR                                   */
+/* ============================================ */
+.ar-trigger {
+    transition: all 0.3s ease;
+}
+.ar-trigger:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+/* Correction modal AR en mode clair */
+body[data-theme="light"] .modal-content {
+    background: #ffffff;
+}
+body[data-theme="light"] .modal-header {
+    border-bottom-color: #e2e8f0;
+}
+body[data-theme="light"] .modal-header .btn-close {
+    filter: invert(1);
+}
