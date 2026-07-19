@@ -1865,3 +1865,59 @@ body[data-theme="light"] .chatbot-input input {
 .message.bot a:hover {
     text-decoration: none;
 }
+
+/* ============================================ */
+/* THREE.JS SCROLL ANIMATION                   */
+/* ============================================ */
+#three-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#three-section {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ============================================ */
+/* RÉALITÉ AUGMENTÉE (AR)                      */
+/* ============================================ */
+#ar-container {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#ar-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#ar-activate-btn {
+    background: var(--gradient-main);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#ar-activate-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(59,130,246,0.3);
+}
+
+/* Mode sombre/clair pour les conteneurs 3D */
+body[data-theme="light"] #three-container,
+body[data-theme="light"] #ar-container {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+body[data-theme="light"] #three-container canvas,
+body[data-theme="light"] #ar-container canvas {
+    background: #f8fafc;
+}
