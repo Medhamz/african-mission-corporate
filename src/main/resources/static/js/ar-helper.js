@@ -9,52 +9,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const arViewer = document.getElementById('arViewer');
     const arLabel = document.getElementById('arModalLabel');
 
+    // Vérifier que tous les éléments existent
+    if (!arModal || !arViewer || !arLabel) {
+        console.warn('AR : éléments manquants (modal, viewer ou label)');
+        return;
+    }
+
     arTriggers.forEach(btn => {
         btn.addEventListener('click', function(e) {
-            const modelUrl = this.dataset.model || '';
+            e.preventDefault(); // Empêche tout comportement par défaut
+
+            const modelUrl = this.dataset.model || '/models/activity.glb';
             const title = this.dataset.title || 'Visualisation 3D';
 
-            // Mettre à jour le model-viewer
-            if (arViewer) {
-                // Si un modèle est spécifié, l'utiliser
-                if (modelUrl) {
-                    arViewer.setAttribute('src', modelUrl);
-                } else {
-                    // Sinon, afficher un message dans le viewer
-                    arViewer.setAttribute('src', '');
-                    arViewer.innerHTML = `
-                        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);flex-direction:column;gap:16px;">
-                            <i class="fas fa-cube" style="font-size:4rem;color:var(--primary-blue);opacity:0.3;"></i>
-                            <p style="font-size:1.1rem;max-width:300px;text-align:center;">
-                                Ajoutez un modèle 3D (.glb) dans le dossier <br>
-                                <code style="background:var(--bg-primary);padding:2px 8px;border-radius:4px;">/static/models/</code>
-                            </p>
-                            <p style="font-size:0.85rem;color:var(--text-muted);">
-                                ou téléchargez un modèle gratuit sur
-                                <a href="https://sketchfab.com/search?type=models&features=free&downloadable=true" target="_blank" style="color:var(--primary-blue);">Sketchfab</a>
-                            </p>
-                        </div>
-                    `;
-                }
-                arLabel.textContent = title || 'Visualisation 3D';
+            // Mettre à jour le model-viewer (ne pas toucher à innerHTML)
+            arViewer.setAttribute('src', modelUrl);
+            arLabel.textContent = title;
 
-                // Ouvrir le modal
-                const modal = new bootstrap.Modal(arModal);
-                modal.show();
-            }
+            // Ouvrir le modal avec Bootstrap
+            const modal = new bootstrap.Modal(arModal);
+            modal.show();
         });
     });
 
-    // Réinitialiser quand le modal se ferme
+    // Réinitialisation à la fermeture du modal (optionnel)
     arModal.addEventListener('hidden.bs.modal', function () {
-        if (arViewer) {
-            // Remettre le viewer dans son état initial
-            arViewer.setAttribute('camera-controls', '');
-            // Supprimer le contenu additionnel si présent
-            const placeholder = arViewer.querySelector('div');
-            if (placeholder) {
-                placeholder.remove();
-            }
-        }
+        // Remettre le viewer dans son état initial
+        arViewer.setAttribute('camera-controls', '');
+        // Le slot poster sera automatiquement réaffiché par model-viewer
     });
 });
