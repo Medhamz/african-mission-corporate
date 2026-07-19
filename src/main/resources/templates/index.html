@@ -121,13 +121,10 @@
     </div>
 </nav>
 
-<!-- Mobile Search -->
-<div class="mobile-search-premium" id="mobileSearch">
-    <form action="/search" method="get">
-        <input type="search" name="q" placeholder="Rechercher...">
-        <button type="submit"><i class="fas fa-search"></i> Rechercher</button>
-    </form>
-</div>
+<!-- ============================================ -->
+<!-- DONNÉES MÉTÉO & MARCHÉS (bandeau utilitaire) -->
+<!-- ============================================ -->
+<div th:replace="fragments/market-data :: #marketData"></div>
 
 <!-- ============================================ -->
 <!-- HERO - CORPORATE PREMIUM 3.0                -->
@@ -373,11 +370,6 @@
         </div>
     </div>
 </section>
-
-<!-- ============================================ -->
-<!-- DONNÉES MÉTÉO & MARCHÉS (FRAGMENT)         -->
-<!-- ============================================ -->
-<div th:replace="fragments/market-data :: #marketData"></div>
 
 <!-- ============================================ -->
 <!-- FOOTER - CORPORATE PREMIUM 3.0             -->

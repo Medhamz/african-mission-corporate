@@ -1,14 +1,17 @@
 /* ============================================ */
-/* DONNÉES MÉTÉO & MARCHÉS                     */
+/* BANDEAU UTILITAIRE - MÉTÉO & MARCHÉS        */
 /* ============================================ */
-
 .market-data-section {
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-light);
-    padding: 10px 0;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    transition: background 0.3s ease, color 0.3s ease;
+    padding: 6px 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    z-index: 5;
+    /* juste sous la navbar fixe (pour éviter les chevauchements) */
+    margin-top: 0;
 }
 
 .market-data-row {
@@ -16,78 +19,129 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 16px 30px;
+    gap: 8px 24px;
 }
 
+/* --- Météo --- */
 .market-weather {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .market-weather .weather-icon {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: var(--primary-blue);
+    opacity: 0.8;
 }
 
 .market-weather .weather-city {
-    font-weight: 600;
-    color: var(--text-primary);
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
 }
 
 .market-weather .weather-temp {
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text-primary);
+    font-size: 0.9rem;
 }
 
 .market-weather .weather-desc {
     text-transform: capitalize;
+    color: var(--text-muted);
+    font-size: 0.8rem;
 }
 
+/* Séparateur vertical (élégant) */
+.market-weather .separator {
+    color: var(--border-medium);
+    font-weight: 300;
+    margin: 0 4px;
+}
+
+/* --- Marchés --- */
 .market-prices {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px 20px;
+    gap: 6px 18px;
 }
 
 .market-label {
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-right: 4px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+    margin-right: 2px;
 }
 
 .market-item {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 2px 10px;
-    border-radius: 50px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: transparent;
+    transition: background 0.2s;
 }
 
-.market-item .up { color: #22c55e; }
-.market-item .down { color: #ef4444; }
+.market-item:hover {
+    background: var(--bg-card);
+}
 
-/* Mode clair */
+.market-item .up {
+    color: #22c55e;
+    font-weight: 500;
+}
+
+.market-item .down {
+    color: #ef4444;
+    font-weight: 500;
+}
+
+/* --- Mode clair (light) --- */
 body[data-theme="light"] .market-data-section {
     background: #f1f5f9;
-    border-color: #e2e8f0;
+    border-bottom-color: #e2e8f0;
 }
 
-body[data-theme="light"] .market-item {
+body[data-theme="light"] .market-item:hover {
     background: #ffffff;
 }
 
-/* Responsive */
+/* --- Responsive --- */
 @media (max-width: 768px) {
     .market-data-row {
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 4px 0;
+        padding: 4px 0;
+    }
+    .market-weather {
+        flex-wrap: wrap;
+        gap: 4px 12px;
     }
     .market-prices {
         flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+    .market-weather .separator {
+        display: none;
+    }
+}
+
+/* Pour les très petits écrans (mobile) */
+@media (max-width: 480px) {
+    .market-data-section {
+        font-size: 0.7rem;
+        padding: 4px 0;
+    }
+    .market-item {
+        font-size: 0.7rem;
+        padding: 1px 4px;
     }
 }
