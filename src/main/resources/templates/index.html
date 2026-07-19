@@ -192,7 +192,6 @@
             </div>
 
             <div class="col-lg-5 text-center d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000">
-                <!-- ====== CONTENEUR THREE.JS ====== -->
                 <div id="three-container" style="position: relative; width: 100%; height: 400px; max-height: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05), rgba(10, 10, 26, 0.8));"></div>
             </div>
         </div>
@@ -223,7 +222,7 @@
                     <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
                     <p class="card-premium-text" th:text="${activity.description}">Description</p>
                     <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
-                    <!-- BOUTON AR - SANS data-bs-toggle (géré par JavaScript) -->
+                    <!-- BOUTON AR - SANS data-bs-toggle (géré par JavaScript inline) -->
                     <div class="mt-3">
                         <button class="btn btn-sm btn-outline-primary ar-trigger"
                                 data-model="/models/activity.glb"
@@ -270,7 +269,6 @@
                               auto-rotate
                               auto-rotate-delay="0"
                               rotation-per-second="10deg">
-                    <!-- Message si le modèle n'est pas chargé -->
                     <div slot="poster">
                         <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);flex-direction:column;gap:16px;background:var(--bg-secondary);">
                             <i class="fas fa-cube" style="font-size:4rem;color:var(--primary-blue);opacity:0.3;"></i>
@@ -476,7 +474,6 @@
 <script th:src="@{/js/chatbot.js}"></script>
 <script th:src="@{/js/micro-interactions.js}"></script>
 <script th:src="@{/js/sw-register.js}"></script>
-<script th:src="@{/js/ar-helper.js}"></script>
 
 <!-- ============================================ -->
 <!-- THREE.JS GLOBE ANIMATION (STANDARD)        -->
@@ -486,28 +483,23 @@
         const container = document.getElementById('three-container');
         if (!container) return;
 
-        // Vérifier que Three.js est chargé
         if (typeof THREE === 'undefined') {
             console.warn('Three.js non chargé');
             container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding-top:40%;">Chargement du globe 3D...</p>';
             return;
         }
 
-        // Créer la scène
         const scene = new THREE.Scene();
-        scene.background = null; // transparent
+        scene.background = null;
 
-        // Caméra
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
         camera.position.set(0, 0, 4);
 
-        // Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
-        // Contrôles (OrbitControls)
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableZoom = true;
         controls.rotateSpeed = 0.5;
@@ -516,7 +508,6 @@
         controls.autoRotate = true;
         controls.autoRotateSpeed = 1.0;
 
-        // Lumières
         const ambientLight = new THREE.AmbientLight(0x404060, 0.5);
         scene.add(ambientLight);
 
@@ -528,7 +519,6 @@
         backLight.position.set(-1, -0.5, -1);
         scene.add(backLight);
 
-        // Sphère principale
         const geometry = new THREE.SphereGeometry(1, 64, 64);
         const material = new THREE.MeshPhongMaterial({
             color: 0x3b82f6,
@@ -541,7 +531,6 @@
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
 
-        // Wireframe (lignes)
         const linesMaterial = new THREE.LineBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.3 });
         const linesGeometry = new THREE.SphereGeometry(1.01, 24, 12);
         const wireframe = new THREE.LineSegments(
@@ -550,7 +539,6 @@
         );
         scene.add(wireframe);
 
-        // Anneaux
         const ringMaterial = new THREE.MeshBasicMaterial({
             color: 0x3b82f6,
             transparent: true,
@@ -568,7 +556,6 @@
             rings.push(ring);
         }
 
-        // Particules
         const particlesGeo = new THREE.BufferGeometry();
         const particlesCount = 500;
         const positions = new Float32Array(particlesCount * 3);
@@ -591,7 +578,6 @@
         const particles = new THREE.Points(particlesGeo, particlesMat);
         scene.add(particles);
 
-        // Animation
         function animate() {
             requestAnimationFrame(animate);
 
@@ -609,7 +595,6 @@
         }
         animate();
 
-        // Redimensionnement
         window.addEventListener('resize', () => {
             const width = container.clientWidth;
             const height = container.clientHeight;
@@ -620,13 +605,56 @@
             }
         });
 
-        // Accélération au scroll
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
             const maxScroll = 500;
             const speed = 0.5 + (scrollY / maxScroll) * 1.5;
             controls.autoRotateSpeed = Math.min(speed, 3.0);
         });
+    });
+</script>
+
+<!-- ============================================ -->
+<!-- AR LOGIC INLINE (remplace ar-helper.js)    -->
+<!-- ============================================ -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 AR Logic inline loaded');
+
+        const arTriggers = document.querySelectorAll('.ar-trigger');
+        const arModal = document.getElementById('arModal');
+        const arViewer = document.getElementById('arViewer');
+        const arLabel = document.getElementById('arModalLabel');
+
+        if (!arModal || !arViewer || !arLabel) {
+            console.warn('⚠️ AR : éléments manquants');
+            return;
+        }
+
+        console.log('🔍 Boutons AR trouvés :', arTriggers.length);
+
+        arTriggers.forEach(function(btn, index) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('🖱️ Clic AR détecté !');
+
+                const modelUrl = this.dataset.model || '/models/activity.glb';
+                const title = this.dataset.title || 'Visualisation 3D';
+
+                arViewer.setAttribute('src', modelUrl);
+                arLabel.textContent = title;
+
+                try {
+                    const modal = new bootstrap.Modal(arModal);
+                    modal.show();
+                    console.log('✅ Modal AR ouvert');
+                } catch (err) {
+                    console.error('❌ Erreur ouverture modal :', err);
+                }
+            });
+        });
+
+        console.log('✅ AR Logic inline initialisé');
     });
 </script>
 
