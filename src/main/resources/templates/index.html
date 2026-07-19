@@ -223,9 +223,11 @@
                     <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
                     <p class="card-premium-text" th:text="${activity.description}">Description</p>
                     <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
-                    <!-- BOUTON AR -->
+                    <!-- BOUTON AR - avec data-bs-toggle et data-bs-target -->
                     <div class="mt-3">
                         <button class="btn btn-sm btn-outline-primary ar-trigger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#arModal"
                                 data-model="/models/activity.glb"
                                 data-title="Modèle 3D de l'activité"
                                 style="border-radius: 50px; font-size: 0.8rem; padding: 4px 16px;">
@@ -627,34 +629,6 @@
             const speed = 0.5 + (scrollY / maxScroll) * 1.5;
             controls.autoRotateSpeed = Math.min(speed, 3.0);
         });
-    });
-</script>
-
-<!-- ============================================ -->
-<!-- LOGIQUE AR (MODAL)                         -->
-<!-- ============================================ -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Gérer les boutons "Voir en AR"
-        const arTriggers = document.querySelectorAll('.ar-trigger');
-        const arModal = document.getElementById('arModal');
-        const arViewer = document.getElementById('arViewer');
-        const arLabel = document.getElementById('arModalLabel');
-
-        if (arTriggers.length > 0 && arModal && arViewer) {
-            arTriggers.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    const modelUrl = this.dataset.model || '/models/activity.glb';
-                    const title = this.dataset.title || 'Modèle 3D';
-                    // Mettre à jour le model-viewer
-                    arViewer.setAttribute('src', modelUrl);
-                    arLabel.textContent = title;
-                    // Ouvrir le modal
-                    const modal = new bootstrap.Modal(arModal);
-                    modal.show();
-                });
-            });
-        }
     });
 </script>
 
