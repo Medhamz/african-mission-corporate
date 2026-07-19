@@ -222,7 +222,7 @@
                     <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
                     <p class="card-premium-text" th:text="${activity.description}">Description</p>
                     <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
-                    <!-- BOUTON AR - SANS data-bs-toggle (géré par JavaScript inline) -->
+                    <!-- BOUTON AR -->
                     <div class="mt-3">
                         <button class="btn btn-sm btn-outline-primary ar-trigger"
                                 data-model="/models/activity.glb"
@@ -615,13 +615,12 @@
 </script>
 
 <!-- ============================================ -->
-<!-- AR LOGIC INLINE (remplace ar-helper.js)    -->
+<!-- AR LOGIC INLINE (délégation)               -->
 <!-- ============================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 AR Logic inline loaded');
+        console.log('🚀 AR Logic inline (délégation) loaded');
 
-        const arTriggers = document.querySelectorAll('.ar-trigger');
         const arModal = document.getElementById('arModal');
         const arViewer = document.getElementById('arViewer');
         const arLabel = document.getElementById('arModalLabel');
@@ -631,30 +630,30 @@
             return;
         }
 
-        console.log('🔍 Boutons AR trouvés :', arTriggers.length);
+        // Délégation d'événement
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.ar-trigger');
+            if (!btn) return;
 
-        arTriggers.forEach(function(btn, index) {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log('🖱️ Clic AR détecté !');
+            e.preventDefault();
+            console.log('🖱️ Clic AR détecté !');
 
-                const modelUrl = this.dataset.model || '/models/activity.glb';
-                const title = this.dataset.title || 'Visualisation 3D';
+            const modelUrl = btn.dataset.model || '/models/activity.glb';
+            const title = btn.dataset.title || 'Visualisation 3D';
 
-                arViewer.setAttribute('src', modelUrl);
-                arLabel.textContent = title;
+            arViewer.setAttribute('src', modelUrl);
+            arLabel.textContent = title;
 
-                try {
-                    const modal = new bootstrap.Modal(arModal);
-                    modal.show();
-                    console.log('✅ Modal AR ouvert');
-                } catch (err) {
-                    console.error('❌ Erreur ouverture modal :', err);
-                }
-            });
+            try {
+                const modal = new bootstrap.Modal(arModal);
+                modal.show();
+                console.log('✅ Modal AR ouvert');
+            } catch (err) {
+                console.error('❌ Erreur ouverture modal :', err);
+            }
         });
 
-        console.log('✅ AR Logic inline initialisé');
+        console.log('✅ AR Logic inline (délégation) initialisé');
     });
 </script>
 
