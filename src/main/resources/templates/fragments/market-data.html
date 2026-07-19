@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/market-data.css}">
+</head>
+<body>
+<div id="marketData" class="market-data-section" style="display:none;">
+    <div class="container">
+        <div class="market-data-row">
+            <!-- Météo -->
+            <div class="market-weather">
+                <i class="fas fa-cloud-sun weather-icon"></i>
+                <span class="weather-city" id="weatherCity">--</span>
+                <span class="weather-temp" id="weatherTemp">--°C</span>
+                <span class="weather-desc" id="weatherDesc">--</span>
+            </div>
+
+            <!-- Marchés -->
+            <div class="market-prices">
+                <span class="market-label">📈 Marchés</span>
+                <span class="market-item" id="marketCOTTON">Coton: --</span>
+                <span class="market-item" id="marketLUMBER">Bois: --</span>
+                <span class="market-item" id="marketSTEEL">Acier: --</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/market-data.js}"></script>
+</body>
+</html>
