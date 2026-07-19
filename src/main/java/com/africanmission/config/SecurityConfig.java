@@ -27,7 +27,8 @@ public class SecurityConfig {
                                 "/testimonials", "/gallery", "/key-figures",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**",
-                                "/maintenance" // ⬅️ AJOUT ICI : page de maintenance publique
+                                "/maintenance",
+                                "/api/market/**" // ⬅️ AJOUT : rendre les données météo/marchés publiques
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
