@@ -21,7 +21,8 @@ public class SecurityConfig {
         http
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/about", "/activities", "/contact",
+                        .requestMatchers(
+                                "/", "/about", "/activities", "/contact",
                                 "/services", "/projects", "/team", "/faq",
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery", "/key-figures",

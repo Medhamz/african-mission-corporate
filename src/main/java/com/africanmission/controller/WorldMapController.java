@@ -19,7 +19,6 @@ public class WorldMapController {
     }
 }
 
-// Ne pas oublier ce RestController pour les données API
 @RestController
 @RequestMapping("/api/world")
 class WorldDataController {
