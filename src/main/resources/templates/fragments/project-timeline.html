@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div id="projectTimeline" class="project-timeline-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">
+                <span class="gradient-text">Timeline</span> des projets
+            </h2>
+            <div class="section-line centered"></div>
+            <p class="section-desc">Visualisez l’avancement de nos projets, avec les prévisions météo impactant les délais</p>
+        </div>
+
+        <div id="ganttContainer" class="gantt-container" style="position:relative; overflow-x:auto; margin-top:32px;">
+            <div id="ganttChart" style="min-height:300px; position:relative;">
+                <!-- Le diagramme sera dessiné ici en JS -->
+                <div class="gantt-loading">Chargement du planning...</div>
+            </div>
+        </div>
+
+        <div class="gantt-legend d-flex flex-wrap justify-content-center gap-3 mt-4" style="font-size:0.85rem; color: var(--text-muted);">
+            <span><span class="badge" style="background:#22c55e;">●</span> En cours</span>
+            <span><span class="badge" style="background:#3b82f6;">●</span> À venir</span>
+            <span><span class="badge" style="background:#f59e0b;">●</span> Prévu</span>
+            <span><span class="badge" style="background:#ef4444;">●</span> En retard (météo)</span>
+            <span><i class="fas fa-cloud-rain" style="color:var(--primary-blue);"></i> Jours de pluie prévus</span>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/project-timeline.js}"></script>
+</body>
+</html>

@@ -20,6 +20,8 @@
     <link rel="stylesheet" th:href="@{/css/market-data.css}">
     <!-- ====== TIMELINE 3D CSS ====== -->
     <link rel="stylesheet" th:href="@{/css/timeline.css}">
+    <!-- ====== PROJECT TIMELINE CSS ====== -->
+    <link rel="stylesheet" th:href="@{/css/project-timeline.css}">
 
     <!-- ============================================ -->
     <!-- THREE.JS (VERSION GLOBALE)                  -->
@@ -379,6 +381,11 @@
 <div th:replace="fragments/timeline :: #timeline"></div>
 
 <!-- ============================================ -->
+<!-- PROJECT TIMELINE GANTT AVEC MÉTÉO          -->
+<!-- ============================================ -->
+<div th:replace="fragments/project-timeline :: #projectTimeline"></div>
+
+<!-- ============================================ -->
 <!-- FOOTER - CORPORATE PREMIUM 3.0             -->
 <!-- ============================================ -->
 <footer class="footer-premium">
@@ -480,6 +487,8 @@
 <script th:src="@{/js/market-data.js}"></script>
 <!-- ====== TIMELINE 3D JS ====== -->
 <script th:src="@{/js/timeline.js}"></script>
+<!-- ====== PROJECT TIMELINE JS ====== -->
+<script th:src="@{/js/project-timeline.js}"></script>
 
 <!-- ============================================ -->
 <!-- THREE.JS GLOBE ANIMATION (STANDARD)        -->
