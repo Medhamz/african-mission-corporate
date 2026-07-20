@@ -28,7 +28,8 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**",
                                 "/maintenance",
-                                "/api/market/**" // ⬅️ AJOUT : rendre les données météo/marchés publiques
+                                "/api/market/**",
+                                "/api/projects/**" // ⬅️ AJOUT : rendre les données projets publiques
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
