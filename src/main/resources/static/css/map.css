@@ -1,0 +1,92 @@
+/* ============================================ */
+/* CARTE DU MONDE - STYLES                     */
+/* ============================================ */
+
+.map-section {
+    padding-top: 76px; /* hauteur de la navbar */
+    background: var(--bg-primary);
+    min-height: 100vh;
+}
+
+#map {
+    height: calc(100vh - 76px);
+    width: 100%;
+    background: var(--bg-secondary);
+}
+
+/* Personnalisation des popups */
+.leaflet-popup-content-wrapper {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--border-light) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+.leaflet-popup-content {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Marqueurs personnalisés */
+.custom-marker {
+    background: var(--primary-blue);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+    transition: all 0.3s ease;
+}
+
+.custom-marker:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 6px rgba(59,130,246,0.15);
+}
+
+.custom-marker-import {
+    background: #f59e0b;
+}
+
+.custom-marker-export {
+    background: #22c55e;
+}
+
+.custom-marker-project {
+    background: #3b82f6;
+}
+
+/* Légende sur la carte (ajoutée par JS) */
+.legend {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+.legend i {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .map-section {
+        padding-top: 68px;
+    }
+    #map {
+        height: calc(100vh - 68px);
+    }
+}

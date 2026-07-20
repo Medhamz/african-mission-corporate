@@ -30,7 +30,9 @@ public class SecurityConfig {
                                 "/maintenance",
                                 "/api/market/**",
                                 "/api/projects/**",
-                                "/diagnostiqueur" // ⬅️ AJOUT : rendre la page Diagnostiqueur publique
+                                "/diagnostiqueur",
+                                "/monde",          // ⬅️ AJOUT : page Carte du Monde
+                                "/api/world/**"    // ⬅️ AJOUT : données de la carte
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
