@@ -25,7 +25,7 @@
     <!-- AOS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <!-- Petit style inline pour garantir la hauteur -->
+    <!-- Style inline pour garantir la hauteur -->
     <style>
         #worldMap {
             height: 100%;
@@ -103,15 +103,25 @@
             <p class="section-desc">Visualisez l'empreinte internationale d'African Mission Corporate</p>
         </div>
 
+        <!-- FILTRES -->
+        <div class="filter-section text-center mb-3" data-aos="fade-up" data-aos-delay="50">
+            <button class="filter-btn" data-type="all">🌍 Tous</button>
+            <button class="filter-btn" data-type="project">📋 Projets</button>
+            <button class="filter-btn" data-type="partner">🤝 Partenariats</button>
+            <button class="filter-btn" data-type="investment">💰 Investissements</button>
+        </div>
+
+        <!-- CARTE -->
         <div class="map-container" data-aos="fade-up" data-aos-delay="100">
             <div id="worldMap"></div>
         </div>
 
-        <!-- Légende -->
+        <!-- LÉGENDE -->
         <div class="map-legend d-flex flex-wrap justify-content-center gap-4 mt-3">
-            <span><span class="badge" style="background:#3b82f6;width:14px;height:14px;display:inline-block;border-radius:50%;"></span> Projets</span>
-            <span><span class="badge" style="background:#22c55e;width:14px;height:14px;display:inline-block;border-radius:50%;"></span> Partenariats</span>
-            <span><span class="badge" style="background:#f59e0b;width:14px;height:14px;display:inline-block;border-radius:50%;"></span> Investissements</span>
+            <span><span class="badge" style="background:#3b82f6;"></span> Projets</span>
+            <span><span class="badge" style="background:#22c55e;"></span> Partenariats</span>
+            <span><span class="badge" style="background:#f59e0b;"></span> Investissements</span>
+            <span><span class="badge" style="background:#8b5cf6;"></span> Connexions</span>
         </div>
     </div>
 </section>
