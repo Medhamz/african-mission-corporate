@@ -29,7 +29,8 @@ public class SecurityConfig {
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**",
                                 "/maintenance",
                                 "/api/market/**",
-                                "/api/projects/**" // ⬅️ AJOUT : rendre les données projets publiques
+                                "/api/projects/**",
+                                "/diagnostiqueur" // ⬅️ AJOUT : rendre la page Diagnostiqueur publique
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
