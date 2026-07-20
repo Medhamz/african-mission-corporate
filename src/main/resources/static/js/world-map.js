@@ -1,9 +1,16 @@
 // ============================================
-// CARTE DU MONDE INTERACTIVE - VERSION AMÉLIORÉE
+// CARTE DU MONDE INTERACTIVE
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 world-map.js chargé');
+
+    // Récupérer l'ID de la carte (correspond à <div id="worldMap"> dans le HTML)
+    const mapContainer = document.getElementById('worldMap');
+    if (!mapContainer) {
+        console.error('❌ #worldMap introuvable dans le DOM');
+        return;
+    }
 
     // Initialiser la carte
     const map = L.map('worldMap').setView([20, 0], 2);
@@ -17,19 +24,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('🗺️ Carte initialisée');
 
-    // --- MARQUEURS DE TEST (pour vérifier que la carte fonctionne) ---
-    // Ces marqueurs apparaissent même si l'API échoue
-    L.marker([12.65, -8.0]).addTo(map)
-        .bindPopup('🏛️ Bamako, Mali (siège)');
-    L.marker([14.5, -14.5]).addTo(map)
-        .bindPopup('🌍 Dakar, Sénégal (partenaire)');
-    L.marker([6.8, -5.3]).addTo(map)
-        .bindPopup('🌍 Abidjan, Côte d\'Ivoire (projet)');
-    L.marker([48.9, 2.3]).addTo(map)
-        .bindPopup('🌍 Paris, France (bureau)');
-    L.marker([40.7, -74.0]).addTo(map)
-        .bindPopup('🌍 New York, USA (investissement)');
+    // --- MARQUEURS DE TEST ---
+    // Ces marqueurs apparaissent immédiatement pour vérifier que la carte fonctionne
+    const testMarkers = [
+        { lat: 12.65, lng: -8.0, label: '🏛️ Bamako, Mali (siège)' },
+        { lat: 14.5, lng: -14.5, label: '🌍 Dakar, Sénégal (partenaire)' },
+        { lat: 6.8, lng: -5.3, label: '🌍 Abidjan, Côte d\'Ivoire (projet)' },
+        { lat: 48.9, lng: 2.3, label: '🌍 Paris, France (bureau)' },
+        { lat: 40.7, lng: -74.0, label: '🌍 New York, USA (investissement)' }
+    ];
 
+    testMarkers.forEach(m => {
+        L.marker([m.lat, m.lng]).addTo(map)
+            .bindPopup(m.label);
+    });
     console.log('📍 Marqueurs de test ajoutés');
 
     // --- Récupération des données depuis l'API ---
@@ -46,8 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.warn('⚠️ Aucun pays reçu');
                     return;
                 }
-                // On peut remplacer les marqueurs de test par les vrais, ou les superposer
-                // Pour l'instant, on les ajoute en plus
                 countries.forEach(country => {
                     addMarker(country);
                 });
@@ -57,23 +63,16 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(err => {
                 console.error('❌ Erreur chargement pays :', err);
-                // On laisse les marqueurs de test visibles
             });
     }
 
     function addMarker(country) {
-        // Couleur selon le type
         let color = '#3b82f6';
-        let label = 'Projets';
         if (country.partners > country.projects && country.partners > 0) {
             color = '#22c55e';
-            label = 'Partenariats';
         } else if (country.investment && country.investment.includes('M')) {
             color = '#f59e0b';
-            label = 'Investissement';
         }
-
-        console.log(`📍 Ajout du marqueur pour ${country.name} (${label})`);
 
         const marker = L.circleMarker([country.lat, country.lng], {
             radius: 8 + (country.projects || 0) * 2,

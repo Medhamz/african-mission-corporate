@@ -27,12 +27,14 @@ public class SecurityConfig {
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery", "/key-figures",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
+                                "/uploads/**",
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**",
                                 "/maintenance",
                                 "/api/market/**",
                                 "/api/projects/**",
                                 "/diagnostiqueur",
                                 "/monde",          // ⬅️ Page Carte du Monde
+                                "/carte-monde",    // ⬅️ URL alternative
                                 "/api/world/**"    // ⬅️ Données de la carte
                         ).permitAll()
                         // Admin - accès par rôle
