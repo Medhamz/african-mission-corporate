@@ -31,8 +31,8 @@ public class SecurityConfig {
                                 "/api/market/**",
                                 "/api/projects/**",
                                 "/diagnostiqueur",
-                                "/monde",          // ⬅️ AJOUT : page Carte du Monde
-                                "/api/world/**"    // ⬅️ AJOUT : données de la carte
+                                "/monde",          // ⬅️ Page Carte du Monde
+                                "/api/world/**"    // ⬅️ Données de la carte
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
