@@ -18,6 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/market-data.css}">
+    <!-- ====== TIMELINE 3D CSS ====== -->
+    <link rel="stylesheet" th:href="@{/css/timeline.css}">
 
     <!-- ============================================ -->
     <!-- THREE.JS (VERSION GLOBALE)                  -->
@@ -372,6 +374,11 @@
 </section>
 
 <!-- ============================================ -->
+<!-- TIMELINE 3D IMMERSIVE                       -->
+<!-- ============================================ -->
+<div th:replace="fragments/timeline :: #timeline"></div>
+
+<!-- ============================================ -->
 <!-- FOOTER - CORPORATE PREMIUM 3.0             -->
 <!-- ============================================ -->
 <footer class="footer-premium">
@@ -471,6 +478,8 @@
 <script th:src="@{/js/micro-interactions.js}"></script>
 <script th:src="@{/js/sw-register.js}"></script>
 <script th:src="@{/js/market-data.js}"></script>
+<!-- ====== TIMELINE 3D JS ====== -->
+<script th:src="@{/js/timeline.js}"></script>
 
 <!-- ============================================ -->
 <!-- THREE.JS GLOBE ANIMATION (STANDARD)        -->

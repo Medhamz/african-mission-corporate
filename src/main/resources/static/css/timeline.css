@@ -1,0 +1,121 @@
+/* ============================================ */
+/* TIMELINE 3D - STYLES                         */
+/* ============================================ */
+
+#timeline-globe {
+    width: 100%;
+    height: 500px;
+    max-height: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.03), rgba(10, 10, 26, 0.6));
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#timeline-globe canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Section Timeline */
+.timeline-section {
+    padding: 60px 0;
+    background: var(--bg-secondary);
+    transition: background 0.3s ease;
+}
+
+.timeline-section .section-title {
+    margin-bottom: 8px;
+}
+
+.timeline-section .section-line {
+    margin: 8px 0 16px;
+}
+
+.timeline-section .section-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+/* Légende interactive sous le globe */
+.timeline-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 24px;
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.timeline-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: default;
+    transition: color 0.2s;
+}
+
+.timeline-legend-item:hover {
+    color: var(--text-primary);
+}
+
+.timeline-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.timeline-legend-item .year {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Mode clair */
+body[data-theme="light"] .timeline-section {
+    background: #f8fafc;
+}
+
+body[data-theme="light"] .timeline-legend {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+body[data-theme="light"] #timeline-globe {
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.02), rgba(200, 200, 220, 0.3));
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #timeline-globe {
+        height: 350px;
+        max-height: 350px;
+    }
+    .timeline-legend {
+        gap: 8px 16px;
+        padding: 8px 12px;
+    }
+    .timeline-legend-item {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #timeline-globe {
+        height: 280px;
+        max-height: 280px;
+    }
+}
