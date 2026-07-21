@@ -33,9 +33,11 @@ public class SecurityConfig {
                                 "/api/market/**",
                                 "/api/projects/**",
                                 "/diagnostiqueur",
-                                "/monde",          // ⬅️ Page Carte du Monde
-                                "/carte-monde",    // ⬅️ URL alternative
-                                "/api/world/**"    // ⬅️ Données de la carte
+                                "/monde",
+                                "/carte-monde",
+                                "/api/world/**",
+                                "/eco",          // ⬅️ Page Éco‑responsabilité
+                                "/api/eco/**"    // ⬅️ Données du tableau de bord
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
