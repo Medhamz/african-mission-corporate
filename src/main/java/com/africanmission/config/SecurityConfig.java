@@ -37,7 +37,8 @@ public class SecurityConfig {
                                 "/carte-monde",
                                 "/api/world/**",
                                 "/eco",          // ⬅️ Page Éco‑responsabilité
-                                "/api/eco/**"    // ⬅️ Données du tableau de bord
+                                "/api/eco/**",   // ⬅️ Données du tableau de bord
+                                "/kiosk"         // ⬅️ Mode Kiosque (salons professionnels)
                         ).permitAll()
                         // Admin - accès par rôle
                         .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",

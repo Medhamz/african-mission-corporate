@@ -1,0 +1,409 @@
+/* ============================================ */
+/* MODE KIOSQUE - STYLES PREMIUM               */
+/* ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.kiosk-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-primary);
+    overflow: hidden;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ============================================ */
+/* SLIDES                                      */
+/* ============================================ */
+.kiosk-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    padding: 40px;
+}
+
+.kiosk-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.kiosk-slide-bg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 50%, rgba(59,130,246,0.03), transparent 70%);
+    border-radius: var(--radius-lg);
+}
+
+.kiosk-slide-content {
+    max-width: 1000px;
+    width: 100%;
+    text-align: center;
+    padding: 40px;
+}
+
+/* ============================================ */
+/* CONTENU DES SLIDES                         */
+/* ============================================ */
+.kiosk-hero .kiosk-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+}
+
+.kiosk-hero .kiosk-logo i {
+    font-size: 2.4rem;
+    color: var(--primary-blue);
+}
+
+.kiosk-hero .kiosk-logo strong {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.kiosk-hero .kiosk-logo small {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    -webkit-text-fill-color: var(--text-muted);
+    background: none;
+}
+
+.kiosk-slide-content h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.kiosk-slide-content h2 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+}
+
+.kiosk-slide-content .gradient-text {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.kiosk-slide-content p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 32px;
+}
+
+.kiosk-slide-content .kiosk-cta {
+    font-size: 1rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-4px); }
+}
+
+/* ============================================ */
+/* GRILLES                                     */
+/* ============================================ */
+.kiosk-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.kiosk-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.kiosk-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(8px);
+}
+
+.kiosk-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(59,130,246,0.2);
+    box-shadow: var(--shadow-md);
+}
+
+.kiosk-card i {
+    font-size: 2.8rem;
+    color: var(--primary-blue);
+    margin-bottom: 12px;
+}
+
+.kiosk-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.kiosk-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ============================================ */
+/* STATISTIQUES                                 */
+/* ============================================ */
+.kiosk-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 16px;
+}
+
+.kiosk-stat {
+    text-align: center;
+}
+
+.kiosk-stat-number {
+    font-size: 4rem;
+    font-weight: 800;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    line-height: 1;
+}
+
+.kiosk-stat-label {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ============================================ */
+/* CONTACT                                     */
+/* ============================================ */
+.kiosk-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.kiosk-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gradient-main);
+    color: #fff !important;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 40px rgba(59,130,246,0.15);
+}
+
+.kiosk-btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 60px rgba(59,130,246,0.25);
+    color: #fff !important;
+}
+
+.kiosk-social {
+    display: flex;
+    gap: 16px;
+}
+
+.kiosk-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.kiosk-social a:hover {
+    background: var(--primary-blue);
+    color: #fff;
+    border-color: var(--primary-blue);
+    transform: translateY(-3px);
+}
+
+/* ============================================ */
+/* CONTROLES                                    */
+/* ============================================ */
+.kiosk-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.06);
+    z-index: 10000;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.kiosk-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.kiosk-btn:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+
+.kiosk-btn.active {
+    color: var(--primary-blue);
+}
+
+.kiosk-counter {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 48px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ============================================ */
+/* INDICATEURS DE SLIDE                        */
+/* ============================================ */
+.kiosk-dots {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10000;
+}
+
+.kiosk-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.kiosk-dot.active {
+    background: var(--primary-blue);
+    width: 28px;
+    border-radius: 50px;
+}
+
+/* ============================================ */
+/* RESPONSIVE                                   */
+/* ============================================ */
+@media (max-width: 768px) {
+    .kiosk-slide-content h1 {
+        font-size: 2.4rem;
+    }
+    .kiosk-slide-content h2 {
+        font-size: 2rem;
+    }
+    .kiosk-grid-3,
+    .kiosk-grid-2 {
+        grid-template-columns: 1fr;
+    }
+    .kiosk-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    .kiosk-stat-number {
+        font-size: 2.8rem;
+    }
+    .kiosk-controls {
+        bottom: 16px;
+        padding: 6px 12px;
+    }
+    .kiosk-dots {
+        bottom: 76px;
+    }
+}
+
+@media (max-width: 480px) {
+    .kiosk-slide-content h1 {
+        font-size: 1.8rem;
+    }
+    .kiosk-slide-content h2 {
+        font-size: 1.5rem;
+    }
+    .kiosk-card {
+        padding: 20px 16px;
+    }
+    .kiosk-controls {
+        gap: 4px;
+    }
+    .kiosk-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
