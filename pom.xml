@@ -64,7 +64,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Utilities -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -92,7 +92,7 @@
 
     <build>
         <plugins>
-            <!-- ====== Plugin pour l'annotation processing (Lombok) ====== -->
+            <!-- ====== Plugin Maven Compiler avec Lombok ====== -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -106,7 +106,6 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
-                        <!-- Ajoute ici d'autres processeurs si nécessaire (MapStruct, etc.) -->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
