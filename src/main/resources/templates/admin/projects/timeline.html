@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Gestion projets timeline')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Projet Timeline', 'Gestion des projets')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Projets</h4>
+                <a th:href="@{/admin/projects-timeline/add}" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter</a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nom</th>
+                                <th>Début</th>
+                                <th>Fin</th>
+                                <th>Lieu</th>
+                                <th>Statut</th>
+                                <th>Jours pluie</th>
+                                <th>Actif</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="p : ${projects}">
+                                <td th:text="${p.id}"></td>
+                                <td th:text="${p.name}"></td>
+                                <td th:text="${p.startDate}"></td>
+                                <td th:text="${p.endDate}"></td>
+                                <td th:text="${p.location}"></td>
+                                <td><span class="badge" th:class="${p.status == 'En cours'} ? 'bg-success' : (${p.status == 'À venir'} ? 'bg-info' : (${p.status == 'En retard'} ? 'bg-danger' : 'bg-secondary'))" th:text="${p.status}"></span></td>
+                                <td th:text="${p.rainDays}"></td>
+                                <td>
+                                        <span class="badge" th:class="${p.isActive} ? 'bg-success' : 'bg-secondary'"
+                                              th:text="${p.isActive} ? 'Actif' : 'Inactif'"></span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/projects-timeline/edit/{id}(id=${p.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                    <a th:href="@{/admin/projects-timeline/delete/{id}(id=${p.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                                    <a th:href="@{/admin/projects-timeline/toggle/{id}(id=${p.id})}" class="btn btn-sm btn-secondary"><i class="fas fa-sync"></i></a>
+                                </td>
+                            </tr>
+                            <tr th:if="${projects.isEmpty()}">
+                                <td colspan="9" class="text-center text-muted">Aucun projet.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

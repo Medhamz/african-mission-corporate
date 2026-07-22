@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Formulaire événement timeline')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Timeline 3D', 'Formulaire événement')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/timeline/save}" th:object="${event}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Année</label>
+                                <input type="text" class="form-control" th:field="*{year}" placeholder="2016" required>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Titre</label>
+                                <input type="text" class="form-control" th:field="*{title}" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" th:field="*{description}" rows="3" required></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Image (URL)</label>
+                                <input type="text" class="form-control" th:field="*{imageUrl}" placeholder="/images/timeline/2016.jpg">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Icône (FontAwesome)</label>
+                                <input type="text" class="form-control" th:field="*{icon}" placeholder="fa-flag">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Couleur (hex)</label>
+                                <input type="color" class="form-control" th:field="*{color}" value="#3b82f6">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Ordre d'affichage</label>
+                                <input type="number" class="form-control" th:field="*{displayOrder}" min="0">
+                            </div>
+                            <div class="col-md-4 form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" th:field="*{isActive}">
+                                <label class="form-check-label ms-2">Actif</label>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                <a th:href="@{/admin/timeline}" class="btn btn-secondary">Annuler</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

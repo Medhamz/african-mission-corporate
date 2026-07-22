@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Formulaire slide kiosque')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Mode Kiosque', 'Formulaire slide')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/kiosk/save}" th:object="${slide}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Titre</label>
+                                <input type="text" class="form-control" th:field="*{title}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Sous-titre</label>
+                                <input type="text" class="form-control" th:field="*{subtitle}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Type</label>
+                                <select class="form-select" th:field="*{type}">
+                                    <option value="hero">Hero (accueil)</option>
+                                    <option value="grid">Grille (activités)</option>
+                                    <option value="stats">Statistiques</option>
+                                    <option value="contact">Contact</option>
+                                    <option value="custom">Personnalisé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Icône (FontAwesome)</label>
+                                <input type="text" class="form-control" th:field="*{icon}" placeholder="fa-globe-africa">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Contenu (JSON)</label>
+                                <textarea class="form-control" th:field="*{content}" rows="4" placeholder="Ex: {&quot;items&quot;:[{&quot;title&quot;:&quot;...&quot;}]}"></textarea>
+                                <small class="text-muted">Données structurées pour le slide (selon le type).</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Image de fond (URL)</label>
+                                <input type="text" class="form-control" th:field="*{backgroundImage}" placeholder="/images/kiosk/bg1.jpg">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Ordre d'affichage</label>
+                                <input type="number" class="form-control" th:field="*{displayOrder}" min="0">
+                            </div>
+                            <div class="col-md-3 form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" th:field="*{isActive}">
+                                <label class="form-check-label ms-2">Actif</label>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                <a th:href="@{/admin/kiosk}" class="btn btn-secondary">Annuler</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

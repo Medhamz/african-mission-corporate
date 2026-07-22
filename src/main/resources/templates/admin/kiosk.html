@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle}">Gestion du Mode Kiosque</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<!-- Inclusion du layout admin -->
+<div th:replace="admin/fragments/header :: header"></div>
+<div th:replace="admin/fragments/sidebar :: sidebar"></div>
+
+<div class="admin-content">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-desktop"></i> Mode Kiosque</h2>
+            <a href="/admin/kiosk/add" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nouvelle slide
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Liste des slides</h5>
+                <small class="text-muted">Glissez-déposez pour réorganiser</small>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="kioskTable">
+                        <thead>
+                        <tr>
+                            <th style="width:60px;">Ordre</th>
+                            <th>Titre</th>
+                            <th>Sous-titre</th>
+                            <th>Icône</th>
+                            <th style="width:100px;">Actif</th>
+                            <th style="width:180px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="kioskSortable">
+                        <tr th:each="slide : ${slides}" data-id="${slide.id}">
+                            <td class="drag-handle"><i class="fas fa-grip-vertical"></i> <span th:text="${slide.slideOrder}"></span></td>
+                            <td th:text="${slide.title}">Titre</td>
+                            <td th:text="${slide.subtitle}">Sous-titre</td>
+                            <td><i th:class="${slide.iconClass}"></i></td>
+                            <td>
+                                <span class="badge" th:class="${slide.isActive ? 'bg-success' : 'bg-secondary'}" th:text="${slide.isActive ? 'Actif' : 'Inactif'}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{/admin/kiosk/edit/{id}(id=${slide.id})}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{/admin/kiosk/toggle/{id}(id=${slide.id})}" class="btn btn-sm btn-outline-warning">
+                                    <i class="fas fa-power-off"></i>
+                                </a>
+                                <a th:href="@{/admin/kiosk/delete/{id}(id=${slide.id})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer cette slide ?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${slides.isEmpty()}">
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="fas fa-inbox fa-2x d-block mb-2"></i>
+                                Aucune slide créée. Cliquez sur "Nouvelle slide" pour commencer.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+<script>
+    // Drag & Drop pour réorganiser les slides
+    const sortable = document.getElementById('kioskSortable');
+    if (sortable) {
+        new Sortable(sortable, {
+            handle: '.drag-handle',
+            animation: 150,
+            onEnd: function() {
+                const ids = [];
+                sortable.querySelectorAll('tr').forEach(tr => {
+                    ids.push(tr.dataset.id);
+                });
+                fetch('/admin/kiosk/reorder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(ids)
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

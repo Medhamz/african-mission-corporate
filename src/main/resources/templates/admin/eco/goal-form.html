@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Formulaire objectif RSE')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Éco-responsabilité', 'Formulaire objectif RSE')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/eco/goals/save}" th:object="${goal}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Code (unique)</label>
+                                <input type="text" class="form-control" th:field="*{code}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" th:field="*{name}" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" th:field="*{description}" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Progression (%)</label>
+                                <input type="number" class="form-control" th:field="*{progress}" min="0" max="100" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Couleur (hex)</label>
+                                <input type="color" class="form-control" th:field="*{color}" value="#3b82f6">
+                            </div>
+                            <div class="col-md-4 form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" th:field="*{isActive}">
+                                <label class="form-check-label ms-2">Actif</label>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                <a th:href="@{/admin/eco/goals}" class="btn btn-secondary">Annuler</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="admin/layout :: page(~{::content})">
+<head>
+    <title th:text="${pageTitle}">Gestion des pays</title>
+</head>
+<body>
+<th:block th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3"><i class="fas fa-globe"></i> Gestion des pays</h1>
+        <a href="/admin/countries/new" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Ajouter un pays
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Capitale</th>
+                <th>Projets</th>
+                <th>Partenaires</th>
+                <th>Investissement</th>
+                <th>Type</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="country : ${countries}">
+                <td th:text="${country.id}">1</td>
+                <td th:text="${country.name}">Mali</td>
+                <td th:text="${country.capital}">Bamako</td>
+                <td th:text="${country.projectsCount}">3</td>
+                <td th:text="${country.partnersCount}">2</td>
+                <td th:text="${country.investment}">1.2M FCFA</td>
+                <td>
+                        <span class="badge" th:classappend="${country.type == 'project' ? 'bg-primary' : country.type == 'partner' ? 'bg-success' : 'bg-warning'}"
+                              th:text="${country.type}">project</span>
+                </td>
+                <td>
+                        <span class="badge" th:classappend="${country.isActive ? 'bg-success' : 'bg-secondary'}"
+                              th:text="${country.isActive ? 'Actif' : 'Inactif'}">Actif</span>
+                </td>
+                <td>
+                    <a th:href="@{/admin/countries/edit/{id}(id=${country.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <form th:action="@{/admin/countries/toggle/{id}(id=${country.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-warning">
+                            <i class="fas" th:classappend="${country.isActive ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                        </button>
+                    </form>
+                    <form th:action="@{/admin/countries/delete/{id}(id=${country.id})}" method="post" style="display:inline;" onsubmit="return confirm('Supprimer ce pays ?')">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${countries.empty}">
+                <td colspan="9" class="text-center text-muted">Aucun pays enregistré.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</th:block>
+</body>
+</html>

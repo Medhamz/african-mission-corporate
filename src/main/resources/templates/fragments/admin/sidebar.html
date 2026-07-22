@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="sidebar" class="admin-sidebar">
+    <style>
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255,255,255,0.04);
+            padding: 24px 16px;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-sidebar .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 20px;
+        }
+
+        .admin-sidebar .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .admin-sidebar .sidebar-brand .brand-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            letter-spacing: -0.3px;
+        }
+
+        .admin-sidebar .sidebar-brand .brand-text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #64748b;
+        }
+
+        .admin-sidebar .sidebar-section {
+            margin-bottom: 20px;
+        }
+
+        .admin-sidebar .sidebar-section .section-title {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            padding: 0 12px;
+            margin-bottom: 6px;
+        }
+
+        .admin-sidebar .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+        }
+
+        .admin-sidebar .sidebar-link:hover {
+            background: rgba(255,255,255,0.04);
+            color: #f1f5f9;
+        }
+
+        .admin-sidebar .sidebar-link.active {
+            background: rgba(59,130,246,0.08);
+            color: #3b82f6;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .admin-sidebar .sidebar-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            transition: color 0.25s ease;
+        }
+
+        .admin-sidebar .sidebar-link:hover i {
+            color: #f1f5f9;
+        }
+
+        .admin-sidebar .sidebar-link.active i {
+            color: #3b82f6;
+        }
+
+        .admin-sidebar .sidebar-link .badge-link {
+            margin-left: auto;
+            font-size: 0.6rem;
+            background: #ef4444;
+            color: #fff;
+            padding: 1px 10px;
+            border-radius: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .admin-sidebar.open {
+                transform: translateX(0);
+            }
+            .admin-sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.4);
+                z-index: 999;
+            }
+            .admin-sidebar-overlay.active {
+                display: block;
+            }
+        }
+    </style>
+
+    <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="brand-text">
+            Admin
+            <small>African Mission</small>
+        </div>
+    </div>
+
+    <!-- Menu principal -->
+    <div class="sidebar-section">
+        <div class="section-title">Général</div>
+        <a href="/admin/dashboard" class="sidebar-link" th:classappend="${#request.getRequestURI().startsWith('/admin/dashboard')} ? 'active' : ''">
+            <i class="fas fa-th-large"></i> Dashboard
+        </a>
+        <a href="/admin/search" class="sidebar-link">
+            <i class="fas fa-search"></i> Recherche
+        </a>
+    </div>
+
+    <!-- Contenu -->
+    <div class="sidebar-section">
+        <div class="section-title">Contenu</div>
+        <a href="/admin/activities" class="sidebar-link"><i class="fas fa-tasks"></i> Activités</a>
+        <a href="/admin/partners" class="sidebar-link"><i class="fas fa-handshake"></i> Partenaires</a>
+        <a href="/admin/projects-admin" class="sidebar-link"><i class="fas fa-rocket"></i> Projets</a>
+        <a href="/admin/testimonials" class="sidebar-link"><i class="fas fa-star"></i> Témoignages</a>
+        <a href="/admin/team-members" class="sidebar-link"><i class="fas fa-users"></i> Équipe</a>
+        <a href="/admin/faqs" class="sidebar-link"><i class="fas fa-question-circle"></i> FAQ</a>
+        <a href="/admin/media" class="sidebar-link"><i class="fas fa-images"></i> Médias</a>
+        <a href="/admin/pages" class="sidebar-link"><i class="fas fa-file-alt"></i> Pages</a>
+    </div>
+
+    <!-- Communications -->
+    <div class="sidebar-section">
+        <div class="section-title">Communications</div>
+        <a href="/admin/messages" class="sidebar-link"><i class="fas fa-envelope"></i> Messages</a>
+        <a href="/admin/chat-sessions" class="sidebar-link"><i class="fas fa-comments"></i> Chat</a>
+        <a href="/admin/newsletter" class="sidebar-link"><i class="fas fa-envelope-open-text"></i> Newsletter</a>
+        <a href="/admin/notifications" class="sidebar-link">
+            <i class="fas fa-bell"></i> Notifications
+            <span th:if="${unreadNotifications != null && unreadNotifications > 0}" class="badge-link" th:text="${unreadNotifications}">0</span>
+        </a>
+    </div>
+
+    <!-- Nouvelles fonctionnalités -->
+    <div class="sidebar-section">
+        <div class="section-title" style="color: #f59e0b;">⭐ Nouvelles</div>
+        <a href="/admin/diagnostic" class="sidebar-link"><i class="fas fa-stethoscope" style="color: #8b5cf6;"></i> Diagnostiqueur</a>
+        <a href="/admin/countries" class="sidebar-link"><i class="fas fa-globe-africa" style="color: #3b82f6;"></i> Carte du Monde</a>
+        <a href="/admin/eco/indicators" class="sidebar-link"><i class="fas fa-leaf" style="color: #22c55e;"></i> Éco-responsabilité</a>
+        <a href="/admin/kiosk" class="sidebar-link"><i class="fas fa-desktop" style="color: #f59e0b;"></i> Mode Kiosque</a>
+        <a href="/admin/timeline" class="sidebar-link"><i class="fas fa-clock" style="color: #ec4899;"></i> Timeline 3D</a>
+        <a href="/admin/projects-timeline" class="sidebar-link"><i class="fas fa-chart-gantt" style="color: #22d3ee;"></i> Projet Timeline</a>
+    </div>
+
+    <!-- Administration -->
+    <div class="sidebar-section">
+        <div class="section-title">Administration</div>
+        <a href="/admin/users" class="sidebar-link"><i class="fas fa-users-cog"></i> Utilisateurs</a>
+        <a href="/admin/roles" class="sidebar-link"><i class="fas fa-user-tag"></i> Rôles</a>
+        <a href="/admin/settings" class="sidebar-link"><i class="fas fa-sliders-h"></i> Paramètres</a>
+        <a href="/admin/logs" class="sidebar-link"><i class="fas fa-history"></i> Logs</a>
+        <a href="/admin/maintenance" class="sidebar-link"><i class="fas fa-tools"></i> Maintenance</a>
+    </div>
+
+    <!-- Mobile toggle -->
+    <button class="sidebar-toggle-mobile" style="display:none; background:transparent; border:none; color:#f1f5f9; font-size:1.5rem; position:fixed; top:16px; left:16px; z-index:1001; cursor:pointer;">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile toggle
+            const toggle = document.querySelector('.sidebar-toggle-mobile');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const overlay = document.createElement('div');
+            overlay.className = 'admin-sidebar-overlay';
+            document.body.prepend(overlay);
+
+            if (window.innerWidth <= 768) {
+                toggle.style.display = 'block';
+            }
+
+            toggle?.addEventListener('click', function() {
+                sidebar?.classList.toggle('open');
+                overlay.classList.toggle('active');
+            });
+
+            overlay.addEventListener('click', function() {
+                sidebar?.classList.remove('open');
+                this.classList.remove('active');
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    toggle.style.display = 'block';
+                } else {
+                    toggle.style.display = 'none';
+                    sidebar?.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</div>
+</html>

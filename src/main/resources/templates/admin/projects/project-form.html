@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Formulaire projet timeline')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Projet Timeline', 'Formulaire projet')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/admin/projects-timeline/save}" th:object="${project}" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom du projet</label>
+                                <input type="text" class="form-control" th:field="*{name}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Lieu</label>
+                                <input type="text" class="form-control" th:field="*{location}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Date de début</label>
+                                <input type="date" class="form-control" th:field="*{startDate}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Date de fin estimée</label>
+                                <input type="date" class="form-control" th:field="*{endDate}" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Jours de pluie estimés</label>
+                                <input type="number" class="form-control" th:field="*{rainDays}" min="0">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Statut</label>
+                                <select class="form-select" th:field="*{status}">
+                                    <option value="Prévu">Prévu</option>
+                                    <option value="À venir">À venir</option>
+                                    <option value="En cours">En cours</option>
+                                    <option value="En retard">En retard</option>
+                                    <option value="Terminé">Terminé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-12 form-check">
+                                <input type="checkbox" class="form-check-input" th:field="*{isActive}">
+                                <label class="form-check-label">Actif</label>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                <a th:href="@{/admin/projects-timeline}" class="btn btn-secondary">Annuler</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

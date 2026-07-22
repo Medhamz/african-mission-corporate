@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Conseils éco')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Éco-responsabilité', 'Conseils')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Conseils éco-responsables</h4>
+                <a th:href="@{/admin/eco/tips/add}" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter</a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Titre</th>
+                                <th>Description</th>
+                                <th>Catégorie</th>
+                                <th>Ordre</th>
+                                <th>Actif</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="t : ${tips}">
+                                <td th:text="${t.id}"></td>
+                                <td th:text="${t.title}"></td>
+                                <td th:text="${t.description}"></td>
+                                <td th:text="${t.category}"></td>
+                                <td th:text="${t.displayOrder}"></td>
+                                <td>
+                                        <span class="badge" th:class="${t.isActive} ? 'bg-success' : 'bg-secondary'"
+                                              th:text="${t.isActive} ? 'Actif' : 'Inactif'"></span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/eco/tips/edit/{id}(id=${t.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                    <a th:href="@{/admin/eco/tips/delete/{id}(id=${t.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr th:if="${tips.isEmpty()}">
+                                <td colspan="7" class="text-center text-muted">Aucun conseil.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

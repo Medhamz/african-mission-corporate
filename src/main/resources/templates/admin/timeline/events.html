@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/header :: head('Gestion Timeline 3D')"></head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div class="main-content">
+        <div th:replace="fragments/admin/header :: header('Timeline 3D', 'Gestion des événements')"></div>
+
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Événements de la timeline</h4>
+                <a th:href="@{/admin/timeline/add}" class="btn btn-primary"><i class="fas fa-plus"></i> Ajouter</a>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Année</th>
+                                <th>Titre</th>
+                                <th>Ordre</th>
+                                <th>Actif</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="e : ${events}">
+                                <td th:text="${e.id}"></td>
+                                <td><span class="badge bg-primary" th:text="${e.year}"></span></td>
+                                <td th:text="${e.title}"></td>
+                                <td th:text="${e.displayOrder}"></td>
+                                <td>
+                                        <span class="badge" th:class="${e.isActive} ? 'bg-success' : 'bg-secondary'"
+                                              th:text="${e.isActive} ? 'Actif' : 'Inactif'"></span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/timeline/edit/{id}(id=${e.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                    <a th:href="@{/admin/timeline/delete/{id}(id=${e.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                                    <a th:href="@{/admin/timeline/toggle/{id}(id=${e.id})}" class="btn btn-sm btn-secondary"><i class="fas fa-sync"></i></a>
+                                </td>
+                            </tr>
+                            <tr th:if="${events.isEmpty()}">
+                                <td colspan="6" class="text-center text-muted">Aucun événement.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="fragments/admin/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>
