@@ -44,7 +44,14 @@ class WorldDataController {
         country.put("partners", partners);
         country.put("investment", investment);
         country.put("flag", getFlagEmoji(name));
+        country.put("type", getType(projects, partners, investment));
         return country;
+    }
+
+    private String getType(int projects, int partners, String investment) {
+        if (partners > 0) return "partner";
+        if (projects > 0) return "project";
+        return "investment";
     }
 
     private String getFlagEmoji(String country) {

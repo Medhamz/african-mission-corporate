@@ -64,7 +64,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Lombok -->
+        <!-- LOMBOK - Version explicite -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -92,7 +92,7 @@
 
     <build>
         <plugins>
-            <!-- ====== Plugin Maven Compiler avec Lombok ====== -->
+            <!-- ====== COMPILER AVEC LOMBOK ====== -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -110,7 +110,7 @@
                 </configuration>
             </plugin>
 
-            <!-- ====== Spring Boot Plugin ====== -->
+            <!-- ====== SPRING BOOT ====== -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
