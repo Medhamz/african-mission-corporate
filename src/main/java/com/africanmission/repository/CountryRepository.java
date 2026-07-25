@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
-    List<Country> findByIsActiveTrue();
+    List<Country> findByIsActiveTrueOrderByNameAsc();
     List<Country> findByType(String type);
 }

@@ -21,6 +21,7 @@ public class TimelineService {
 
     @Transactional(readOnly = true)
     public List<TimelineEvent> getActiveEvents() {
+        // CORRECTION : isActive() au lieu de getIsActive()
         return timelineEventRepository.findByIsActiveTrueOrderByYearAscDisplayOrderAsc();
     }
 

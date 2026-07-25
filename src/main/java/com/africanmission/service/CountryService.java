@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,16 +14,21 @@ public class CountryService {
 
     private final CountryRepository countryRepository;
 
+    @Transactional(readOnly = true)
     public List<Country> getAllCountries() {
         return countryRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Country> getActiveCountries() {
-        return countryRepository.findByIsActiveTrue();
+        // CORRECTION : isActive() au lieu de getIsActive()
+        return countryRepository.findByIsActiveTrueOrderByNameAsc();
     }
 
-    public Optional<Country> getCountryById(Long id) {
-        return countryRepository.findById(id);
+    @Transactional(readOnly = true)
+    public Country getCountryById(Long id) {
+        return countryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pays non trouvé"));
     }
 
     @Transactional
@@ -38,14 +42,9 @@ public class CountryService {
     }
 
     @Transactional
-    public Country toggleActive(Long id) {
-        Country country = countryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pays non trouvé"));
+    public void toggleActive(Long id) {
+        Country country = getCountryById(id);
         country.setIsActive(!country.getIsActive());
-        return countryRepository.save(country);
-    }
-
-    public List<Country> getCountriesByType(String type) {
-        return countryRepository.findByType(type);
+        countryRepository.save(country);
     }
 }

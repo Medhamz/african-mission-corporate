@@ -21,6 +21,7 @@ public class ProjectTimelineService {
 
     @Transactional(readOnly = true)
     public List<ProjectTimeline> getActiveProjects() {
+        // CORRECTION : isActive() au lieu de getIsActive()
         return projectTimelineRepository.findByIsActiveTrueOrderByStartDateAsc();
     }
 
