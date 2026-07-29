@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/admin/header :: head('Gestion du Kiosque')"></head>
+<head th:replace="~{fragments/admin/header :: head('Gestion du Kiosque')}"></head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div th:replace="~{fragments/admin/sidebar :: sidebar}"></div>
     <div class="main-content">
-        <div th:replace="fragments/admin/header :: header('Mode Kiosque', 'Gestion des slides')"></div>
+        <div th:replace="~{fragments/admin/header :: header('Mode Kiosque', 'Gestion des slides')}"></div>
 
         <div class="container-fluid mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div th:replace="fragments/admin/footer :: footer"></div>
+        <div th:replace="~{fragments/admin/footer :: footer}"></div>
     </div>
 </div>
 </body>

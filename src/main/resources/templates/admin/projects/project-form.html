@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/admin/header :: head('Formulaire projet timeline')"></head>
+<head th:replace="~{fragments/admin/header :: head('Formulaire projet timeline')}"></head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div th:replace="~{fragments/admin/sidebar :: sidebar}"></div>
     <div class="main-content">
-        <div th:replace="fragments/admin/header :: header('Projet Timeline', 'Formulaire projet')"></div>
+        <div th:replace="~{fragments/admin/header :: header('Projet Timeline', 'Formulaire projet')}"></div>
 
         <div class="container-fluid mt-4">
             <div class="card">
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div th:replace="fragments/admin/footer :: footer"></div>
+        <div th:replace="~{fragments/admin/footer :: footer}"></div>
     </div>
 </div>
 </body>

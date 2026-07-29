@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/admin/header :: head('Gestion des pays')"></head>
+<head th:replace="~{fragments/admin/header :: head('Gestion des pays')}"></head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/admin/sidebar :: sidebar"></div>
+    <div th:replace="~{fragments/admin/sidebar :: sidebar}"></div>
     <div class="main-content">
-        <div th:replace="fragments/admin/header :: header('Carte du Monde', 'Gestion des pays')"></div>
+        <div th:replace="~{fragments/admin/header :: header('Carte du Monde', 'Gestion des pays')}"></div>
 
         <div class="container-fluid mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        <div th:replace="fragments/admin/footer :: footer"></div>
+        <div th:replace="~{fragments/admin/footer :: footer}"></div>
     </div>
 </div>
 </body>
