@@ -16,19 +16,86 @@
             z-index: 1000;
             transition: transform 0.3s ease;
         }
-        .admin-sidebar .sidebar-brand { display: flex; align-items: center; gap: 12px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 20px; }
-        .admin-sidebar .sidebar-brand .brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; }
-        .admin-sidebar .sidebar-brand .brand-text { font-weight: 700; font-size: 1.1rem; color: #f1f5f9; letter-spacing: -0.3px; }
-        .admin-sidebar .sidebar-brand .brand-text small { display: block; font-weight: 400; font-size: 0.6rem; color: #64748b; }
+        .admin-sidebar .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 20px;
+        }
+        .admin-sidebar .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        .admin-sidebar .sidebar-brand .brand-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            letter-spacing: -0.3px;
+        }
+        .admin-sidebar .sidebar-brand .brand-text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: #64748b;
+        }
         .admin-sidebar .sidebar-section { margin-bottom: 20px; }
-        .admin-sidebar .sidebar-section .section-title { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #64748b; padding: 0 12px; margin-bottom: 6px; }
-        .admin-sidebar .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-radius: 10px; color: #94a3b8; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.25s ease; margin-bottom: 2px; }
-        .admin-sidebar .sidebar-link:hover { background: rgba(255,255,255,0.04); color: #f1f5f9; }
-        .admin-sidebar .sidebar-link.active { background: rgba(59,130,246,0.08); color: #3b82f6; border-left: 3px solid #3b82f6; }
-        .admin-sidebar .sidebar-link i { width: 20px; text-align: center; font-size: 0.9rem; color: #64748b; transition: color 0.25s ease; }
+        .admin-sidebar .sidebar-section .section-title {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            padding: 0 12px;
+            margin-bottom: 6px;
+        }
+        .admin-sidebar .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            margin-bottom: 2px;
+        }
+        .admin-sidebar .sidebar-link:hover {
+            background: rgba(255,255,255,0.04);
+            color: #f1f5f9;
+        }
+        .admin-sidebar .sidebar-link.active {
+            background: rgba(59,130,246,0.08);
+            color: #3b82f6;
+            border-left: 3px solid #3b82f6;
+        }
+        .admin-sidebar .sidebar-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            transition: color 0.25s ease;
+        }
         .admin-sidebar .sidebar-link:hover i { color: #f1f5f9; }
         .admin-sidebar .sidebar-link.active i { color: #3b82f6; }
-        .admin-sidebar .sidebar-link .badge-link { margin-left: auto; font-size: 0.6rem; background: #ef4444; color: #fff; padding: 1px 10px; border-radius: 50px; }
+        .admin-sidebar .sidebar-link .badge-link {
+            margin-left: auto;
+            font-size: 0.6rem;
+            background: #ef4444;
+            color: #fff;
+            padding: 1px 10px;
+            border-radius: 50px;
+        }
         @media (max-width: 768px) {
             .admin-sidebar { transform: translateX(-100%); width: 280px; }
             .admin-sidebar.open { transform: translateX(0); }
@@ -47,7 +114,7 @@
 
     <div class="sidebar-section">
         <div class="section-title">Général</div>
-        <a href="/admin/dashboard" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/dashboard')} ? 'active' : ''">
+        <a href="/admin/dashboard" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/dashboard')} ? 'active' : ''">
             <i class="fas fa-th-large"></i> Dashboard
         </a>
         <a href="/admin/search" class="sidebar-link">
@@ -57,22 +124,22 @@
 
     <div class="sidebar-section">
         <div class="section-title">Contenu</div>
-        <a href="/admin/activities" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/activities')} ? 'active' : ''"><i class="fas fa-tasks"></i> Activités</a>
-        <a href="/admin/partners" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/partners')} ? 'active' : ''"><i class="fas fa-handshake"></i> Partenaires</a>
-        <a href="/admin/projects-admin" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/projects-admin')} ? 'active' : ''"><i class="fas fa-rocket"></i> Projets</a>
-        <a href="/admin/testimonials" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/testimonials')} ? 'active' : ''"><i class="fas fa-star"></i> Témoignages</a>
-        <a href="/admin/team-members" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/team-members')} ? 'active' : ''"><i class="fas fa-users"></i> Équipe</a>
-        <a href="/admin/faqs" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/faqs')} ? 'active' : ''"><i class="fas fa-question-circle"></i> FAQ</a>
-        <a href="/admin/media" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/media')} ? 'active' : ''"><i class="fas fa-images"></i> Médias</a>
-        <a href="/admin/pages" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/pages')} ? 'active' : ''"><i class="fas fa-file-alt"></i> Pages</a>
+        <a href="/admin/activities" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/activities')} ? 'active' : ''"><i class="fas fa-tasks"></i> Activités</a>
+        <a href="/admin/partners" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/partners')} ? 'active' : ''"><i class="fas fa-handshake"></i> Partenaires</a>
+        <a href="/admin/projects-admin" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/projects-admin')} ? 'active' : ''"><i class="fas fa-rocket"></i> Projets</a>
+        <a href="/admin/testimonials" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/testimonials')} ? 'active' : ''"><i class="fas fa-star"></i> Témoignages</a>
+        <a href="/admin/team-members" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/team-members')} ? 'active' : ''"><i class="fas fa-users"></i> Équipe</a>
+        <a href="/admin/faqs" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/faqs')} ? 'active' : ''"><i class="fas fa-question-circle"></i> FAQ</a>
+        <a href="/admin/media" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/media')} ? 'active' : ''"><i class="fas fa-images"></i> Médias</a>
+        <a href="/admin/pages" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/pages')} ? 'active' : ''"><i class="fas fa-file-alt"></i> Pages</a>
     </div>
 
     <div class="sidebar-section">
         <div class="section-title">Communications</div>
-        <a href="/admin/messages" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/messages')} ? 'active' : ''"><i class="fas fa-envelope"></i> Messages</a>
-        <a href="/admin/chat-sessions" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/chat-sessions')} ? 'active' : ''"><i class="fas fa-comments"></i> Chat</a>
-        <a href="/admin/newsletter" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/newsletter')} ? 'active' : ''"><i class="fas fa-envelope-open-text"></i> Newsletter</a>
-        <a href="/admin/notifications" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/notifications')} ? 'active' : ''">
+        <a href="/admin/messages" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/messages')} ? 'active' : ''"><i class="fas fa-envelope"></i> Messages</a>
+        <a href="/admin/chat-sessions" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/chat-sessions')} ? 'active' : ''"><i class="fas fa-comments"></i> Chat</a>
+        <a href="/admin/newsletter" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/newsletter')} ? 'active' : ''"><i class="fas fa-envelope-open-text"></i> Newsletter</a>
+        <a href="/admin/notifications" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/notifications')} ? 'active' : ''">
             <i class="fas fa-bell"></i> Notifications
             <span th:if="${unreadNotifications != null && unreadNotifications > 0}" class="badge-link" th:text="${unreadNotifications}">0</span>
         </a>
@@ -80,21 +147,21 @@
 
     <div class="sidebar-section">
         <div class="section-title" style="color: #f59e0b;">⭐ Nouvelles</div>
-        <a href="/admin/diagnostic" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/diagnostic')} ? 'active' : ''"><i class="fas fa-stethoscope" style="color: #8b5cf6;"></i> Diagnostiqueur</a>
-        <a href="/admin/countries" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/countries')} ? 'active' : ''"><i class="fas fa-globe-africa" style="color: #3b82f6;"></i> Carte du Monde</a>
-        <a href="/admin/eco/indicators" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/eco')} ? 'active' : ''"><i class="fas fa-leaf" style="color: #22c55e;"></i> Éco-responsabilité</a>
-        <a href="/admin/kiosk" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/kiosk')} ? 'active' : ''"><i class="fas fa-desktop" style="color: #f59e0b;"></i> Mode Kiosque</a>
-        <a href="/admin/timeline" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/timeline')} ? 'active' : ''"><i class="fas fa-clock" style="color: #ec4899;"></i> Timeline 3D</a>
-        <a href="/admin/projects-timeline" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/projects-timeline')} ? 'active' : ''"><i class="fas fa-chart-gantt" style="color: #22d3ee;"></i> Projet Timeline</a>
+        <a href="/admin/diagnostic" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/diagnostic')} ? 'active' : ''"><i class="fas fa-stethoscope" style="color: #8b5cf6;"></i> Diagnostiqueur</a>
+        <a href="/admin/countries" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/countries')} ? 'active' : ''"><i class="fas fa-globe-africa" style="color: #3b82f6;"></i> Carte du Monde</a>
+        <a href="/admin/eco/indicators" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/eco')} ? 'active' : ''"><i class="fas fa-leaf" style="color: #22c55e;"></i> Éco-responsabilité</a>
+        <a href="/admin/kiosk" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/kiosk')} ? 'active' : ''"><i class="fas fa-desktop" style="color: #f59e0b;"></i> Mode Kiosque</a>
+        <a href="/admin/timeline" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/timeline')} ? 'active' : ''"><i class="fas fa-clock" style="color: #ec4899;"></i> Timeline 3D</a>
+        <a href="/admin/projects-timeline" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/projects-timeline')} ? 'active' : ''"><i class="fas fa-chart-gantt" style="color: #22d3ee;"></i> Projet Timeline</a>
     </div>
 
     <div class="sidebar-section">
         <div class="section-title">Administration</div>
-        <a href="/admin/users" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/users')} ? 'active' : ''"><i class="fas fa-users-cog"></i> Utilisateurs</a>
-        <a href="/admin/roles" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/roles')} ? 'active' : ''"><i class="fas fa-user-tag"></i> Rôles</a>
-        <a href="/admin/settings" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/settings')} ? 'active' : ''"><i class="fas fa-sliders-h"></i> Paramètres</a>
-        <a href="/admin/logs" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/logs')} ? 'active' : ''"><i class="fas fa-history"></i> Logs</a>
-        <a href="/admin/maintenance" class="sidebar-link" th:classappend="${currentUri.startsWith('/admin/maintenance')} ? 'active' : ''"><i class="fas fa-tools"></i> Maintenance</a>
+        <a href="/admin/users" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/users')} ? 'active' : ''"><i class="fas fa-users-cog"></i> Utilisateurs</a>
+        <a href="/admin/roles" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/roles')} ? 'active' : ''"><i class="fas fa-user-tag"></i> Rôles</a>
+        <a href="/admin/settings" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/settings')} ? 'active' : ''"><i class="fas fa-sliders-h"></i> Paramètres</a>
+        <a href="/admin/logs" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/logs')} ? 'active' : ''"><i class="fas fa-history"></i> Logs</a>
+        <a href="/admin/maintenance" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/maintenance')} ? 'active' : ''"><i class="fas fa-tools"></i> Maintenance</a>
     </div>
 
     <!-- Mobile toggle -->
