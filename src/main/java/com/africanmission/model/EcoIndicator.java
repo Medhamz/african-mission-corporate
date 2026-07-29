@@ -21,7 +21,7 @@ public class EcoIndicator {
     private Long id;
 
     @Column(unique = true, nullable = false, length = 50)
-    private String code;   // ⬅️ AJOUT : ex: carbon, water, energy
+    private String code;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -36,7 +36,7 @@ public class EcoIndicator {
     private Double targetValue;
 
     @Column(length = 20)
-    private String unit; // t CO2, m³, %, MWh
+    private String unit;
 
     private Double trend;
 
