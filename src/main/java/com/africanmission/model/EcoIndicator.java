@@ -1,9 +1,11 @@
 package com.africanmission.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +20,8 @@ public class EcoIndicator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String code; // carbon, water, energy, recycling
+    @Column(unique = true, nullable = false, length = 50)
+    private String code;   // ⬅️ AJOUT : ex: carbon, water, energy
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -34,29 +36,20 @@ public class EcoIndicator {
     private Double targetValue;
 
     @Column(length = 20)
-    private String unit; // t CO2, m³, MWh, %
+    private String unit; // t CO2, m³, %, MWh
 
-    private Double trend; // % d'évolution
+    private Double trend;
 
-    @Column(length = 20)
+    @Column(length = 50)
     private String icon;
 
     private Boolean isActive = true;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }
