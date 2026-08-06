@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,8 +40,12 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Nom d'utilisateur ou mot de passe incorrect"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Identifiants invalides"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Erreur interne du serveur"));
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -58,18 +63,16 @@ public class AuthController {
         String password = request.get("password");
         String email = request.get("email");
 
-        // Vérifier si l'utilisateur existe déjà
         if (adminUserRepository.findByUsername(username).isPresent()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Username déjà utilisé"));
+            return ResponseEntity.badRequest().body(Map.of("error", "Nom d'utilisateur déjà pris"));
         }
 
-        // Créer le nouvel utilisateur
         AdminUser user = new AdminUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
         user.setFullName(request.getOrDefault("fullName", username));
-        user.setRole("USER"); // Rôle pour l'application mobile
+        user.setRole("USER");
         adminUserRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "Utilisateur créé avec succès"));
