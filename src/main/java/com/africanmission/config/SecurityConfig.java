@@ -3,11 +3,15 @@ package com.africanmission.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -15,11 +19,40 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(userDetailsService)
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/admin/**", "/newsletter/**", "/chat/**", "/contact/**"))
+                .formLogin(form -> form
+                        .loginPage("/admin/login")
+                        .loginProcessingUrl("/admin/login")
+                        .defaultSuccessUrl("/admin/dashboard", true)
+                        .failureUrl("/admin/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/admin/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
+
+        // ====== CONFIGURATION DE L'API MOBILE (JWT) ======
+        http
+                .securityMatcher("/api/mobile/**")
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/api/mobile/auth/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // ====== CONFIGURATION DU SITE WEB ======
+        http
+                .securityMatcher("/**")
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
                                 "/", "/about", "/activities", "/contact",
@@ -36,38 +69,20 @@ public class SecurityConfig {
                                 "/monde",
                                 "/carte-monde",
                                 "/api/world/**",
-                                "/eco",          // ⬅️ Page Éco‑responsabilité
-                                "/api/eco/**",   // ⬅️ Données du tableau de bord
-                                "/kiosk"         // ⬅️ Mode Kiosque (salons professionnels)
+                                "/eco",
+                                "/api/eco/**",
+                                "/kiosk"
                         ).permitAll()
-                        // Admin - accès par rôle
-                        .requestMatchers("/admin/dashboard", "/admin/activities", "/admin/partners",
-                                "/admin/projects-admin", "/admin/testimonials", "/admin/team-members",
-                                "/admin/faqs", "/admin/messages", "/admin/chat-sessions",
-                                "/admin/newsletter").hasAnyRole("ADMIN", "SUPER_ADMIN", "EDITOR")
-                        .requestMatchers("/admin/users", "/admin/settings", "/admin/logs",
-                                "/admin/roles", "/admin/notifications",
-                                "/admin/export/**").hasAnyRole("SUPER_ADMIN", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/admin/login")
-                        .loginProcessingUrl("/admin/login")
-                        .defaultSuccessUrl("/admin/dashboard", true)
-                        .failureUrl("/admin/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/admin/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll()
-                )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**")
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
     @Bean
