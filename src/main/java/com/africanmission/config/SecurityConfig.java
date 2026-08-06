@@ -3,6 +3,7 @@ package com.africanmission.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,38 +22,35 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    // ============================================
+    // 1. API MOBILE (Stateless, JWT)
+    // ============================================
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .userDetailsService(userDetailsService)
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**", "/admin/**", "/newsletter/**", "/chat/**", "/contact/**"))
-                .formLogin(form -> form
-                        .loginPage("/admin/login")
-                        .loginProcessingUrl("/admin/login")
-                        .defaultSuccessUrl("/admin/dashboard", true)
-                        .failureUrl("/admin/login?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/admin/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll()
-                );
-
-        // ====== CONFIGURATION DE L'API MOBILE (JWT) ======
+    @Order(1)
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/mobile/**")
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/mobile/auth/**").permitAll()
+                        .requestMatchers("/api/mobile/auth/**").permitAll() // login & register
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        // ====== CONFIGURATION DU SITE WEB ======
+        return http.build();
+    }
+
+    // ============================================
+    // 2. SITE WEB (avec sessions)
+    // ============================================
+    @Bean
+    @Order(2)
+    public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/**")
+                .userDetailsService(userDetailsService)
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**"))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
                                 "/", "/about", "/activities", "/contact",
@@ -75,6 +73,18 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/admin/login")
+                        .loginProcessingUrl("/admin/login")
+                        .defaultSuccessUrl("/admin/dashboard", true)
+                        .failureUrl("/admin/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/admin/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
                 );
 
         return http.build();
