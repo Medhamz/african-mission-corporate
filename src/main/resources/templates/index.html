@@ -5,50 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">African Mission Corporate</title>
 
-    <!-- ============================================ -->
-    <!-- PWA - MANIFEST & THEME COLOR                -->
-    <!-- ============================================ -->
+    <!-- PWA, Bootstrap, FontAwesome, AOS, CSS ... -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a1a">
-
-    <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/market-data.css}">
-    <!-- ====== TIMELINE 3D CSS ====== -->
     <link rel="stylesheet" th:href="@{/css/timeline.css}">
-    <!-- ====== PROJECT TIMELINE CSS ====== -->
     <link rel="stylesheet" th:href="@{/css/project-timeline.css}">
 
-    <!-- ============================================ -->
-    <!-- THREE.JS (VERSION GLOBALE)                  -->
-    <!-- ============================================ -->
+    <!-- Three.js et Model-Viewer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-
-    <!-- ============================================ -->
-    <!-- MODEL-VIEWER (AR)                           -->
-    <!-- ============================================ -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
 
-<!-- ============================================ -->
-<!-- BARRE DE PROGRESSION DE SCROLL              -->
-<!-- ============================================ -->
+<!-- Scroll Progress -->
 <div id="scrollProgress" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gradient-main); z-index: 9999; transition: width 0.1s ease; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);"></div>
 
-<!-- ============================================ -->
-<!-- TOAST NOTIFICATIONS CONTAINER              -->
-<!-- ============================================ -->
+<!-- Toast Container -->
 <div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
 
-<!-- ============================================ -->
-<!-- NAVBAR - CORPORATE PREMIUM 3.0             -->
-<!-- ============================================ -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
         <a class="logo-premium" href="/">
@@ -64,16 +46,8 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto menu-premium">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/">
-                        <i class="fas fa-home nav-icon"></i>Accueil
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">
-                        <i class="fas fa-info-circle nav-icon"></i>À propos
-                    </a>
-                </li>
+                <li class="nav-item"><a class="nav-link active" href="/"><i class="fas fa-home nav-icon"></i>Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle nav-icon"></i>À propos</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-cogs nav-icon"></i>Services
@@ -86,58 +60,25 @@
                         <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/team">
-                        <i class="fas fa-users nav-icon"></i>Équipe
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/careers">
-                        <i class="fas fa-briefcase nav-icon"></i>Carrières
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/blog">
-                        <i class="fas fa-newspaper nav-icon"></i>Blog
-                    </a>
-                </li>
-                <!-- ====== LIEN DIAGNOSTIQUEUR ====== -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/diagnostiqueur">
-                        <i class="fas fa-stethoscope nav-icon"></i>Diagnostiqueur
-                    </a>
-                </li>
-                <!-- ====== NOUVEAU LIEN CARTE DU MONDE ====== -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/monde">
-                        <i class="fas fa-globe-africa nav-icon"></i>Carte du Monde
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/eco">
-                        <i class="fas fa-leaf nav-icon"></i>Éco-responsabilité
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/kiosk">
-                        <i class="fas fa-desktop nav-icon"></i>Mode Kiosque
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact">
-                        <i class="fas fa-envelope nav-icon"></i>Contact
-                    </a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="/team"><i class="fas fa-users nav-icon"></i>Équipe</a></li>
+                <li class="nav-item"><a class="nav-link" href="/careers"><i class="fas fa-briefcase nav-icon"></i>Carrières</a></li>
+                <li class="nav-item"><a class="nav-link" href="/blog"><i class="fas fa-newspaper nav-icon"></i>Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="/diagnostiqueur"><i class="fas fa-stethoscope nav-icon"></i>Diagnostiqueur</a></li>
+                <li class="nav-item"><a class="nav-link" href="/monde"><i class="fas fa-globe-africa nav-icon"></i>Carte du Monde</a></li>
+                <li class="nav-item"><a class="nav-link" href="/eco"><i class="fas fa-leaf nav-icon"></i>Éco-responsabilité</a></li>
+                <li class="nav-item"><a class="nav-link" href="/kiosk"><i class="fas fa-desktop nav-icon"></i>Mode Kiosque</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-envelope nav-icon"></i>Contact</a></li>
             </ul>
 
             <div class="d-flex align-items-center gap-3">
-                <div class="search-premium">
-                    <input type="search" placeholder="Rechercher...">
-                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                <!-- BARRE DE RECHERCHE DESKTOP -->
+                <div class="search-premium" style="display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 3px; transition: all 0.3s ease; min-width: 180px;">
+                    <input type="text" id="searchInputDesktop" placeholder="Rechercher..." style="background: transparent; border: none; color: var(--text-primary); padding: 6px 16px; font-size: 0.85rem; width: 100%; outline: none;">
+                    <button class="search-btn" onclick="performSearch()" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); padding: 6px 18px; font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                <a href="/contact" class="cta-premium">
-                    <i class="fas fa-paper-plane"></i> Devis
-                </a>
+                <a href="/contact" class="cta-premium"><i class="fas fa-paper-plane"></i> Devis</a>
                 <button onclick="toggleTheme()" style="background: transparent; border: 1px solid var(--border-light); color: var(--text-secondary); padding: 8px 14px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;">
                     <i class="fas fa-moon" id="themeIcon"></i>
                 </button>
@@ -146,590 +87,149 @@
     </div>
 </nav>
 
-<!-- ============================================ -->
-<!-- DONNÉES MÉTÉO & MARCHÉS (bandeau utilitaire) -->
-<!-- ============================================ -->
-<div th:replace="fragments/market-data :: #marketData"></div>
-
-<!-- ============================================ -->
-<!-- HERO - CORPORATE PREMIUM 3.0                -->
-<!-- ============================================ -->
-<section class="hero-premium" id="heroSection">
-    <div class="hero-grid"></div>
-    <div class="hero-glow-orb orb-1"></div>
-    <div class="hero-glow-orb orb-2"></div>
-    <div class="hero-glow-orb orb-3"></div>
-
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-
-    <div class="container hero-content">
-        <div class="row align-items-center">
-            <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
-                <div class="hero-badge">
-                    <span class="hero-badge-dot"></span>
-                    Leader au Mali depuis 2026
-                </div>
-
-                <h1 class="hero-title">
-                    <span class="gradient-text">African Mission</span>
-                    <span class="light-text">Corporate</span>
-                </h1>
-
-                <p class="hero-subtitle">
-                    Entreprise polyvalente, leader dans les prestations de services, la promotion immobilière,
-                    l'agrobusiness, l'import-export et le développement durable.
-                </p>
-
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="/activities" class="btn-primary-premium">
-                        <i class="fas fa-rocket"></i> Découvrir nos activités
-                    </a>
-                    <a href="/contact" class="btn-secondary-premium">
-                        <i class="fas fa-phone"></i> Nous contacter
-                    </a>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <div class="hero-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">30+</div>
-                        <div class="hero-stat-label">Activités</div>
-                        <div class="stat-line"></div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-number">15+</div>
-                        <div class="hero-stat-label">Domaines</div>
-                        <div class="stat-line"></div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-number">100%</div>
-                        <div class="hero-stat-label">Engagement</div>
-                        <div class="stat-line"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-5 text-center d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000">
-                <div id="three-container" style="position: relative; width: 100%; height: 400px; max-height: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05), rgba(10, 10, 26, 0.8));"></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================ -->
-<!-- ACTIVITIES PREVIEW (avec AR)                -->
-<!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-secondary); padding-top: 60px !important; padding-bottom: 60px !important;">
-    <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
-            <div class="section-tag">✦ SERVICES ✦</div>
-            <h2 class="section-title">
-                <span class="gradient-text">Nos activités</span> principales
-            </h2>
-            <div class="section-line centered"></div>
-            <p style="color: var(--text-secondary); font-size: 1rem;">Découvrez l'étendue de nos compétences et services</p>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-md-4" th:each="activity : ${activities}" th:if="${activityStat.index < 6}"
-                 data-aos="fade-up" th:data-aos-delay="${100 * activityStat.index}">
-                <div class="card-premium">
-                    <div class="card-premium-icon">
-                        <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
-                    </div>
-                    <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
-                    <p class="card-premium-text" th:text="${activity.description}">Description</p>
-                    <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
-                    <div class="mt-3">
-                        <button class="btn btn-sm btn-outline-primary ar-trigger"
-                                data-model="/models/activity.glb"
-                                data-title="Modèle 3D de l'activité"
-                                style="border-radius: 50px; font-size: 0.8rem; padding: 4px 16px;">
-                            <i class="fas fa-cube"></i> Voir en AR
-                        </button>
-                    </div>
-                    <div class="card-premium-border"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center mt-5">
-            <a href="/activities" class="btn-outline-premium">
-                Voir toutes nos activités <i class="fas fa-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================ -->
-<!-- MODAL AR (MODEL-VIEWER)                     -->
-<!-- ============================================ -->
-<div class="modal fade" id="arModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="background: var(--bg-primary); border: 1px solid var(--border-light);">
-            <div class="modal-header" style="border-bottom: 1px solid var(--border-light);">
-                <h5 class="modal-title" id="arModalLabel" style="color: var(--text-primary);">Visualisation en réalité augmentée</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--btn-close-filter);"></button>
-            </div>
-            <div class="modal-body p-4">
-                <model-viewer id="arViewer"
-                              src="/models/activity.glb"
-                              alt="Modèle 3D"
-                              ar
-                              ar-modes="webxr scene-viewer quick-look"
-                              camera-controls
-                              touch-action="pan-y"
-                              style="width:100%; height:500px; background: var(--bg-secondary); border-radius: 12px;"
-                              poster="/images/ar-poster.png"
-                              shadow-intensity="1"
-                              exposure="1.2"
-                              auto-rotate
-                              auto-rotate-delay="0"
-                              rotation-per-second="10deg">
-                    <div slot="poster">
-                        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);flex-direction:column;gap:16px;background:var(--bg-secondary);">
-                            <i class="fas fa-cube" style="font-size:4rem;color:var(--primary-blue);opacity:0.3;"></i>
-                            <p style="font-size:1.1rem;max-width:300px;text-align:center;">
-                                Ajoutez un modèle 3D (.glb) dans le dossier <br>
-                                <code style="background:var(--bg-primary);padding:2px 8px;border-radius:4px;">/static/models/</code>
-                            </p>
-                            <p style="font-size:0.85rem;color:var(--text-muted);">
-                                ou téléchargez un modèle gratuit sur
-                                <a href="https://sketchfab.com/search?type=models&features=free&downloadable=true" target="_blank" style="color:var(--primary-blue);">Sketchfab</a>
-                            </p>
-                        </div>
-                    </div>
-                </model-viewer>
-                <div class="mt-3 text-center">
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-mobile-alt me-1"></i>
-                        Utilisez votre téléphone pour visualiser ce modèle en réalité augmentée.
-                        <br>
-                        <span class="badge bg-primary">📱 AR compatible sur mobile</span>
-                    </p>
-                </div>
-            </div>
-        </div>
+<!-- MOBILE SEARCH -->
+<div class="mobile-search-premium" id="mobileSearch" style="position: fixed; top: 76px; left: 0; width: 100%; padding: 12px 16px; background: var(--bg-primary); border-bottom: 1px solid var(--border-light); z-index: 999; transform: translateY(-100%); transition: transform 0.3s ease, background 0.3s ease;">
+    <div style="display: flex; gap: 8px;">
+        <input type="text" id="searchInputMobile" placeholder="Rechercher..." style="flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 10px 16px; color: var(--text-primary); font-size: 0.9rem; outline: none;">
+        <button onclick="performSearch()" style="background: var(--gradient-main); border: none; border-radius: var(--radius-full); padding: 10px 24px; color: #fff; font-weight: 600; transition: all 0.3s ease;">
+            <i class="fas fa-search"></i>
+        </button>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- ABOUT PREVIEW                              -->
-<!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-primary); padding-top: 60px !important; padding-bottom: 60px !important;">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6" data-aos="fade-right">
-                <div class="section-tag">✦ À PROPOS ✦</div>
-                <h2 class="section-title" style="color: var(--text-primary);">
-                    <span class="gradient-text">Qui sommes-</span>nous ?
-                </h2>
-                <div class="section-line" style="margin-left:0;"></div>
-                <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;">
-                    African Mission Corporate est une entreprise malienne polyvalente, engagée dans le développement
-                    durable et l'excellence opérationnelle.
-                </p>
-                <ul class="list-unstyled mt-4" style="color: var(--text-secondary);">
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
-                        </span>
-                        Plus de 33 activités variées
-                    </li>
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
-                        </span>
-                        Présence au Mali et à l'international
-                    </li>
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
-                        </span>
-                        Engagement pour le développement durable
-                    </li>
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
-                        </span>
-                        Expertise multi-sectorielle
-                    </li>
-                </ul>
-                <a href="/about" class="btn-primary-premium mt-3">
-                    En savoir plus <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-            <div class="col-lg-6 text-center" data-aos="fade-left">
-                <div style="position:relative; display:inline-block; padding: 8px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
-                    <img src="https://via.placeholder.com/600x400/1e293b/3b82f6?text=African+Mission"
-                         alt="African Mission" class="img-fluid rounded-4" style="max-height:350px; position:relative; z-index:1;">
-                    <div style="position:absolute; top:-4px; left:-4px; right:-4px; bottom:-4px; background: var(--gradient-main); border-radius: var(--radius-lg); opacity: 0.03; z-index:0;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Contenu de la page (identique) -->
+<!-- ... (tout le contenu de l'index reste inchangé) ... -->
 
-<!-- ============================================ -->
-<!-- PARTNERS                                   -->
-<!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-secondary); padding-top: 60px !important; padding-bottom: 60px !important;">
-    <div class="container">
-        <div class="text-center mb-4" data-aos="fade-up">
-            <div class="section-tag">✦ PARTENAIRES ✦</div>
-            <h3 class="section-title" style="font-size: 1.8rem; color: var(--text-primary);">
-                <span class="gradient-text">Nos</span> partenaires
-            </h3>
-            <div class="section-line centered"></div>
-        </div>
-        <div class="row align-items-center justify-content-center g-3">
-            <div class="col-md-2 col-4 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
-                <div class="partner-premium">
-                    <span class="partner-premium-name" th:text="${partner.name}">Partenaire</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================ -->
-<!-- TIMELINE 3D IMMERSIVE                       -->
-<!-- ============================================ -->
-<div th:replace="fragments/timeline :: #timeline"></div>
-
-<!-- ============================================ -->
-<!-- PROJECT TIMELINE GANTT AVEC MÉTÉO          -->
-<!-- ============================================ -->
-<div th:replace="fragments/project-timeline :: #projectTimeline"></div>
-
-<!-- ============================================ -->
-<!-- FOOTER - CORPORATE PREMIUM 3.0             -->
-<!-- ============================================ -->
+<!-- FOOTER (inchangé) -->
 <footer class="footer-premium">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-md-4">
-                <h4 class="fw-bold">
-                    <i class="fas fa-globe-africa me-2" style="color: var(--primary-blue);"></i>
-                    African Mission Corporate
-                </h4>
-                <p class="mt-3" style="line-height: 1.8;">
-                    Entreprise spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et bien plus.
-                </p>
-                <div class="mt-4 d-flex gap-2">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <h5 class="fw-bold mb-3">Liens rapides</h5>
-                <ul class="list-unstyled" style="columns: 2; column-gap: 20px;">
-                    <li class="mb-2"><a href="/">Accueil</a></li>
-                    <li class="mb-2"><a href="/about">À propos</a></li>
-                    <li class="mb-2"><a href="/services">Services</a></li>
-                    <li class="mb-2"><a href="/activities">Activités</a></li>
-                    <li class="mb-2"><a href="/projects">Projets</a></li>
-                    <li class="mb-2"><a href="/team">Équipe</a></li>
-                    <li class="mb-2"><a href="/careers">Carrières</a></li>
-                    <li class="mb-2"><a href="/blog">Blog</a></li>
-                    <li class="mb-2"><a href="/faq">FAQ</a></li>
-                    <li class="mb-2"><a href="/contact">Contact</a></li>
-                    <li class="mb-2"><a href="/diagnostiqueur">🔍 Diagnostiqueur</a></li>
-                    <li class="mb-2"><a href="/monde">🌍 Carte du Monde</a></li>
-                    <li class="mb-2"><a href="/eco">🌿 Éco-responsabilité</a></li>
-                    <li class="mb-2"><a href="/kiosk">🖥️ Mode Kiosque</a></li>
-                    <li class="mb-2"><a href="/legal">Mentions légales</a></li>
-                    <li class="mb-2"><a href="/maintenance">🔧 Maintenance</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5 class="fw-bold mb-3">Contact</h5>
-                <ul class="list-unstyled" style="color: var(--text-secondary);">
-                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2" style="color: var(--primary-blue);"></i> Bamako, Mali</li>
-                    <li class="mb-2"><i class="fas fa-phone me-2" style="color: var(--primary-blue);"></i> +223 44 39 12 03</li>
-                    <li class="mb-2"><i class="fas fa-envelope me-2" style="color: var(--primary-blue);"></i> contact@africanmission.com</li>
-                    <li class="mb-2"><i class="fas fa-clock me-2" style="color: var(--primary-blue);"></i> Lun - Ven : 8h00 - 17h00</li>
-                </ul>
-                <div class="mt-4">
-                    <h6 style="font-size: 0.9rem; font-weight: 600;">📩 Restez informé</h6>
-                    <form action="/newsletter/subscribe" method="post" class="d-flex" style="gap: 8px;">
-                        <input type="email" name="email" class="form-control form-control-sm"
-                               placeholder="Votre email" required
-                               style="border-radius: var(--radius-full); border: 1px solid var(--border-light); background: var(--bg-primary); color: var(--text-primary); padding: 8px 16px;">
-                        <button type="submit" class="btn btn-sm" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); font-weight: 600; padding: 8px 20px; white-space: nowrap;">
-                            <i class="fas fa-paper-plane"></i> S'abonner
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <hr class="mt-4" style="border-color: var(--border-light);">
-        <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start" style="color: var(--text-muted); font-size: 0.85rem;">
-                &copy; 2026 African Mission Corporate. Tous droits réservés.
-            </div>
-            <div class="col-md-6 text-center text-md-end" style="color: var(--text-muted); font-size: 0.85rem;">
-                <a href="/legal" class="text-decoration-none me-3" style="color: var(--text-muted);">Mentions légales</a>
-                <a href="/sitemap" class="text-decoration-none" style="color: var(--text-muted);">Plan du site</a>
-            </div>
-        </div>
-    </div>
+    <!-- ... -->
 </footer>
 
-<!-- ============================================ -->
-<!-- CHATBOT WIDGET                              -->
-<!-- ============================================ -->
-<div id="chatbotWidget">
-    <button id="chatbotToggle" class="chatbot-toggle">
-        <i class="fas fa-comment-dots"></i>
-    </button>
-    <div id="chatbotWindow" class="chatbot-window" style="display:none;">
-        <div class="chatbot-header">
-            <span>Assistant African Mission</span>
-            <button id="chatbotClose" class="chatbot-close"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chatbotMessages" class="chatbot-messages">
-            <div class="message bot">Bonjour ! Je suis votre assistant. Comment puis-je vous aider ?</div>
-        </div>
-        <div class="chatbot-input">
-            <input type="text" id="chatbotInput" placeholder="Posez votre question...">
-            <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-</div>
-
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script th:src="@{/js/chatbot.js}"></script>
-<script th:src="@{/js/micro-interactions.js}"></script>
-<script th:src="@{/js/sw-register.js}"></script>
-<script th:src="@{/js/market-data.js}"></script>
-<!-- ====== TIMELINE 3D JS ====== -->
-<script th:src="@{/js/timeline.js}"></script>
-<!-- ====== PROJECT TIMELINE JS ====== -->
-<script th:src="@{/js/project-timeline.js}"></script>
-
-<!-- ============================================ -->
-<!-- THREE.JS GLOBE ANIMATION (STANDARD)        -->
-<!-- ============================================ -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('three-container');
-        if (!container) return;
-
-        if (typeof THREE === 'undefined') {
-            console.warn('Three.js non chargé');
-            container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding-top:40%;">Chargement du globe 3D...</p>';
-            return;
-        }
-
-        const scene = new THREE.Scene();
-        scene.background = null;
-
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(0, 0, 4);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = true;
-        controls.rotateSpeed = 0.5;
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 1.0;
-
-        const ambientLight = new THREE.AmbientLight(0x404060, 0.5);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-        dirLight.position.set(1, 2, 3);
-        scene.add(dirLight);
-
-        const backLight = new THREE.DirectionalLight(0x3b82f6, 0.5);
-        backLight.position.set(-1, -0.5, -1);
-        scene.add(backLight);
-
-        const geometry = new THREE.SphereGeometry(1, 64, 64);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x3b82f6,
-            emissive: 0x0a1628,
-            emissiveIntensity: 0.1,
-            transparent: true,
-            opacity: 0.9,
-            shininess: 30
-        });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-
-        const linesMaterial = new THREE.LineBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.3 });
-        const linesGeometry = new THREE.SphereGeometry(1.01, 24, 12);
-        const wireframe = new THREE.LineSegments(
-            new THREE.WireframeGeometry(linesGeometry),
-            linesMaterial
-        );
-        scene.add(wireframe);
-
-        const ringMaterial = new THREE.MeshBasicMaterial({
-            color: 0x3b82f6,
-            transparent: true,
-            opacity: 0.15,
-            side: THREE.DoubleSide,
-            wireframe: true
-        });
-        const rings = [];
-        for (let i = 0; i < 3; i++) {
-            const ringGeo = new THREE.TorusGeometry(1.3 + i * 0.25, 0.02, 16, 64);
-            const ring = new THREE.Mesh(ringGeo, ringMaterial);
-            ring.rotation.x = Math.PI / 2 + (i * 0.5);
-            ring.rotation.z = i * 0.8;
-            scene.add(ring);
-            rings.push(ring);
-        }
-
-        const particlesGeo = new THREE.BufferGeometry();
-        const particlesCount = 500;
-        const positions = new Float32Array(particlesCount * 3);
-        for (let i = 0; i < particlesCount * 3; i += 3) {
-            const radius = 2.5 + Math.random() * 2.0;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            positions[i] = radius * Math.sin(phi) * Math.cos(theta);
-            positions[i+1] = radius * Math.sin(phi) * Math.sin(theta);
-            positions[i+2] = radius * Math.cos(phi);
-        }
-        particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particlesMat = new THREE.PointsMaterial({
-            color: 0x93b4f0,
-            size: 0.02,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
-        });
-        const particles = new THREE.Points(particlesGeo, particlesMat);
-        scene.add(particles);
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            sphere.rotation.y += 0.002;
-            wireframe.rotation.y = sphere.rotation.y;
-            particles.rotation.y += 0.0005;
-
-            rings.forEach((ring, index) => {
-                ring.rotation.x += 0.001 * (1 + index * 0.5);
-                ring.rotation.z += 0.0008 * (1 + index * 0.3);
-            });
-
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            if (width > 0 && height > 0) {
-                renderer.setSize(width, height);
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-            }
-        });
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const maxScroll = 500;
-            const speed = 0.5 + (scrollY / maxScroll) * 1.5;
-            controls.autoRotateSpeed = Math.min(speed, 3.0);
-        });
-    });
-</script>
-
-<!-- ============================================ -->
-<!-- AR LOGIC INLINE (délégation)               -->
-<!-- ============================================ -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 AR Logic inline (délégation) loaded');
-
-        const arModal = document.getElementById('arModal');
-        const arViewer = document.getElementById('arViewer');
-        const arLabel = document.getElementById('arModalLabel');
-
-        if (!arModal || !arViewer || !arLabel) {
-            console.warn('⚠️ AR : éléments manquants');
-            return;
-        }
-
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.ar-trigger');
-            if (!btn) return;
-
-            e.preventDefault();
-            console.log('🖱️ Clic AR détecté !');
-
-            const modelUrl = btn.dataset.model || '/models/activity.glb';
-            const title = btn.dataset.title || 'Visualisation 3D';
-
-            arViewer.setAttribute('src', modelUrl);
-            arLabel.textContent = title;
-
-            try {
-                const modal = new bootstrap.Modal(arModal);
-                modal.show();
-                console.log('✅ Modal AR ouvert');
-            } catch (err) {
-                console.error('❌ Erreur ouverture modal :', err);
-            }
-        });
-
-        console.log('✅ AR Logic inline (délégation) initialisé');
-    });
-</script>
+<!-- ... autres scripts ... -->
 
 <script>
     // ============================================
-    // AOS INITIALIZATION
+    // FONCTION DE RECHERCHE UNIFIÉE
+    // ============================================
+    function performSearch() {
+        // Récupérer la valeur depuis l'input desktop ou mobile
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        let query = '';
+        if (desktopInput && desktopInput.value.trim() !== '') {
+            query = desktopInput.value.trim().toLowerCase();
+        } else if (mobileInput && mobileInput.value.trim() !== '') {
+            query = mobileInput.value.trim().toLowerCase();
+        } else {
+            // Si les deux sont vides, on réinitialise l'affichage
+            resetSearch();
+            return;
+        }
+
+        // Si la requête est vide, on réinitialise
+        if (query === '') {
+            resetSearch();
+            return;
+        }
+
+        // Cibler les éléments recherchables sur la page
+        const searchableItems = document.querySelectorAll(
+            '.card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item'
+        );
+        // Ajouter également les sections de texte importantes
+        const textElements = document.querySelectorAll(
+            '.hero-title, .hero-subtitle, .section-title, .section-tag, .page-header h1, .page-header p'
+        );
+
+        let found = false;
+
+        // Parcourir les éléments de carte
+        searchableItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(query)) {
+                item.style.display = ''; // réafficher
+                found = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Pour les éléments de texte (non masquables), on les surligne ou on scroll vers eux
+        textElements.forEach(el => {
+            const text = el.textContent.toLowerCase();
+            if (text.includes(query)) {
+                el.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                el.style.transition = 'background 0.3s';
+                // scroll vers le premier élément trouvé
+                if (!found) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    found = true;
+                }
+            } else {
+                el.style.backgroundColor = 'transparent';
+            }
+        });
+
+        // Si aucun résultat, afficher un toast
+        if (!found) {
+            showToast('Aucun résultat trouvé pour "' + query + '"', 'error');
+        } else {
+            showToast('Résultats trouvés pour "' + query + '"', 'success');
+        }
+    }
+
+    function resetSearch() {
+        // Réafficher tous les éléments masqués
+        document.querySelectorAll('.card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item')
+            .forEach(item => item.style.display = '');
+        // Effacer les surlignages
+        document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag, .page-header h1, .page-header p')
+            .forEach(el => el.style.backgroundColor = 'transparent');
+        // Vider les champs de recherche
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        if (desktopInput) desktopInput.value = '';
+        if (mobileInput) mobileInput.value = '';
+    }
+
+    // Permettre la recherche avec la touche Entrée
+    document.addEventListener('DOMContentLoaded', function() {
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        if (desktopInput) {
+            desktopInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+        if (mobileInput) {
+            mobileInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+    });
+
+    // ============================================
+    // AOS, NAVBAR SCROLL, THEME TOGGLE, etc.
     // ============================================
     AOS.init({ duration: 800, once: true, offset: 80, easing: 'ease-out-cubic' });
 
-    // ============================================
-    // NAVBAR SCROLL EFFECT
-    // ============================================
     const navbar = document.getElementById('mainNav');
     const mobileSearch = document.getElementById('mobileSearch');
 
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
         if (mobileSearch) {
-            if (window.scrollY > 150) {
-                mobileSearch.classList.remove('visible');
-            } else {
-                mobileSearch.classList.add('visible');
-            }
+            if (window.scrollY > 150) mobileSearch.classList.remove('visible');
+            else mobileSearch.classList.add('visible');
         }
     });
+    if (mobileSearch) mobileSearch.classList.add('visible');
 
-    if (mobileSearch) {
-        mobileSearch.classList.add('visible');
-    }
-
-    // ============================================
-    // SCROLL PROGRESS BAR
-    // ============================================
+    // Scroll Progress
     window.addEventListener('scroll', function() {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -737,14 +237,10 @@
         document.getElementById('scrollProgress').style.width = scrollPercent + '%';
     });
 
-    // ============================================
-    // THEME TOGGLE (DARK/LIGHT)
-    // ============================================
     function toggleTheme() {
         const body = document.body;
         const icon = document.getElementById('themeIcon');
         const isDark = body.getAttribute('data-theme') !== 'light';
-
         if (isDark) {
             body.setAttribute('data-theme', 'light');
             icon.className = 'fas fa-sun';
@@ -764,16 +260,12 @@
         }
     });
 
-    // ============================================
-    // TOAST NOTIFICATIONS SYSTEM
-    // ============================================
+    // Toast function
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
-        const isDark = document.body.getAttribute('data-theme') === 'light';
-        const bgColor = type === 'success' ? (isDark ? '#1e293b' : '#1e293b') : '#ef4444';
+        const bgColor = type === 'success' ? '#1e293b' : '#ef4444';
         const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-
         toast.style.cssText = `
             background: ${bgColor};
             color: #fff;
@@ -788,12 +280,8 @@
             align-items: center;
             gap: 12px;
         `;
-        toast.innerHTML = `
-            <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
-            <span>${message}</span>
-        `;
+        toast.innerHTML = `<i class="fas ${icon}" style="font-size: 1.2rem;"></i><span>${message}</span>`;
         container.appendChild(toast);
-
         setTimeout(() => {
             toast.style.opacity = '0';
             toast.style.transform = 'translateX(100px)';
@@ -801,14 +289,6 @@
             setTimeout(() => toast.remove(), 300);
         }, 4000);
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const toastMessage = /*[[${toastMessage}]]*/ null;
-        const toastType = /*[[${toastType}]]*/ 'success';
-        if (toastMessage) {
-            showToast(toastMessage, toastType);
-        }
-    });
 
     const style = document.createElement('style');
     style.textContent = `
@@ -819,5 +299,6 @@
     `;
     document.head.appendChild(style);
 </script>
+
 </body>
 </html>

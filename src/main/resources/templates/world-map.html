@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carte du Monde - African Mission Corporate</title>
 
-    <!-- ============================================ -->
-    <!-- PWA - MANIFEST & THEME COLOR                -->
-    <!-- ============================================ -->
+    <!-- PWA - MANIFEST & THEME COLOR -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a1a">
 
@@ -25,39 +23,21 @@
     <!-- AOS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <!-- Style inline -->
     <style>
-        #worldMap {
-            height: 100%;
-            width: 100%;
-            min-height: 500px;
-        }
-        .map-container {
-            height: 550px;
-            width: 100%;
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        @media (max-width: 768px) {
-            .map-container {
-                height: 400px;
-            }
-        }
+        #worldMap { height: 100%; width: 100%; min-height: 500px; }
+        .map-container { height: 550px; width: 100%; position: relative; border-radius: 12px; overflow: hidden; }
+        @media (max-width: 768px) { .map-container { height: 400px; } }
     </style>
 </head>
 <body>
 
-<!-- ============================================ -->
-<!-- NAVBAR - CORPORATE PREMIUM 3.0             -->
-<!-- ============================================ -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
         <a class="logo-premium" href="/">
             <span class="logo-premium-icon"><i class="fas fa-globe-africa"></i></span>
             <div>
                 <span class="logo-premium-text">African <span class="highlight">Mission Corporate</span></span>
-                <!-- badge SARL supprimé -->
             </div>
         </a>
 
@@ -86,9 +66,31 @@
                 <li class="nav-item"><a class="nav-link active" href="/monde">🌍 Carte du Monde</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
             </ul>
+
+            <div class="d-flex align-items-center gap-3">
+                <!-- RECHERCHE DESKTOP -->
+                <div class="search-premium" style="display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 3px; transition: all 0.3s ease; min-width: 180px;">
+                    <input type="text" id="searchInputDesktop" placeholder="Rechercher..." style="background: transparent; border: none; color: var(--text-primary); padding: 6px 16px; font-size: 0.85rem; width: 100%; outline: none;">
+                    <button class="search-btn" onclick="performSearch()" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); padding: 6px 18px; font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <a href="/contact" class="cta-premium"><i class="fas fa-paper-plane"></i> Devis</a>
+                <button onclick="toggleTheme()" style="background: transparent; border: 1px solid var(--border-light); color: var(--text-secondary); padding: 8px 14px; border-radius: 50px; cursor: pointer;"><i class="fas fa-moon" id="themeIcon"></i></button>
+            </div>
         </div>
     </div>
 </nav>
+
+<!-- Mobile Search -->
+<div class="mobile-search-premium" id="mobileSearch" style="position: fixed; top: 76px; left: 0; width: 100%; padding: 12px 16px; background: var(--bg-primary); border-bottom: 1px solid var(--border-light); z-index: 999; transform: translateY(-100%); transition: transform 0.3s ease, background 0.3s ease;">
+    <div style="display: flex; gap: 8px;">
+        <input type="text" id="searchInputMobile" placeholder="Rechercher..." style="flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 10px 16px; color: var(--text-primary); font-size: 0.9rem; outline: none;">
+        <button onclick="performSearch()" style="background: var(--gradient-main); border: none; border-radius: var(--radius-full); padding: 10px 24px; color: #fff; font-weight: 600; transition: all 0.3s ease;">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</div>
 
 <!-- ============================================ -->
 <!-- CARTE DU MONDE                              -->
@@ -126,9 +128,7 @@
     </div>
 </section>
 
-<!-- ============================================ -->
-<!-- FOOTER                                      -->
-<!-- ============================================ -->
+<!-- FOOTER -->
 <footer class="footer-premium">
     <div class="container">
         <div class="row">
@@ -141,11 +141,149 @@
     </div>
 </footer>
 
+<!-- Toast Container -->
+<div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script th:src="@{/js/world-map.js}"></script>
 <script>
+    // ============================================
+    // RECHERCHE
+    // ============================================
+    function performSearch() {
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        let query = '';
+        if (desktopInput && desktopInput.value.trim() !== '') {
+            query = desktopInput.value.trim().toLowerCase();
+        } else if (mobileInput && mobileInput.value.trim() !== '') {
+            query = mobileInput.value.trim().toLowerCase();
+        } else {
+            resetSearch();
+            return;
+        }
+        if (query === '') { resetSearch(); return; }
+
+        const searchableItems = document.querySelectorAll('.filter-btn, .map-legend span, .card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item, .gallery-item, .testimonial-item, .sitemap-item');
+        const textElements = document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag, .page-header h1, .page-header p, .section-desc');
+
+        let found = false;
+        searchableItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(query)) {
+                item.style.display = '';
+                found = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+        textElements.forEach(el => {
+            const text = el.textContent.toLowerCase();
+            if (text.includes(query)) {
+                el.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                el.style.transition = 'background 0.3s';
+                if (!found) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    found = true;
+                }
+            } else {
+                el.style.backgroundColor = 'transparent';
+            }
+        });
+        if (!found) {
+            showToast('Aucun résultat trouvé pour "' + query + '"', 'error');
+        } else {
+            showToast('Résultats trouvés pour "' + query + '"', 'success');
+        }
+    }
+
+    function resetSearch() {
+        document.querySelectorAll('.filter-btn, .map-legend span, .card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item, .gallery-item, .testimonial-item, .sitemap-item')
+            .forEach(item => item.style.display = '');
+        document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag, .page-header h1, .page-header p, .section-desc')
+            .forEach(el => el.style.backgroundColor = 'transparent');
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        if (desktopInput) desktopInput.value = '';
+        if (mobileInput) mobileInput.value = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        if (desktopInput) {
+            desktopInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+        if (mobileInput) {
+            mobileInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+    });
+
+    function showToast(message, type) {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? '#1e293b' : '#ef4444';
+        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        toast.style.cssText = `
+            background: ${bgColor};
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-left: 4px solid ${type === 'success' ? '#3b82f6' : '#ef4444'};
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        `;
+        toast.innerHTML = `<i class="fas ${icon}" style="font-size: 1.2rem;"></i><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // ============================================
+    // AOS, NAVBAR, THEME
+    // ============================================
     AOS.init({ duration: 800, once: true, offset: 80, easing: 'ease-out-cubic' });
+
+    const navbar = document.getElementById('mainNav');
+    const mobileSearch = document.getElementById('mobileSearch');
+
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+        if (mobileSearch) {
+            if (window.scrollY > 150) mobileSearch.classList.remove('visible');
+            else mobileSearch.classList.add('visible');
+        }
+    });
+    if (mobileSearch) mobileSearch.classList.add('visible');
+
+    function toggleTheme() {
+        const body = document.body, icon = document.getElementById('themeIcon');
+        const isDark = body.getAttribute('data-theme') !== 'light';
+        if (isDark) { body.setAttribute('data-theme', 'light'); icon.className = 'fas fa-sun'; localStorage.setItem('theme', 'light'); }
+        else { body.removeAttribute('data-theme'); icon.className = 'fas fa-moon'; localStorage.setItem('theme', 'dark'); }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('themeIcon').className = 'fas fa-sun';
+        }
+    });
 </script>
 </body>
 </html>

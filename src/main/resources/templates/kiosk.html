@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mode Kiosque - African Mission Corporate</title>
 
-    <!-- ============================================ -->
-    <!-- PWA - MANIFEST & THEME COLOR                -->
-    <!-- ============================================ -->
+    <!-- PWA - MANIFEST & THEME COLOR -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a1a">
 
@@ -18,7 +16,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/kiosk.css}">
 
-    <!-- GSAP (GreenSock) pour animations de pointe -->
+    <!-- GSAP pour animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
@@ -58,7 +56,6 @@
                     <div class="kiosk-logo">
                         <i class="fas fa-globe-africa"></i>
                         <span>African <strong>Mission Corporate</strong></span>
-                        <!-- <small>Corporate SARL</small> supprimé -->
                     </div>
                     <h1>Bienvenue sur notre <span class="gradient-text">vitrine interactive</span></h1>
                     <p>Découvrez l'excellence malienne au service du développement durable</p>
@@ -79,8 +76,8 @@
                 <div class="kiosk-grid-3">
                     <div class="kiosk-card">
                         <i class="fas fa-building"></i>
-                        <h4>BTP & Construction</h4>
-                        <p>Projets d'envergure au Mali et à l'international</p>
+                        <h4>Promotion immobilière</h4>
+                        <p>Construction de logements et infrastructures au Mali</p>
                     </div>
                     <div class="kiosk-card">
                         <i class="fas fa-seedling"></i>
@@ -199,7 +196,63 @@
     <span class="kiosk-dot" data-slide="6"></span>
 </div>
 
+<!-- Toast Container -->
+<div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
+
 <script th:src="@{/js/kiosk-slides.js}"></script>
 <script th:src="@{/js/kiosk.js}"></script>
+
+<script>
+    // ============================================
+    // RECHERCHE (Kiosk n'a pas de barre de recherche,
+    // mais on ajoute les fonctions pour compatibilité)
+    // ============================================
+    function performSearch() {
+        showToast('La recherche n\'est pas disponible en mode Kiosque', 'error');
+    }
+
+    function resetSearch() {
+        // Rien à réinitialiser
+    }
+
+    function showToast(message, type) {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? '#1e293b' : '#ef4444';
+        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        toast.style.cssText = `
+            background: ${bgColor};
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-left: 4px solid ${type === 'success' ? '#3b82f6' : '#ef4444'};
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        `;
+        toast.innerHTML = `<i class="fas ${icon}" style="font-size: 1.2rem;"></i><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100px)';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
 </body>
 </html>
