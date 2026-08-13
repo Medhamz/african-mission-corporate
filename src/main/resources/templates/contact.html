@@ -21,7 +21,7 @@
         <a class="logo-premium" href="/">
             <span class="logo-premium-icon"><i class="fas fa-globe-africa"></i></span>
             <div>
-                <span class="logo-premium-text">African <span class="highlight">Mission</span></span>
+                <span class="logo-premium-text">African <span class="highlight">Mission Corporate</span></span>
                 <span class="logo-premium-badge">SARL</span>
             </div>
         </a>
@@ -186,7 +186,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- CHAT PUBLIQUE (inchangé)                    -->
+<!-- CHAT PUBLIQUE                               -->
 <!-- ============================================ -->
 <section class="py-5" style="background: var(--bg-primary);">
     <div class="container">
@@ -293,9 +293,6 @@
 <script>
     AOS.init({ duration: 800, once: true, offset: 80 });
 
-    // ============================================
-    // THEME TOGGLE
-    // ============================================
     const navbar = document.getElementById('mainNav');
     const mobileSearch = document.getElementById('mobileSearch');
 
@@ -339,9 +336,6 @@
         }
     });
 
-    // ============================================
-    // TOAST NOTIFICATIONS
-    // ============================================
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         if (!container) return;
@@ -373,9 +367,6 @@
         }, 4000);
     }
 
-    // ============================================
-    // CHAT PUBLIQUE (inchangé)
-    // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         const chatForm = document.getElementById('chatForm');
         const chatInput = document.getElementById('chatMessageInput');
@@ -397,14 +388,12 @@
                 chatSessionId = data.sessionId;
                 chatStatus.textContent = 'Connecté';
                 chatStatus.style.color = '#22c55e';
-                console.log('✅ Session chat initialisée:', chatSessionId);
                 if (visitorName) {
                     setVisitorName(visitorName);
                 }
                 loadMessages(true);
             })
             .catch(error => {
-                console.error('❌ Erreur initialisation session:', error);
                 chatStatus.textContent = 'Erreur de connexion';
                 chatStatus.style.color = '#ef4444';
             });
@@ -422,10 +411,9 @@
             .then(data => {
                 if (data.success) {
                     visitorName = name;
-                    console.log('✅ Nom du visiteur défini:', name);
                 }
             })
-            .catch(error => console.error('❌ Erreur définition nom:', error));
+            .catch(error => console.error(error));
         }
 
         function appendMessage(msg, visitorName) {
@@ -482,18 +470,14 @@
                             if (newMessages.length > 0) {
                                 newMessages.sort((a, b) => new Date(a.sentAt || a.createdAt) - new Date(b.sentAt || b.createdAt));
                                 newMessages.forEach(msg => appendMessage(msg, visitorNameFromServer));
-                                console.log(`✅ ${newMessages.length} nouveaux messages ajoutés.`);
                                 if (wasAtBottom) {
                                     chatMessages.scrollTop = chatMessages.scrollHeight;
                                 }
-                            } else {
-                                console.log('📭 Aucun nouveau message.');
                             }
                         }
                     }
                 })
                 .catch(error => {
-                    console.error('❌ Erreur chargement messages:', error);
                     if (initial || !initialLoadDone) {
                         chatMessages.innerHTML = `
                             <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">
@@ -545,7 +529,6 @@
                 }
             })
             .catch(error => {
-                console.error('❌ Erreur envoi message:', error);
                 showToast('Erreur de connexion au serveur', 'error');
             });
         }
@@ -571,7 +554,6 @@
             });
         }
 
-        console.log('🚀 Initialisation du chat...');
         initChatSession();
         setInterval(() => {
             if (chatSessionId) {
@@ -581,7 +563,6 @@
     });
 </script>
 
-<!-- Conteneur pour les toasts -->
 <div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
 
 <style>
