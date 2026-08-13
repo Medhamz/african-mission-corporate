@@ -1,9 +1,8 @@
 /* ==========================================================================
-   AFRICAN MISSION CORPORATE - ULTIMATE HYPER-CYBER / GLASSMORPHISM 3.0 (FIXED)
+   AFRICAN MISSION - STYLES PRINCIPAUX
    ========================================================================== */
 
 :root {
-  /* Color Palette - Deep Cyber Neon */
   --bg-primary: #030712;
   --bg-secondary: #0b0f19;
   --bg-card: rgba(15, 23, 42, 0.75);
@@ -23,38 +22,49 @@
 
   --gradient-cyber: linear-gradient(135deg, #00f0ff 0%, #8b5cf6 50%, #ec4899 100%);
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.4);
-  --glow-purple: 0 0 25px rgba(139, 92, 246, 0.4);
   --glow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.2);
 
-  --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 24px;
   --radius-full: 9999px;
 
   --backdrop-blur: blur(16px) saturate(180%);
-  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-3d: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Override Bootstrap Backgrounds */
+/* Force l'arrière-plan sombre */
 html, body {
   background-color: var(--bg-primary) !important;
   color: var(--text-primary) !important;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-/* Fix Bootstrap Container Spacing */
-.container {
-  position: relative;
-  z-index: 2;
+/* Navigation */
+.custom-navbar {
+  padding: 18px 0;
+  background: var(--bg-glass) !important;
+  backdrop-filter: var(--backdrop-blur);
+  border-bottom: 1px solid var(--border-cyber);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
-/* ==========================================================================
-   EFFECTS & TYPOGRAPHY
-   ========================================================================== */
+.custom-navbar .nav-link {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  padding: 8px 16px !important;
+  border-radius: var(--radius-full);
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: var(--text-primary) !important;
+  background: rgba(0, 240, 255, 0.12) !important;
+  border: 1px solid rgba(0, 240, 255, 0.3) !important;
+}
+
+/* Textes Gradient & Glowing */
 .text-gradient, .glowing-text {
   background: var(--gradient-cyber) !important;
   -webkit-background-clip: text !important;
@@ -68,48 +78,9 @@ html, body {
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--text-primary) !important;
-  position: relative;
-  text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
 }
 
-/* ==========================================================================
-   NAVBAR
-   ========================================================================== */
-.custom-navbar {
-  padding: 18px 0;
-  transition: all var(--transition-smooth);
-  background: var(--bg-glass) !important;
-  backdrop-filter: var(--backdrop-blur) !important;
-  border-bottom: 1px solid var(--border-cyber) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
-  z-index: 1050 !important;
-}
-
-.custom-navbar .navbar-brand {
-  font-weight: 800;
-  font-size: 1.4rem;
-  letter-spacing: 0.5px;
-}
-
-.custom-navbar .nav-link {
-  color: var(--text-secondary) !important;
-  font-weight: 500;
-  padding: 8px 16px !important;
-  border-radius: var(--radius-full);
-  transition: all 0.2s ease;
-}
-
-.custom-navbar .nav-link:hover,
-.custom-navbar .nav-link.active {
-  color: var(--text-primary) !important;
-  background: rgba(0, 240, 255, 0.12) !important;
-  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2) !important;
-  border: 1px solid rgba(0, 240, 255, 0.3) !important;
-}
-
-/* ==========================================================================
-   HERO SECTION 3D & LIGHTS
-   ========================================================================== */
+/* Hero Section */
 .hero-section {
   position: relative;
   min-height: 100vh;
@@ -117,7 +88,6 @@ html, body {
   padding-bottom: 60px;
   background: var(--bg-primary) !important;
   overflow: hidden;
-  z-index: 1;
 }
 
 .hero-bg-glow {
@@ -125,18 +95,11 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
-  height: 700px;
+  width: 650px;
+  height: 650px;
   background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(139, 92, 246, 0.18) 40%, transparent 70%);
   filter: blur(90px);
   pointer-events: none;
-  animation: pulseGlow 6s ease-in-out infinite alternate;
-  z-index: 1;
-}
-
-@keyframes pulseGlow {
-  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
-  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
 }
 
 .hero-title {
@@ -153,28 +116,22 @@ html, body {
   margin: 0 auto 35px auto;
 }
 
-/* ==========================================================================
-   BUTTONS
-   ========================================================================== */
+/* Boutons */
 .btn-glow {
-  position: relative;
   background: var(--gradient-cyber) !important;
   color: #ffffff !important;
   font-weight: 700;
   padding: 12px 32px;
   border-radius: var(--radius-full);
   text-decoration: none;
-  box-shadow: var(--glow-cyan) !important;
-  transition: all var(--transition-smooth) !important;
-  border: none !important;
+  box-shadow: var(--glow-cyan);
+  border: none;
   display: inline-block;
-  cursor: pointer;
 }
 
 .btn-glow:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.8), 0 0 15px rgba(236, 72, 153, 0.5) !important;
-  color: #ffffff !important;
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
 }
 
 .btn-outline-glow {
@@ -185,58 +142,34 @@ html, body {
   padding: 12px 32px;
   border-radius: var(--radius-full);
   text-decoration: none;
-  transition: all var(--transition-smooth) !important;
   display: inline-block;
 }
 
 .btn-outline-glow:hover {
   background: rgba(0, 240, 255, 0.15) !important;
-  box-shadow: var(--glow-cyan) !important;
   color: #ffffff !important;
   transform: translateY(-3px);
 }
 
-/* ==========================================================================
-   GLASS CARDS & SERVICES
-   ========================================================================== */
+/* Section Services */
 #services {
   background: var(--bg-secondary) !important;
-  position: relative;
-  z-index: 2;
 }
 
 .glass-card {
   background: var(--bg-card) !important;
-  backdrop-filter: var(--backdrop-blur) !important;
+  backdrop-filter: var(--backdrop-blur);
   border: 1px solid var(--border-light) !important;
   border-radius: var(--radius-lg);
   padding: 35px 25px;
-  transition: all var(--transition-3d) !important;
+  transition: transform 0.3s ease, border-color 0.3s ease;
   height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--gradient-cyber);
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .glass-card:hover {
-  transform: translateY(-10px) rotateX(4deg) rotateY(-2deg);
+  transform: translateY(-8px);
   border-color: var(--border-cyber) !important;
-  box-shadow: var(--glow-card) !important;
-}
-
-.glass-card:hover::before {
-  opacity: 1;
+  box-shadow: var(--glow-card);
 }
 
 .card-icon {
@@ -251,14 +184,6 @@ html, body {
   font-size: 1.6rem;
   color: var(--cyan-neon) !important;
   margin-bottom: 20px;
-  box-shadow: var(--glow-cyan);
-  transition: all var(--transition-3d) !important;
-}
-
-.glass-card:hover .card-icon {
-  background: var(--gradient-cyber) !important;
-  color: #ffffff !important;
-  transform: scale(1.1) rotate(5deg);
 }
 
 .glass-card h3 {
@@ -271,12 +196,9 @@ html, body {
 .glass-card p {
   color: var(--text-secondary) !important;
   font-size: 0.95rem;
-  line-height: 1.6;
 }
 
-/* ==========================================================================
-   CHATBOT WIDGET
-   ========================================================================== */
+/* Chatbot Widget */
 .chatbot-toggle-btn {
   position: fixed;
   bottom: 30px;
@@ -289,14 +211,8 @@ html, body {
   color: #ffffff !important;
   font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.6) !important;
-  z-index: 9999 !important;
-  transition: all var(--transition-smooth) !important;
-}
-
-.chatbot-toggle-btn:hover {
-  transform: scale(1.12) rotate(10deg);
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.9) !important;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+  z-index: 9999;
 }
 
 .notification-badge {
@@ -317,24 +233,24 @@ html, body {
   width: 360px;
   height: 480px;
   background: var(--bg-glass) !important;
-  backdrop-filter: var(--backdrop-blur) !important;
+  backdrop-filter: var(--backdrop-blur);
   border: 1px solid var(--border-cyber) !important;
   border-radius: var(--radius-lg);
-  box-shadow: var(--glow-card) !important;
+  box-shadow: var(--glow-card);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 9998 !important;
+  z-index: 9998;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(20px) scale(0.95);
-  transition: all var(--transition-smooth) !important;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
 }
 
 .chatbot-container.active {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateY(0) scale(1) !important;
+  transform: translateY(0) !important;
 }
 
 .chatbot-header {
@@ -364,10 +280,6 @@ html, body {
   font-size: 1.1rem;
 }
 
-.chatbot-close:hover {
-  color: var(--cyan-neon);
-}
-
 .chatbot-messages {
   flex: 1;
   padding: 16px;
@@ -395,7 +307,6 @@ html, body {
   background: var(--gradient-cyber) !important;
   color: #ffffff !important;
   align-self: flex-end;
-  box-shadow: var(--glow-cyan);
 }
 
 .chatbot-input {
@@ -415,10 +326,6 @@ html, body {
   outline: none;
 }
 
-.chatbot-input input:focus {
-  border-color: var(--cyan-neon) !important;
-}
-
 .chatbot-input button {
   background: var(--gradient-cyber) !important;
   border: none !important;
@@ -427,11 +334,4 @@ html, body {
   height: 38px;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: var(--glow-cyan);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero-title { font-size: 2.5rem; }
-  .chatbot-container { width: calc(100% - 40px); right: 20px; }
 }
