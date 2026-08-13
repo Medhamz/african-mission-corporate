@@ -107,7 +107,7 @@
 <section class="page-header">
     <div class="container text-center" data-aos="fade-up">
         <h1 class="display-4 fw-bold">Nos activités</h1>
-        <p class="lead">Découvrez l'ensemble de nos services et compétences</p>
+        <p class="lead">Découvrez l'ensemble de nos services en promotion immobilière</p>
     </div>
 </section>
 
@@ -117,16 +117,86 @@
 <section class="activities-section">
     <div class="container">
         <div class="row g-4">
-            <div class="col-md-6 col-lg-4" th:each="activity : ${activities}"
-                 data-aos="fade-up" th:data-aos-delay="${100 * activityStat.index}">
+            <!-- Activité 1 : Construction de logements sociaux -->
+            <div class="col-md-6 col-lg-4" data-aos="fade-up">
                 <div class="card-premium">
                     <div class="card-premium-content">
                         <div class="card-premium-icon">
-                            <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
+                            <i class="fas fa-home"></i>
                         </div>
-                        <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
-                        <p class="card-premium-text" th:text="${activity.description}">Description</p>
-                        <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
+                        <h5 class="card-premium-title">Construction de logements sociaux</h5>
+                        <p class="card-premium-text">Réalisation de programmes de logements abordables pour les populations à revenus modestes.</p>
+                        <span class="card-premium-badge">Logement social</span>
+                        <div class="card-premium-border"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Activité 2 : Promotion de résidences de standing -->
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-premium">
+                    <div class="card-premium-content">
+                        <div class="card-premium-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h5 class="card-premium-title">Promotion de résidences de standing</h5>
+                        <p class="card-premium-text">Construction de villas, appartements haut de gamme et résidences de luxe.</p>
+                        <span class="card-premium-badge">Standing</span>
+                        <div class="card-premium-border"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Activité 3 : Aménagement de zones d'habitation -->
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-premium">
+                    <div class="card-premium-content">
+                        <div class="card-premium-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h5 class="card-premium-title">Aménagement de zones d'habitation</h5>
+                        <p class="card-premium-text">Lotissements, viabilisation, espaces verts et équipements collectifs intégrés.</p>
+                        <span class="card-premium-badge">Aménagement</span>
+                        <div class="card-premium-border"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Activité 4 : Rénovation urbaine -->
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-premium">
+                    <div class="card-premium-content">
+                        <div class="card-premium-icon">
+                            <i class="fas fa-hammer"></i>
+                        </div>
+                        <h5 class="card-premium-title">Rénovation urbaine</h5>
+                        <p class="card-premium-text">Réhabilitation de quartiers anciens, mise aux normes et revitalisation.</p>
+                        <span class="card-premium-badge">Rénovation</span>
+                        <div class="card-premium-border"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Activité 5 : Immobilier d'entreprise -->
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="card-premium">
+                    <div class="card-premium-content">
+                        <div class="card-premium-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h5 class="card-premium-title">Immobilier d'entreprise</h5>
+                        <p class="card-premium-text">Construction de bureaux, centres d'affaires et espaces de coworking.</p>
+                        <span class="card-premium-badge">Immobilier d'entreprise</span>
+                        <div class="card-premium-border"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Activité 6 : Promotion immobilière durable -->
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="card-premium">
+                    <div class="card-premium-content">
+                        <div class="card-premium-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h5 class="card-premium-title">Promotion immobilière durable</h5>
+                        <p class="card-premium-text">Construction écoresponsable, matériaux écologiques et énergies renouvelables.</p>
+                        <span class="card-premium-badge">Durable</span>
                         <div class="card-premium-border"></div>
                     </div>
                 </div>
@@ -147,7 +217,7 @@
                     African Mission Corporate
                 </h4>
                 <p class="mt-3" style="line-height: 1.8;">
-                    African Mission Corporate est spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et bien plus.
+                    African Mission Corporate est spécialisée dans la promotion immobilière, l'agrobusiness, l'import-export et bien plus.
                 </p>
                 <div class="mt-4 d-flex gap-2">
                     <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
