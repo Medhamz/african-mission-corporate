@@ -1582,3 +1582,75 @@ section[data-aos] {
     background: transparent;
     border: none;
 }
+
+/* ==========================================================================
+   STYLISATION PROFESSIONNELLE DU LOGO ET DU TITRE
+   ========================================================================== */
+
+/* Structure du logo dans la Navbar */
+.logo-premium {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.logo-premium:hover {
+    transform: translateY(-1px);
+}
+
+.logo-premium-icon {
+    font-size: 1.5rem;
+    color: var(--primary-blue, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Typographie "African Mission Corporate" (Navbar) */
+.logo-premium-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.15rem; /* Taille équilibrée et lisible */
+    font-weight: 700;
+    letter-spacing: -0.02em; /* Espacement moderne */
+    color: var(--text-primary, #ffffff);
+    text-transform: capitalize;
+    line-height: 1.2;
+}
+
+.logo-premium-text .highlight {
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Badge SARL */
+.logo-premium-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--primary-blue, #3b82f6);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+/* Typographie du Titre de Marque dans le Footer */
+.footer-brand-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-primary, #ffffff);
+    display: flex;
+    align-items: center;
+}
+
+.footer-brand-title i {
+    color: var(--primary-blue, #3b82f6);
+}
