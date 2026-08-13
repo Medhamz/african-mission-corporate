@@ -10,7 +10,7 @@
     <!-- ============================================ -->
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/images/icon-192.png">
-    <meta name="theme-color" content="#0a0a1a">
+    <meta name="theme-color" content="#030712">
     <meta name="description" content="African Mission Corporate - Leader dans les prestations de services, promotion immobilière, agrobusiness, import-export et développement durable au Mali.">
 
     <!-- Styles CSS Externes -->
@@ -28,7 +28,7 @@
     <link rel="stylesheet" th:href="@{/css/project-timeline.css}">
 
     <!-- ============================================ -->
-    <!-- THREE.JS (VERSION GLOBALE)                  -->
+    <!-- THREE.JS (VERSION GLOBALE OPTIMISÉE)         -->
     <!-- ============================================ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -43,7 +43,7 @@
 <!-- ============================================ -->
 <!-- BARRE DE PROGRESSION DE SCROLL              -->
 <!-- ============================================ -->
-<div id="scrollProgress" class="scroll-progress-bar" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gradient-main); z-index: 9999; transition: width 0.1s ease; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);"></div>
+<div id="scrollProgress" class="scroll-progress-bar" style="position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: var(--gradient-cyber); z-index: 9999; transition: width 0.1s ease; box-shadow: var(--glow-cyan);"></div>
 
 <!-- ============================================ -->
 <!-- TOAST NOTIFICATIONS CONTAINER              -->
@@ -51,7 +51,7 @@
 <div id="toastContainer" class="toast-container-wrapper" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
 
 <!-- ============================================ -->
-<!-- NAVBAR - CORPORATE PREMIUM 3.0             -->
+<!-- NAVBAR - CORPORATE GLASS 3.0                -->
 <!-- ============================================ -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav" aria-label="Navigation principale">
     <div class="container">
@@ -83,10 +83,10 @@
                         <i class="fas fa-cogs nav-icon"></i>Services
                     </a>
                     <ul class="dropdown-menu dropdown-premium" aria-labelledby="servicesDropdown">
-                        <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase"></i>Nos services <span class="item-shortcut">↗</span></a></li>
+                        <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase"></i>Nos services <span class="ms-auto" style="color: var(--cyan-neon);">↗</span></a></li>
                         <li><a class="dropdown-item" href="/activities"><i class="fas fa-tasks"></i>Activités</a></li>
                         <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket"></i>Projets</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li><hr class="dropdown-divider" style="border-color: var(--border-light);"></li>
                         <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
                     </ul>
                 </li>
@@ -105,13 +105,11 @@
                         <i class="fas fa-newspaper nav-icon"></i>Blog
                     </a>
                 </li>
-                <!-- ====== LIEN DIAGNOSTIQUEUR ====== -->
                 <li class="nav-item">
                     <a class="nav-link" href="/diagnostiqueur">
                         <i class="fas fa-stethoscope nav-icon"></i>Diagnostiqueur
                     </a>
                 </li>
-                <!-- ====== NOUVEAU LIEN CARTE DU MONDE ====== -->
                 <li class="nav-item">
                     <a class="nav-link" href="/monde">
                         <i class="fas fa-globe-africa nav-icon"></i>Carte du Monde
@@ -134,16 +132,16 @@
                 </li>
             </ul>
 
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-3 ms-lg-3 mt-3 mt-lg-0">
                 <!-- RECHERCHE DESKTOP -->
-                <div class="search-premium" style="display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 3px; transition: all 0.3s ease; min-width: 180px;">
-                    <input type="text" id="searchInputDesktop" placeholder="Rechercher..." aria-label="Recherche sur le site" style="background: transparent; border: none; color: var(--text-primary); padding: 6px 16px; font-size: 0.85rem; width: 100%; outline: none;">
-                    <button class="search-btn" onclick="performSearch()" aria-label="Lancer la recherche" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); padding: 6px 18px; font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;">
+                <div class="search-premium d-none d-xl-flex" style="align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 3px; min-width: 170px;">
+                    <input type="text" id="searchInputDesktop" placeholder="Rechercher..." aria-label="Recherche sur le site" style="background: transparent; border: none; color: var(--text-primary); padding: 6px 14px; font-size: 0.85rem; width: 100%; outline: none;">
+                    <button class="search-btn" onclick="performSearch()" aria-label="Lancer la recherche" style="background: var(--gradient-cyber); border: none; color: #fff; border-radius: var(--radius-full); padding: 6px 14px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center;">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
                 <a href="/contact" class="cta-premium">
-                    <i class="fas fa-paper-plane"></i> Devis
+                    <i class="fas fa-paper-plane me-1"></i> Devis
                 </a>
                 <button onclick="toggleTheme()" aria-label="Changer le thème" style="background: transparent; border: 1px solid var(--border-light); color: var(--text-secondary); padding: 8px 14px; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;">
                     <i class="fas fa-moon" id="themeIcon"></i>
@@ -154,39 +152,21 @@
 </nav>
 
 <!-- ============================================ -->
-<!-- MOBILE SEARCH                               -->
-<!-- ============================================ -->
-<div class="mobile-search-premium" id="mobileSearch" style="position: fixed; top: 76px; left: 0; width: 100%; padding: 12px 16px; background: var(--bg-primary); border-bottom: 1px solid var(--border-light); z-index: 999; transform: translateY(-100%); transition: transform 0.3s ease, background 0.3s ease;">
-    <div style="display: flex; gap: 8px;">
-        <input type="text" id="searchInputMobile" placeholder="Rechercher..." aria-label="Recherche mobile" style="flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-full); padding: 10px 16px; color: var(--text-primary); font-size: 0.9rem; outline: none;">
-        <button onclick="performSearch()" aria-label="Lancer la recherche mobile" style="background: var(--gradient-main); border: none; border-radius: var(--radius-full); padding: 10px 24px; color: #fff; font-weight: 600; transition: all 0.3s ease;">
-            <i class="fas fa-search"></i>
-        </button>
-    </div>
-</div>
-
-<!-- ============================================ -->
 <!-- DONNÉES MÉTÉO & MARCHÉS (bandeau utilitaire) -->
 <!-- ============================================ -->
 <div th:replace="fragments/market-data :: #marketData"></div>
 
 <!-- ============================================ -->
-<!-- HERO - CORPORATE PREMIUM 3.0                -->
+<!-- HERO - HYPER-CYBER 3.0                       -->
 <!-- ============================================ -->
 <section class="hero-premium" id="heroSection">
+    <!-- Grille Cyber 3D & Luminescences arrière-plan -->
     <div class="hero-grid"></div>
     <div class="hero-glow-orb orb-1"></div>
     <div class="hero-glow-orb orb-2"></div>
     <div class="hero-glow-orb orb-3"></div>
 
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-
-    <div class="container hero-content">
+    <div class="container hero-content" style="position: relative; z-index: 2;">
         <div class="row align-items-center">
             <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
                 <div class="hero-badge">
@@ -196,7 +176,7 @@
 
                 <h1 class="hero-title">
                     <span class="gradient-text">African Mission</span>
-                    <span class="light-text">Corporate</span>
+                    <span style="color: var(--text-primary);">Corporate</span>
                 </h1>
 
                 <p class="hero-subtitle">
@@ -217,23 +197,20 @@
                     <div class="hero-stat">
                         <div class="hero-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">30+</div>
                         <div class="hero-stat-label">Activités</div>
-                        <div class="stat-line"></div>
                     </div>
                     <div class="hero-stat">
                         <div class="hero-stat-number">15+</div>
                         <div class="hero-stat-label">Domaines</div>
-                        <div class="stat-line"></div>
                     </div>
                     <div class="hero-stat">
                         <div class="hero-stat-number">100%</div>
                         <div class="hero-stat-label">Engagement</div>
-                        <div class="stat-line"></div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-5 text-center d-none d-lg-block" data-aos="fade-left" data-aos-duration="1000">
-                <div id="three-container" style="position: relative; width: 100%; height: 400px; max-height: 450px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05), rgba(10, 10, 26, 0.8));"></div>
+                <div id="three-container" style="position: relative; width: 100%; height: 440px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-cyber); box-shadow: var(--glow-purple); background: radial-gradient(circle at center, rgba(139, 92, 246, 0.08), rgba(3, 7, 18, 0.9));"></div>
             </div>
         </div>
     </div>
@@ -242,15 +219,15 @@
 <!-- ============================================ -->
 <!-- ACTIVITIES PREVIEW (avec AR)                -->
 <!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-secondary); padding-top: 60px !important; padding-bottom: 60px !important;">
+<section class="py-5" style="background: var(--bg-secondary); padding-top: 100px !important; padding-bottom: 100px !important; position: relative;">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <div class="section-tag">✦ SERVICES ✦</div>
+            <span class="section-tag">✦ SERVICES ✦</span>
             <h2 class="section-title">
                 <span class="gradient-text">Nos activités</span> principales
             </h2>
             <div class="section-line centered"></div>
-            <p style="color: var(--text-secondary); font-size: 1rem;">Découvrez l'étendue de nos compétences et services</p>
+            <p style="color: var(--text-secondary); font-size: 1.05rem;">Découvrez l'étendue de nos compétences et prestations</p>
         </div>
 
         <div class="row g-4">
@@ -263,15 +240,13 @@
                     <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
                     <p class="card-premium-text" th:text="${activity.description}">Description</p>
                     <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
-                    <div class="mt-3">
-                        <button class="btn btn-sm btn-outline-primary ar-trigger"
+                    <div class="mt-4">
+                        <button class="btn btn-sm btn-outline-premium ar-trigger"
                                 data-model="/models/activity.glb"
-                                data-title="Modèle 3D de l'activité"
-                                style="border-radius: 50px; font-size: 0.8rem; padding: 4px 16px;">
-                            <i class="fas fa-cube"></i> Voir en AR
+                                data-title="Modèle 3D de l'activité">
+                            <i class="fas fa-cube me-1"></i> Voir en AR
                         </button>
                     </div>
-                    <div class="card-premium-border"></div>
                 </div>
             </div>
         </div>
@@ -289,10 +264,10 @@
 <!-- ============================================ -->
 <div class="modal fade" id="arModal" tabindex="-1" aria-labelledby="arModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" style="background: var(--bg-primary); border: 1px solid var(--border-light);">
+        <div class="modal-content" style="background: var(--bg-glass); backdrop-filter: var(--backdrop-blur); border: 1px solid var(--border-cyber); box-shadow: var(--glow-purple);">
             <div class="modal-header" style="border-bottom: 1px solid var(--border-light);">
-                <h5 class="modal-title" id="arModalLabel" style="color: var(--text-primary);">Visualisation en réalité augmentée</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: var(--btn-close-filter);"></button>
+                <h5 class="modal-title" id="arModalLabel" style="color: var(--text-primary); font-weight: 700;">Visualisation en réalité augmentée</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
             </div>
             <div class="modal-body p-4">
                 <model-viewer id="arViewer"
@@ -302,33 +277,25 @@
                               ar-modes="webxr scene-viewer quick-look"
                               camera-controls
                               touch-action="pan-y"
-                              style="width:100%; height:500px; background: var(--bg-secondary); border-radius: 12px;"
-                              poster="/images/ar-poster.png"
+                              style="width:100%; height:480px; background: var(--bg-primary); border-radius: var(--radius-md); border: 1px solid var(--border-light);"
                               shadow-intensity="1"
                               exposure="1.2"
                               auto-rotate
-                              auto-rotate-delay="0"
-                              rotation-per-second="10deg">
+                              rotation-per-second="15deg">
                     <div slot="poster">
-                        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);flex-direction:column;gap:16px;background:var(--bg-secondary);">
-                            <i class="fas fa-cube" style="font-size:4rem;color:var(--primary-blue);opacity:0.3;"></i>
-                            <p style="font-size:1.1rem;max-width:300px;text-align:center;">
-                                Ajoutez un modèle 3D (.glb) dans le dossier <br>
-                                <code style="background:var(--bg-primary);padding:2px 8px;border-radius:4px;">/static/models/</code>
-                            </p>
-                            <p style="font-size:0.85rem;color:var(--text-muted);">
-                                ou téléchargez un modèle gratuit sur
-                                <a href="https://sketchfab.com/search?type=models&features=free&downloadable=true" target="_blank" rel="noopener noreferrer" style="color:var(--primary-blue);">Sketchfab</a>
+                        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);flex-direction:column;gap:16px;background:var(--bg-primary);">
+                            <i class="fas fa-cube" style="font-size:4rem;color:var(--cyan-neon);opacity:0.5;"></i>
+                            <p style="font-size:1.1rem;max-width:320px;text-align:center;">
+                                Chargez un fichier .glb dans <br>
+                                <code style="background:var(--bg-secondary);padding:4px 8px;border-radius:4px;color:var(--cyan-neon);">/static/models/</code>
                             </p>
                         </div>
                     </div>
                 </model-viewer>
                 <div class="mt-3 text-center">
                     <p style="color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-mobile-alt me-1"></i>
-                        Utilisez votre téléphone pour visualiser ce modèle en réalité augmentée.
-                        <br>
-                        <span class="badge bg-primary">📱 AR compatible sur mobile</span>
+                        <i class="fas fa-mobile-alt me-1" style="color: var(--cyan-neon);"></i>
+                        Pointez votre caméra vers un espace dégagé pour projeter l'élément.
                     </p>
                 </div>
             </div>
@@ -339,54 +306,47 @@
 <!-- ============================================ -->
 <!-- ABOUT PREVIEW                              -->
 <!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-primary); padding-top: 60px !important; padding-bottom: 60px !important;">
+<section class="py-5" style="background: var(--bg-primary); padding-top: 100px !important; padding-bottom: 100px !important;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <div class="section-tag">✦ À PROPOS ✦</div>
+                <span class="section-tag">✦ À PROPOS ✦</span>
                 <h2 class="section-title" style="color: var(--text-primary);">
                     <span class="gradient-text">Qui sommes-</span>nous ?
                 </h2>
-                <div class="section-line" style="margin-left:0;"></div>
+                <div class="section-line"></div>
                 <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;">
                     African Mission Corporate est une entreprise malienne polyvalente, engagée dans le développement
-                    durable et l'excellence opérationnelle.
+                    durable, l'innovation technologique et l'excellence opérationnelle.
                 </p>
                 <ul class="list-unstyled mt-4" style="color: var(--text-secondary);">
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
+                    <li style="padding: 10px 0; display: flex; align-items: center; gap: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--border-cyber); border-radius: 8px;">
+                            <i class="fas fa-check" style="color: var(--cyan-neon); font-size: 0.8rem;"></i>
                         </span>
-                        Plus de 33 activités variées
+                        Plus de 33 activités variées et interconnectées
                     </li>
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
+                    <li style="padding: 10px 0; display: flex; align-items: center; gap: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--border-cyber); border-radius: 8px;">
+                            <i class="fas fa-check" style="color: var(--cyan-neon); font-size: 0.8rem;"></i>
                         </span>
-                        Présence au Mali et à l'international
+                        Présence solide au Mali et rayonnement international
                     </li>
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
+                    <li style="padding: 10px 0; display: flex; align-items: center; gap: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--border-cyber); border-radius: 8px;">
+                            <i class="fas fa-check" style="color: var(--cyan-neon); font-size: 0.8rem;"></i>
                         </span>
-                        Engagement pour le développement durable
-                    </li>
-                    <li style="padding: 6px 0; display: flex; align-items: center; gap: 12px;">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: rgba(59, 130, 246, 0.06); border-radius: 6px;">
-                            <i class="fas fa-check" style="color: var(--primary-blue); font-size: 0.7rem;"></i>
-                        </span>
-                        Expertise multi-sectorielle
+                        Engagement éco-responsable et durable
                     </li>
                 </ul>
-                <a href="/about" class="btn-primary-premium mt-3">
+                <a href="/about" class="btn-primary-premium mt-4">
                     En savoir plus <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
-            <div class="col-lg-6 text-center" data-aos="fade-left">
-                <div style="position:relative; display:inline-block; padding: 8px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
-                    <img src="https://via.placeholder.com/600x400/1e293b/3b82f6?text=African+Mission"
-                         alt="African Mission Corporate" class="img-fluid rounded-4" style="max-height:350px; position:relative; z-index:1;">
-                    <div style="position:absolute; top:-4px; left:-4px; right:-4px; bottom:-4px; background: var(--gradient-main); border-radius: var(--radius-lg); opacity: 0.03; z-index:0;"></div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0" data-aos="fade-left">
+                <div style="position:relative; display:inline-block; padding: 12px; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-cyber); box-shadow: var(--glow-card);">
+                    <img src="https://via.placeholder.com/600x400/0b0f19/00f0ff?text=African+Mission+Corporate"
+                         alt="African Mission Corporate" class="img-fluid rounded-4" style="max-height:360px; position:relative; z-index:1;">
                 </div>
             </div>
         </div>
@@ -396,17 +356,17 @@
 <!-- ============================================ -->
 <!-- PARTNERS                                   -->
 <!-- ============================================ -->
-<section class="py-5" style="background: var(--bg-secondary); padding-top: 60px !important; padding-bottom: 60px !important;">
+<section class="py-5" style="background: var(--bg-secondary); padding-top: 80px !important; padding-bottom: 80px !important;">
     <div class="container">
         <div class="text-center mb-4" data-aos="fade-up">
-            <div class="section-tag">✦ PARTENAIRES ✦</div>
-            <h3 class="section-title" style="font-size: 1.8rem; color: var(--text-primary);">
+            <span class="section-tag">✦ PARTENAIRES ✦</span>
+            <h3 class="section-title" style="font-size: 2rem; color: var(--text-primary);">
                 <span class="gradient-text">Nos</span> partenaires
             </h3>
             <div class="section-line centered"></div>
         </div>
         <div class="row align-items-center justify-content-center g-3">
-            <div class="col-md-2 col-4 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
+            <div class="col-md-2 col-6 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
                 <div class="partner-premium">
                     <span class="partner-premium-name" th:text="${partner.name}">Partenaire</span>
                 </div>
@@ -426,18 +386,18 @@
 <div th:replace="fragments/project-timeline :: #projectTimeline"></div>
 
 <!-- ============================================ -->
-<!-- FOOTER - CORPORATE PREMIUM 3.0             -->
+<!-- FOOTER - CORPORATE HYPER-CYBER              -->
 <!-- ============================================ -->
 <footer class="footer-premium">
     <div class="container">
         <div class="row g-5">
             <div class="col-md-4">
-                <h4 class="fw-bold">
-                    <i class="fas fa-globe-africa me-2" style="color: var(--primary-blue);"></i>
-                    African Mission Corporate
+                <h4 class="fw-bold text-white">
+                    <i class="fas fa-globe-africa me-2" style="color: var(--cyan-neon);"></i>
+                    African Mission
                 </h4>
-                <p class="mt-3" style="line-height: 1.8;">
-                    Entreprise spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et bien plus.
+                <p class="mt-3" style="line-height: 1.8; color: var(--text-secondary);">
+                    Entreprise spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et les solutions d'avenir.
                 </p>
                 <div class="mt-4 d-flex gap-2">
                     <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -447,55 +407,40 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h5 class="fw-bold mb-3">Liens rapides</h5>
+                <h5 class="fw-bold mb-3 text-white">Navigation</h5>
                 <ul class="list-unstyled" style="columns: 2; column-gap: 20px;">
-                    <li class="mb-2"><a href="/">Accueil</a></li>
-                    <li class="mb-2"><a href="/about">À propos</a></li>
-                    <li class="mb-2"><a href="/services">Services</a></li>
-                    <li class="mb-2"><a href="/activities">Activités</a></li>
-                    <li class="mb-2"><a href="/projects">Projets</a></li>
-                    <li class="mb-2"><a href="/team">Équipe</a></li>
-                    <li class="mb-2"><a href="/careers">Carrières</a></li>
-                    <li class="mb-2"><a href="/blog">Blog</a></li>
-                    <li class="mb-2"><a href="/faq">FAQ</a></li>
-                    <li class="mb-2"><a href="/contact">Contact</a></li>
-                    <li class="mb-2"><a href="/diagnostiqueur">🔍 Diagnostiqueur</a></li>
-                    <li class="mb-2"><a href="/monde">🌍 Carte du Monde</a></li>
-                    <li class="mb-2"><a href="/eco">🌿 Éco-responsabilité</a></li>
-                    <li class="mb-2"><a href="/kiosk">🖥️ Mode Kiosque</a></li>
-                    <li class="mb-2"><a href="/legal">Mentions légales</a></li>
-                    <li class="mb-2"><a href="/maintenance">🔧 Maintenance</a></li>
+                    <li class="mb-2"><a href="/" style="color: var(--text-secondary); text-decoration: none;">Accueil</a></li>
+                    <li class="mb-2"><a href="/about" style="color: var(--text-secondary); text-decoration: none;">À propos</a></li>
+                    <li class="mb-2"><a href="/services" style="color: var(--text-secondary); text-decoration: none;">Services</a></li>
+                    <li class="mb-2"><a href="/activities" style="color: var(--text-secondary); text-decoration: none;">Activités</a></li>
+                    <li class="mb-2"><a href="/projects" style="color: var(--text-secondary); text-decoration: none;">Projets</a></li>
+                    <li class="mb-2"><a href="/team" style="color: var(--text-secondary); text-decoration: none;">Équipe</a></li>
+                    <li class="mb-2"><a href="/careers" style="color: var(--text-secondary); text-decoration: none;">Carrières</a></li>
+                    <li class="mb-2"><a href="/blog" style="color: var(--text-secondary); text-decoration: none;">Blog</a></li>
+                    <li class="mb-2"><a href="/faq" style="color: var(--text-secondary); text-decoration: none;">FAQ</a></li>
+                    <li class="mb-2"><a href="/contact" style="color: var(--text-secondary); text-decoration: none;">Contact</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <h5 class="fw-bold mb-3">Contact</h5>
-                <ul class="list-unstyled" style="color: var(--text-secondary);">
-                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2" style="color: var(--primary-blue);"></i> Bamako, Mali</li>
-                    <li class="mb-2"><i class="fas fa-phone me-2" style="color: var(--primary-blue);"></i> +223 44 39 12 03</li>
-                    <li class="mb-2"><i class="fas fa-envelope me-2" style="color: var(--primary-blue);"></i> contact@africanmission.com</li>
-                    <li class="mb-2"><i class="fas fa-clock me-2" style="color: var(--primary-blue);"></i> Lun - Ven : 8h00 - 17h00</li>
-                </ul>
-                <div class="mt-4">
-                    <h6 style="font-size: 0.9rem; font-weight: 600;">📩 Restez informé</h6>
-                    <form action="/newsletter/subscribe" method="post" class="d-flex" style="gap: 8px;">
-                        <input type="email" name="email" class="form-control form-control-sm"
-                               placeholder="Votre email" required aria-label="S'abonner à la newsletter"
-                               style="border-radius: var(--radius-full); border: 1px solid var(--border-light); background: var(--bg-primary); color: var(--text-primary); padding: 8px 16px;">
-                        <button type="submit" class="btn btn-sm" style="background: var(--gradient-main); border: none; color: #fff; border-radius: var(--radius-full); font-weight: 600; padding: 8px 20px; white-space: nowrap;">
-                            <i class="fas fa-paper-plane"></i> S'abonner
-                        </button>
-                    </form>
-                </div>
+                <h5 class="fw-bold mb-3 text-white">Newsletter</h5>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Recevez nos dernières mises à jour directement dans votre boîte mail.</p>
+                <form action="/newsletter/subscribe" method="post" class="d-flex gap-2 mt-3">
+                    <input type="email" name="email" class="form-control" placeholder="Votre e-mail" required
+                           style="border-radius: var(--radius-full); border: 1px solid var(--border-light); background: var(--bg-primary); color: var(--text-primary); padding: 10px 18px;">
+                    <button type="submit" class="btn-primary-premium" style="padding: 10px 20px;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
             </div>
         </div>
-        <hr class="mt-4" style="border-color: var(--border-light);">
+        <hr class="mt-5" style="border-color: var(--border-light);">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start" style="color: var(--text-muted); font-size: 0.85rem;">
                 &copy; 2026 African Mission Corporate. Tous droits réservés.
             </div>
-            <div class="col-md-6 text-center text-md-end" style="color: var(--text-muted); font-size: 0.85rem;">
-                <a href="/legal" class="text-decoration-none me-3" style="color: var(--text-muted);">Mentions légales</a>
-                <a href="/sitemap" class="text-decoration-none" style="color: var(--text-muted);">Plan du site</a>
+            <div class="col-md-6 text-center text-md-end mt-2 mt-md-0" style="color: var(--text-muted); font-size: 0.85rem;">
+                <a href="/legal" class="me-3" style="color: var(--text-muted); text-decoration: none;">Mentions légales</a>
+                <a href="/sitemap" style="color: var(--text-muted); text-decoration: none;">Plan du site</a>
             </div>
         </div>
     </div>
@@ -505,20 +450,20 @@
 <!-- CHATBOT WIDGET                              -->
 <!-- ============================================ -->
 <div id="chatbotWidget">
-    <button id="chatbotToggle" class="chatbot-toggle" aria-label="Ouvrir le chat">
+    <button id="chatbotToggle" class="chatbot-toggle" onclick="toggleChatbot()" aria-label="Ouvrir l'assistant">
         <i class="fas fa-comment-dots"></i>
     </button>
     <div id="chatbotWindow" class="chatbot-window" style="display:none;">
         <div class="chatbot-header">
-            <span>Assistant African Mission</span>
-            <button id="chatbotClose" class="chatbot-close" aria-label="Fermer le chat"><i class="fas fa-times"></i></button>
+            <span><i class="fas fa-robot me-2" style="color: var(--cyan-neon);"></i> Assistant Corporate</span>
+            <button class="chatbot-close" onclick="toggleChatbot()" aria-label="Fermer"><i class="fas fa-times"></i></button>
         </div>
         <div id="chatbotMessages" class="chatbot-messages">
-            <div class="message bot">Bonjour ! Je suis votre assistant. Comment puis-je vous aider ?</div>
+            <div class="message bot">Bonjour ! Je suis l'assistant d'African Mission Corporate. Comment puis-je vous aider aujourd'hui ?</div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="chatbotInput" placeholder="Posez votre question..." aria-label="Poser une question">
-            <button id="chatbotSend" aria-label="Envoyer le message"><i class="fas fa-paper-plane"></i></button>
+            <input type="text" id="chatbotInput" placeholder="Posez une question..." aria-label="Votre question">
+            <button id="chatbotSend" aria-label="Envoyer"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 </div>
@@ -538,306 +483,130 @@
 <script th:src="@{/js/project-timeline.js}"></script>
 
 <!-- ============================================ -->
-<!-- THREE.JS GLOBE ANIMATION (STANDARD)        -->
+<!-- THREE.JS GLOBE ANIMATION OPTIMISÉE           -->
 <!-- ============================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('three-container');
-        if (!container) return;
-
-        if (typeof THREE === 'undefined') {
-            console.warn('Three.js non chargé');
-            container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding-top:40%;">Chargement du globe 3D...</p>';
-            return;
-        }
+        if (!container || typeof THREE === 'undefined') return;
 
         const scene = new THREE.Scene();
-        scene.background = null;
-
         const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(0, 0, 4);
+        camera.position.set(0, 0, 3.8);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = true;
-        controls.rotateSpeed = 0.5;
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
+        controls.enableZoom = false;
         controls.autoRotate = true;
-        controls.autoRotateSpeed = 1.0;
+        controls.autoRotateSpeed = 1.5;
+        controls.enableDamping = true;
 
-        const ambientLight = new THREE.AmbientLight(0x404060, 0.5);
-        scene.add(ambientLight);
+        // Eclairage Futuriste
+        scene.add(new THREE.AmbientLight(0x0f172a, 1.2));
+        const lightCyan = new THREE.DirectionalLight(0x00f0ff, 2);
+        lightCyan.position.set(3, 3, 3);
+        scene.add(lightCyan);
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-        dirLight.position.set(1, 2, 3);
-        scene.add(dirLight);
+        const lightPurple = new THREE.DirectionalLight(0x8b5cf6, 1.5);
+        lightPurple.position.set(-3, -3, -2);
+        scene.add(lightPurple);
 
-        const backLight = new THREE.DirectionalLight(0x3b82f6, 0.5);
-        backLight.position.set(-1, -0.5, -1);
-        scene.add(backLight);
-
-        const geometry = new THREE.SphereGeometry(1, 64, 64);
+        // Core Sphere (Cyber Core)
+        const geometry = new THREE.SphereGeometry(1, 48, 48);
         const material = new THREE.MeshPhongMaterial({
-            color: 0x3b82f6,
-            emissive: 0x0a1628,
-            emissiveIntensity: 0.1,
-            transparent: true,
-            opacity: 0.9,
-            shininess: 30
+            color: 0x030712,
+            emissive: 0x8b5cf6,
+            emissiveIntensity: 0.2,
+            shininess: 80
         });
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
 
-        const linesMaterial = new THREE.LineBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.3 });
-        const linesGeometry = new THREE.SphereGeometry(1.01, 24, 12);
-        const wireframe = new THREE.LineSegments(
-            new THREE.WireframeGeometry(linesGeometry),
-            linesMaterial
-        );
+        // Hologram Wireframe
+        const wireframeGeo = new THREE.WireframeGeometry(geometry);
+        const wireframeMat = new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.3 });
+        const wireframe = new THREE.LineSegments(wireframeGeo, wireframeMat);
         scene.add(wireframe);
 
-        const ringMaterial = new THREE.MeshBasicMaterial({
-            color: 0x3b82f6,
-            transparent: true,
-            opacity: 0.15,
-            side: THREE.DoubleSide,
-            wireframe: true
-        });
-        const rings = [];
-        for (let i = 0; i < 3; i++) {
-            const ringGeo = new THREE.TorusGeometry(1.3 + i * 0.25, 0.02, 16, 64);
-            const ring = new THREE.Mesh(ringGeo, ringMaterial);
-            ring.rotation.x = Math.PI / 2 + (i * 0.5);
-            ring.rotation.z = i * 0.8;
-            scene.add(ring);
-            rings.push(ring);
-        }
+        // Double Orbital Rings
+        const ring1Geo = new THREE.TorusGeometry(1.3, 0.012, 16, 100);
+        const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.7 });
+        const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+        ring1.rotation.x = Math.PI / 3;
+        scene.add(ring1);
 
-        const particlesGeo = new THREE.BufferGeometry();
-        const particlesCount = 500;
-        const positions = new Float32Array(particlesCount * 3);
-        for (let i = 0; i < particlesCount * 3; i += 3) {
-            const radius = 2.5 + Math.random() * 2.0;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-            positions[i] = radius * Math.sin(phi) * Math.cos(theta);
-            positions[i+1] = radius * Math.sin(phi) * Math.sin(theta);
-            positions[i+2] = radius * Math.cos(phi);
-        }
-        particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particlesMat = new THREE.PointsMaterial({
-            color: 0x93b4f0,
-            size: 0.02,
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
-        });
-        const particles = new THREE.Points(particlesGeo, particlesMat);
-        scene.add(particles);
+        const ring2Geo = new THREE.TorusGeometry(1.45, 0.008, 16, 100);
+        const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xec4899, transparent: true, opacity: 0.5 });
+        const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+        ring2.rotation.y = Math.PI / 4;
+        scene.add(ring2);
 
+        // Animation Loop
         function animate() {
             requestAnimationFrame(animate);
-
             sphere.rotation.y += 0.002;
             wireframe.rotation.y = sphere.rotation.y;
-            particles.rotation.y += 0.0005;
-
-            rings.forEach((ring, index) => {
-                ring.rotation.x += 0.001 * (1 + index * 0.5);
-                ring.rotation.z += 0.0008 * (1 + index * 0.3);
-            });
-
+            ring1.rotation.z += 0.004;
+            ring2.rotation.x += 0.003;
             controls.update();
             renderer.render(scene, camera);
         }
         animate();
 
         window.addEventListener('resize', () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            if (width > 0 && height > 0) {
-                renderer.setSize(width, height);
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-            }
-        });
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const maxScroll = 500;
-            const speed = 0.5 + (scrollY / maxScroll) * 1.5;
-            controls.autoRotateSpeed = Math.min(speed, 3.0);
+            if (!container) return;
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
         });
     });
 </script>
 
 <!-- ============================================ -->
-<!-- AR LOGIC INLINE (délégation)               -->
+<!-- AR LOGIC & INTERACTION ENGINE               -->
 <!-- ============================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 AR Logic inline (délégation) loaded');
+        AOS.init({ duration: 800, once: true, offset: 60 });
 
+        // AR Modal Triggering
         const arModal = document.getElementById('arModal');
         const arViewer = document.getElementById('arViewer');
         const arLabel = document.getElementById('arModalLabel');
 
-        if (!arModal || !arViewer || !arLabel) {
-            console.warn('⚠️ AR : éléments manquants');
-            return;
-        }
-
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('.ar-trigger');
             if (!btn) return;
-
             e.preventDefault();
-            console.log('🖱️ Clic AR détecté !');
 
             const modelUrl = btn.dataset.model || '/models/activity.glb';
             const title = btn.dataset.title || 'Visualisation 3D';
 
-            arViewer.setAttribute('src', modelUrl);
-            arLabel.textContent = title;
+            if (arViewer) arViewer.setAttribute('src', modelUrl);
+            if (arLabel) arLabel.textContent = title;
 
             try {
                 const modal = new bootstrap.Modal(arModal);
                 modal.show();
-                console.log('✅ Modal AR ouvert');
             } catch (err) {
-                console.error('❌ Erreur ouverture modal :', err);
+                console.error('AR Modal Error:', err);
             }
         });
-
-        console.log('✅ AR Logic inline (délégation) initialisé');
     });
-</script>
 
-<script>
-    // ============================================
-    // RECHERCHE FRONT-END
-    // ============================================
-    function performSearch() {
-        const desktopInput = document.getElementById('searchInputDesktop');
-        const mobileInput = document.getElementById('searchInputMobile');
-        let query = '';
-        if (desktopInput && desktopInput.value.trim() !== '') {
-            query = desktopInput.value.trim().toLowerCase();
-        } else if (mobileInput && mobileInput.value.trim() !== '') {
-            query = mobileInput.value.trim().toLowerCase();
-        } else {
-            resetSearch();
-            return;
-        }
-        if (query === '') { resetSearch(); return; }
-
-        const searchableItems = document.querySelectorAll('.card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item');
-        const textElements = document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag, .page-header h1, .page-header p');
-
-        let found = false;
-        searchableItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            if (text.includes(query)) {
-                item.style.display = '';
-                found = true;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-        textElements.forEach(el => {
-            const text = el.textContent.toLowerCase();
-            if (text.includes(query)) {
-                el.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
-                el.style.transition = 'background 0.3s';
-                if (!found) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    found = true;
-                }
-            } else {
-                el.style.backgroundColor = 'transparent';
-            }
-        });
-        if (!found) {
-            showToast('Aucun résultat trouvé pour "' + query + '"', 'error');
-        } else {
-            showToast('Résultats trouvés pour "' + query + '"', 'success');
+    // Chatbot Toggle Helper
+    function toggleChatbot() {
+        const win = document.getElementById('chatbotWindow');
+        if (win) {
+            win.style.display = (win.style.display === 'none' || win.style.display === '') ? 'flex' : 'none';
         }
     }
 
-    function resetSearch() {
-        document.querySelectorAll('.card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item')
-            .forEach(item => item.style.display = '');
-        document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag, .page-header h1, .page-header p')
-            .forEach(el => el.style.backgroundColor = 'transparent');
-        const desktopInput = document.getElementById('searchInputDesktop');
-        const mobileInput = document.getElementById('searchInputMobile');
-        if (desktopInput) desktopInput.value = '';
-        if (mobileInput) mobileInput.value = '';
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const desktopInput = document.getElementById('searchInputDesktop');
-        const mobileInput = document.getElementById('searchInputMobile');
-        if (desktopInput) {
-            desktopInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-        if (mobileInput) {
-            mobileInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-    });
-
-    // ============================================
-    // INITIALIZATION DES ANIMATIONS AOS
-    // ============================================
-    AOS.init({ duration: 800, once: true, offset: 80, easing: 'ease-out-cubic' });
-
-    // ============================================
-    // NAVBAR SCROLL EFFECT
-    // ============================================
-    const navbar = document.getElementById('mainNav');
-    const mobileSearch = document.getElementById('mobileSearch');
-
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        if (mobileSearch) {
-            if (window.scrollY > 150) {
-                mobileSearch.classList.remove('visible');
-            } else {
-                mobileSearch.classList.add('visible');
-            }
-        }
-    });
-
-    if (mobileSearch) {
-        mobileSearch.classList.add('visible');
-    }
-
-    // ============================================
-    // SCROLL PROGRESS BAR
-    // ============================================
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        document.getElementById('scrollProgress').style.width = scrollPercent + '%';
-    });
-
-    // ============================================
-    // THEME TOGGLE (DARK/LIGHT)
-    // ============================================
+    // Theme Switcher Logic
     function toggleTheme() {
         const body = document.body;
         const icon = document.getElementById('themeIcon');
@@ -855,67 +624,60 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
+        if (localStorage.getItem('theme') === 'light') {
             document.body.setAttribute('data-theme', 'light');
-            document.getElementById('themeIcon').className = 'fas fa-sun';
+            const icon = document.getElementById('themeIcon');
+            if (icon) icon.className = 'fas fa-sun';
         }
     });
 
-    // ============================================
-    // TOAST NOTIFICATIONS SYSTEM
-    // ============================================
-    function showToast(message, type = 'success') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        const isDark = document.body.getAttribute('data-theme') === 'light';
-        const bgColor = type === 'success' ? (isDark ? '#1e293b' : '#1e293b') : '#ef4444';
-        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+    // Scroll Progress Bar
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        const progressBar = document.getElementById('scrollProgress');
+        if (progressBar) progressBar.style.width = scrollPercent + '%';
 
-        toast.style.cssText = `
-            background: ${bgColor};
-            color: #fff;
-            padding: 16px 24px;
-            border-radius: 12px;
-            border-left: 4px solid ${type === 'success' ? '#3b82f6' : '#ef4444'};
-            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        `;
-        toast.innerHTML = `
-            <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
-            <span>${message}</span>
-        `;
-        container.appendChild(toast);
+        const nav = document.getElementById('mainNav');
+        if (scrollTop > 50) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    });
 
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(100px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
+    // Simple Search Engine
+    function performSearch() {
+        const input = document.getElementById('searchInputDesktop');
+        if (!input) return;
+        const query = input.value.trim().toLowerCase();
+
+        const items = document.querySelectorAll('.card-premium, .partner-premium');
+        let found = false;
+
+        items.forEach(item => {
+            if (item.textContent.toLowerCase().includes(query)) {
+                item.style.display = '';
+                found = true;
+            } else {
+                item.style.display = query === '' ? '' : 'none';
+            }
+        });
+
+        if (!found && query !== '') {
+            showToast('Aucun élément ne correspond à "' + query + '"', 'error');
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const toastMessage = /*[[${toastMessage}]]*/ null;
-        const toastType = /*[[${toastType}]]*/ 'success';
-        if (toastMessage) {
-            showToast(toastMessage, toastType);
-        }
-    });
-
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-    `;
-    document.head.appendChild(style);
+    // Toast System
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = 'card-premium';
+        toast.style.cssText = `padding: 12px 20px; border-left: 4px solid ${type === 'success' ? 'var(--cyan-neon)' : '#ef4444'}; display: flex; align-items: center; gap: 10px; box-shadow: var(--glow-purple);`;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}" style="color: var(--cyan-neon);"></i> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
 </script>
 </body>
 </html>
