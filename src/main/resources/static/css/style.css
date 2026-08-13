@@ -1,13 +1,13 @@
 /* ==========================================================================
-   AFRICAN MISSION CORPORATE - ULTIMATE HYPER-CYBER / GLASSMORPHISM 3.0
+   AFRICAN MISSION CORPORATE - ULTIMATE HYPER-CYBER / GLASSMORPHISM 3.0 (FIXED)
    ========================================================================== */
 
 :root {
   /* Color Palette - Deep Cyber Neon */
   --bg-primary: #030712;
   --bg-secondary: #0b0f19;
-  --bg-card: rgba(15, 23, 42, 0.65);
-  --bg-glass: rgba(11, 15, 25, 0.85);
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-glass: rgba(11, 15, 25, 0.88);
 
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
@@ -18,13 +18,13 @@
   --pink-neon: #ec4899;
   --emerald-neon: #10b981;
 
-  --border-light: rgba(255, 255, 255, 0.08);
-  --border-cyber: rgba(0, 240, 255, 0.3);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-cyber: rgba(0, 240, 255, 0.35);
 
   --gradient-cyber: linear-gradient(135deg, #00f0ff 0%, #8b5cf6 50%, #ec4899 100%);
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.4);
   --glow-purple: 0 0 25px rgba(139, 92, 246, 0.4);
-  --glow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.15);
+  --glow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.2);
 
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -36,46 +36,40 @@
   --transition-3d: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Base Optimization */
-*, *::before, *::after {
-  box-sizing: border-box;
+/* Override Bootstrap Backgrounds */
+html, body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  overflow-x: hidden;
-}
-
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
+/* Fix Bootstrap Container Spacing */
+.container {
+  position: relative;
+  z-index: 2;
 }
 
 /* ==========================================================================
    EFFECTS & TYPOGRAPHY
    ========================================================================== */
 .text-gradient, .glowing-text {
-  background: var(--gradient-cyber);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: var(--gradient-cyber) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
   display: inline-block;
-  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.4));
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.5));
 }
 
 .section-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   position: relative;
-  text-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
 }
 
 /* ==========================================================================
@@ -84,10 +78,11 @@ body {
 .custom-navbar {
   padding: 18px 0;
   transition: all var(--transition-smooth);
-  background: var(--bg-glass);
-  backdrop-filter: var(--backdrop-blur);
-  border-bottom: 1px solid var(--border-cyber);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: var(--bg-glass) !important;
+  backdrop-filter: var(--backdrop-blur) !important;
+  border-bottom: 1px solid var(--border-cyber) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+  z-index: 1050 !important;
 }
 
 .custom-navbar .navbar-brand {
@@ -107,9 +102,9 @@ body {
 .custom-navbar .nav-link:hover,
 .custom-navbar .nav-link.active {
   color: var(--text-primary) !important;
-  background: rgba(0, 240, 255, 0.1);
-  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2);
-  border: 1px solid rgba(0, 240, 255, 0.3);
+  background: rgba(0, 240, 255, 0.12) !important;
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.2) !important;
+  border: 1px solid rgba(0, 240, 255, 0.3) !important;
 }
 
 /* ==========================================================================
@@ -118,9 +113,11 @@ body {
 .hero-section {
   position: relative;
   min-height: 100vh;
-  padding-top: 120px;
-  background: var(--bg-primary);
+  padding-top: 140px;
+  padding-bottom: 60px;
+  background: var(--bg-primary) !important;
   overflow: hidden;
+  z-index: 1;
 }
 
 .hero-bg-glow {
@@ -128,16 +125,17 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, rgba(139, 92, 246, 0.15) 40%, transparent 70%);
-  filter: blur(80px);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(139, 92, 246, 0.18) 40%, transparent 70%);
+  filter: blur(90px);
   pointer-events: none;
   animation: pulseGlow 6s ease-in-out infinite alternate;
+  z-index: 1;
 }
 
 @keyframes pulseGlow {
-  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
   100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
 }
 
@@ -150,7 +148,7 @@ body {
 
 .hero-subtitle {
   font-size: 1.25rem;
-  color: var(--text-secondary);
+  color: var(--text-secondary) !important;
   max-width: 650px;
   margin: 0 auto 35px auto;
 }
@@ -160,40 +158,41 @@ body {
    ========================================================================== */
 .btn-glow {
   position: relative;
-  background: var(--gradient-cyber);
-  color: #fff !important;
+  background: var(--gradient-cyber) !important;
+  color: #ffffff !important;
   font-weight: 700;
   padding: 12px 32px;
   border-radius: var(--radius-full);
   text-decoration: none;
-  box-shadow: var(--glow-cyan);
-  transition: all var(--transition-smooth);
-  border: none;
-  overflow: hidden;
+  box-shadow: var(--glow-cyan) !important;
+  transition: all var(--transition-smooth) !important;
+  border: none !important;
   display: inline-block;
+  cursor: pointer;
 }
 
 .btn-glow:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.8), 0 0 15px rgba(236, 72, 153, 0.5);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.8), 0 0 15px rgba(236, 72, 153, 0.5) !important;
+  color: #ffffff !important;
 }
 
 .btn-outline-glow {
-  background: transparent;
-  border: 1px solid var(--cyan-neon);
+  background: transparent !important;
+  border: 1px solid var(--cyan-neon) !important;
   color: var(--cyan-neon) !important;
   font-weight: 600;
   padding: 12px 32px;
   border-radius: var(--radius-full);
   text-decoration: none;
-  transition: all var(--transition-smooth);
+  transition: all var(--transition-smooth) !important;
   display: inline-block;
 }
 
 .btn-outline-glow:hover {
-  background: rgba(0, 240, 255, 0.15);
-  box-shadow: var(--glow-cyan);
-  color: #fff !important;
+  background: rgba(0, 240, 255, 0.15) !important;
+  box-shadow: var(--glow-cyan) !important;
+  color: #ffffff !important;
   transform: translateY(-3px);
 }
 
@@ -201,17 +200,18 @@ body {
    GLASS CARDS & SERVICES
    ========================================================================== */
 #services {
-  background: var(--bg-secondary);
+  background: var(--bg-secondary) !important;
   position: relative;
+  z-index: 2;
 }
 
 .glass-card {
-  background: var(--bg-card);
-  backdrop-filter: var(--backdrop-blur);
-  border: 1px solid var(--border-light);
+  background: var(--bg-card) !important;
+  backdrop-filter: var(--backdrop-blur) !important;
+  border: 1px solid var(--border-light) !important;
   border-radius: var(--radius-lg);
   padding: 35px 25px;
-  transition: all var(--transition-3d);
+  transition: all var(--transition-3d) !important;
   height: 100%;
   position: relative;
   overflow: hidden;
@@ -231,8 +231,8 @@ body {
 
 .glass-card:hover {
   transform: translateY(-10px) rotateX(4deg) rotateY(-2deg);
-  border-color: var(--border-cyber);
-  box-shadow: var(--glow-card);
+  border-color: var(--border-cyber) !important;
+  box-shadow: var(--glow-card) !important;
 }
 
 .glass-card:hover::before {
@@ -242,22 +242,22 @@ body {
 .card-icon {
   width: 60px;
   height: 60px;
-  background: rgba(0, 240, 255, 0.1);
-  border: 1px solid var(--border-cyber);
+  background: rgba(0, 240, 255, 0.1) !important;
+  border: 1px solid var(--border-cyber) !important;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  color: var(--cyan-neon);
+  color: var(--cyan-neon) !important;
   margin-bottom: 20px;
   box-shadow: var(--glow-cyan);
-  transition: all var(--transition-3d);
+  transition: all var(--transition-3d) !important;
 }
 
 .glass-card:hover .card-icon {
-  background: var(--gradient-cyber);
-  color: #fff;
+  background: var(--gradient-cyber) !important;
+  color: #ffffff !important;
   transform: scale(1.1) rotate(5deg);
 }
 
@@ -265,11 +265,11 @@ body {
   font-size: 1.35rem;
   font-weight: 700;
   margin-bottom: 12px;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 }
 
 .glass-card p {
-  color: var(--text-secondary);
+  color: var(--text-secondary) !important;
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -284,19 +284,19 @@ body {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: var(--gradient-cyber);
-  border: none;
-  color: #fff;
+  background: var(--gradient-cyber) !important;
+  border: none !important;
+  color: #ffffff !important;
   font-size: 1.5rem;
   cursor: pointer;
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
-  z-index: 9999;
-  transition: all var(--transition-smooth);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.6) !important;
+  z-index: 9999 !important;
+  transition: all var(--transition-smooth) !important;
 }
 
 .chatbot-toggle-btn:hover {
   transform: scale(1.12) rotate(10deg);
-  box-shadow: 0 0 35px rgba(0, 240, 255, 0.9);
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.9) !important;
 }
 
 .notification-badge {
@@ -316,25 +316,25 @@ body {
   right: 30px;
   width: 360px;
   height: 480px;
-  background: var(--bg-glass);
-  backdrop-filter: var(--backdrop-blur);
-  border: 1px solid var(--border-cyber);
+  background: var(--bg-glass) !important;
+  backdrop-filter: var(--backdrop-blur) !important;
+  border: 1px solid var(--border-cyber) !important;
   border-radius: var(--radius-lg);
-  box-shadow: var(--glow-card);
+  box-shadow: var(--glow-card) !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 9998;
+  z-index: 9998 !important;
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px) scale(0.95);
-  transition: all var(--transition-smooth);
+  transition: all var(--transition-smooth) !important;
 }
 
 .chatbot-container.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
 }
 
 .chatbot-header {
@@ -345,7 +345,7 @@ body {
   justify-content: space-between;
   align-items: center;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 }
 
 .online-indicator {
@@ -385,15 +385,15 @@ body {
 }
 
 .message.bot {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-light);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--border-light) !important;
+  color: var(--text-primary) !important;
   align-self: flex-start;
 }
 
 .message.user {
-  background: var(--gradient-cyber);
-  color: #fff;
+  background: var(--gradient-cyber) !important;
+  color: #ffffff !important;
   align-self: flex-end;
   box-shadow: var(--glow-cyan);
 }
@@ -407,22 +407,22 @@ body {
 
 .chatbot-input input {
   flex: 1;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-light) !important;
   border-radius: var(--radius-full);
   padding: 8px 16px;
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   outline: none;
 }
 
 .chatbot-input input:focus {
-  border-color: var(--cyan-neon);
+  border-color: var(--cyan-neon) !important;
 }
 
 .chatbot-input button {
-  background: var(--gradient-cyber);
-  border: none;
-  color: #fff;
+  background: var(--gradient-cyber) !important;
+  border: none !important;
+  color: #ffffff !important;
   width: 38px;
   height: 38px;
   border-radius: 50%;
