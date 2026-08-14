@@ -6,11 +6,15 @@
     border-bottom: 1px solid var(--border-light);
     padding: 6px 0;
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--text-primary) !important; /* ✅ FORCE le texte en blanc */
     transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     position: relative;
-    z-index: 5;
+    z-index: 1029; /* Juste en dessous de la navbar */
     margin-top: 0;
+    /* ✅ Ajout pour meilleur contraste */
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1);
 }
 
 .market-data-row {
@@ -19,8 +23,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px 24px;
+    padding: 2px 0;
 }
 
+/* --- Météo --- */
 .market-weather {
     display: flex;
     align-items: center;
@@ -31,27 +37,32 @@
 .market-weather .weather-icon {
     font-size: 1.1rem;
     color: var(--primary-blue);
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .market-weather .weather-city {
-    font-weight: 500;
-    color: var(--text-secondary);
+    font-weight: 600;
+    color: var(--text-primary) !important; /* ✅ BLANC */
     font-size: 0.85rem;
 }
 
 .market-weather .weather-temp {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary) !important; /* ✅ BLANC */
+    font-size: 0.95rem;
+    background: rgba(59, 130, 246, 0.08);
+    padding: 0 8px;
+    border-radius: 4px;
 }
 
 .market-weather .weather-desc {
     text-transform: capitalize;
-    color: var(--text-muted);
+    color: var(--text-secondary) !important; /* ✅ Plus clair */
     font-size: 0.8rem;
+    font-weight: 400;
 }
 
+/* --- Marchés --- */
 .market-prices {
     display: flex;
     flex-wrap: wrap;
@@ -60,11 +71,14 @@
 }
 
 .market-label {
-    font-weight: 500;
-    color: var(--text-secondary);
+    font-weight: 600;
+    color: var(--text-primary) !important; /* ✅ BLANC */
     font-size: 0.8rem;
     letter-spacing: 0.3px;
     margin-right: 2px;
+    background: rgba(59, 130, 246, 0.06);
+    padding: 0 10px;
+    border-radius: 12px;
 }
 
 .market-item {
@@ -72,36 +86,63 @@
     align-items: center;
     gap: 4px;
     font-size: 0.8rem;
-    color: var(--text-secondary);
-    padding: 2px 6px;
+    color: var(--text-primary) !important; /* ✅ BLANC */
+    padding: 2px 8px;
     border-radius: 4px;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.02);
     transition: background 0.2s;
 }
 
 .market-item:hover {
-    background: var(--bg-card);
+    background: rgba(59, 130, 246, 0.06);
 }
 
 .market-item .up {
     color: #22c55e;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .market-item .down {
     color: #ef4444;
-    font-weight: 500;
+    font-weight: 600;
 }
 
+.market-item .price-value {
+    font-weight: 600;
+    color: var(--text-primary) !important;
+}
+
+/* ============================================ */
+/* MODE CLAIR - BANDEAU                        */
+/* ============================================ */
 body[data-theme="light"] .market-data-section {
-    background: #f1f5f9;
-    border-bottom-color: #e2e8f0;
+    background: rgba(241, 245, 249, 0.95) !important;
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(4px);
+}
+
+body[data-theme="light"] .market-weather .weather-city,
+body[data-theme="light"] .market-weather .weather-temp,
+body[data-theme="light"] .market-label,
+body[data-theme="light"] .market-item {
+    color: #0f172a !important;
 }
 
 body[data-theme="light"] .market-item:hover {
-    background: #ffffff;
+    background: rgba(0, 0, 0, 0.02);
 }
 
+body[data-theme="light"] .market-weather .weather-temp {
+    background: rgba(59, 130, 246, 0.06);
+}
+
+body[data-theme="light"] .market-label {
+    background: rgba(59, 130, 246, 0.04);
+}
+
+/* ============================================ */
+/* RESPONSIVE                                   */
+/* ============================================ */
 @media (max-width: 768px) {
     .market-data-row {
         flex-direction: column;
@@ -117,9 +158,6 @@ body[data-theme="light"] .market-item:hover {
         flex-wrap: wrap;
         gap: 4px 12px;
     }
-    .market-weather .separator {
-        display: none;
-    }
 }
 
 @media (max-width: 480px) {
@@ -129,6 +167,6 @@ body[data-theme="light"] .market-item:hover {
     }
     .market-item {
         font-size: 0.7rem;
-        padding: 1px 4px;
+        padding: 1px 6px;
     }
 }
