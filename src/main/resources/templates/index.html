@@ -26,28 +26,60 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
-    <!-- STYLE POUR CORRIGER L'AFFICHAGE DU BANDEAU -->
+    <!-- ============================================ -->
+    <!-- RÈGLE DE FORCE POUR LE BANDEAU MÉTÉO        -->
+    <!-- ============================================ -->
     <style>
-        /* Forcer l'affichage du bandeau */
+        /* Forcer l'affichage du bandeau météo */
         #marketData {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
+            color: #ffffff !important;
             position: relative !important;
-            z-index: 4 !important;
-            margin-top: 0 !important;
-            padding-top: 6px !important;
+            z-index: 1029 !important;
+            background: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(4px) !important;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+            padding: 6px 0 !important;
         }
 
-        /* La navbar doit rester au-dessus */
+        #marketData .weather-city,
+        #marketData .weather-temp,
+        #marketData .market-label,
+        #marketData .market-item {
+            color: #ffffff !important;
+        }
+
+        #marketData .weather-desc {
+            color: #94a3b8 !important;
+        }
+
+        #marketData .weather-icon {
+            color: #3b82f6 !important;
+            opacity: 0.9 !important;
+        }
+
+        /* Forcer aussi le mode clair */
+        body[data-theme="light"] #marketData {
+            background: rgba(241, 245, 249, 0.95) !important;
+            border-bottom-color: rgba(0, 0, 0, 0.06) !important;
+        }
+
+        body[data-theme="light"] #marketData .weather-city,
+        body[data-theme="light"] #marketData .weather-temp,
+        body[data-theme="light"] #marketData .market-label,
+        body[data-theme="light"] #marketData .market-item {
+            color: #0f172a !important;
+        }
+
+        body[data-theme="light"] #marketData .weather-desc {
+            color: #475569 !important;
+        }
+
+        /* La navbar reste au-dessus */
         .premium-navbar {
             z-index: 1030 !important;
-        }
-
-        /* Éviter que le bandeau soit écrasé par d'autres éléments */
-        .market-data-section {
-            position: relative;
-            z-index: 4 !important;
         }
     </style>
 </head>
@@ -126,31 +158,31 @@
     </div>
 </div>
 
-<!-- ========== BANDEAU MÉTÉO & MARCHÉS (INTÉGRÉ DIRECTEMENT) ========== -->
-<div id="marketData" class="market-data-section" style="display: block !important; position: relative; z-index: 4 !important; margin-top: 0 !important; padding-top: 6px !important; background: var(--bg-secondary); border-bottom: 1px solid var(--border-light);">
+<!-- ========== BANDEAU MÉTÉO & MARCHÉS (intégré en dur) ========== -->
+<div id="marketData" class="market-data-section" style="display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1029 !important; background: rgba(15, 23, 42, 0.95) !important; backdrop-filter: blur(4px) !important; border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important; padding: 6px 0 !important;">
     <div class="container">
         <div class="market-data-row">
             <!-- Météo -->
             <div class="market-weather">
-                <i class="fas fa-cloud-sun weather-icon"></i>
-                <span class="weather-city" id="weatherCity">Chargement...</span>
-                <span class="weather-temp" id="weatherTemp">--°C</span>
-                <span class="weather-desc" id="weatherDesc">--</span>
+                <i class="fas fa-cloud-sun weather-icon" style="color: #3b82f6; opacity: 0.9;"></i>
+                <span class="weather-city" id="weatherCity" style="color: #ffffff !important;">Chargement...</span>
+                <span class="weather-temp" id="weatherTemp" style="color: #ffffff !important;">--°C</span>
+                <span class="weather-desc" id="weatherDesc" style="color: #94a3b8 !important;">--</span>
             </div>
 
             <!-- Marchés -->
             <div class="market-prices">
-                <span class="market-label">📈 Marchés</span>
-                <span class="market-item" id="marketCOTTON">Coton: --</span>
-                <span class="market-item" id="marketLUMBER">Bois: --</span>
-                <span class="market-item" id="marketSTEEL">Acier: --</span>
+                <span class="market-label" style="color: #ffffff !important;">📈 Marchés</span>
+                <span class="market-item" id="marketCOTTON" style="color: #ffffff !important;">Coton: --</span>
+                <span class="market-item" id="marketLUMBER" style="color: #ffffff !important;">Bois: --</span>
+                <span class="market-item" id="marketSTEEL" style="color: #ffffff !important;">Acier: --</span>
             </div>
         </div>
     </div>
 </div>
 
 <!-- ========== HERO SECTION ========== -->
-<section class="hero-premium" id="heroSection" style="padding-top: 0;">
+<section class="hero-premium" id="heroSection" style="z-index:1 !important;">
     <div class="hero-grid"></div>
     <div class="hero-glow-orb orb-1"></div>
     <div class="hero-glow-orb orb-2"></div>
@@ -487,9 +519,6 @@
 <!-- ========== SCRIPTS ========== -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-<!-- ====== SCRIPTS CORRECTEMENT CHARGÉS ====== -->
-<!-- NE PAS UTILISER /admin/login comme source de script ! -->
 <script th:src="@{/js/chatbot.js}"></script>
 <script th:src="@{/js/micro-interactions.js}"></script>
 <script th:src="@{/js/sw-register.js}"></script>
