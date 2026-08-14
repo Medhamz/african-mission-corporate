@@ -1542,3 +1542,254 @@ section[data-aos] {
     color: var(--primary-gold);
     animation: sparkle 3s ease-in-out infinite;
 }
+
+/* ============================================
+   STYLES CHAT - CORRECTION DES CHAMPS BLOQUÉS
+============================================ */
+#chatForm input,
+#chatForm button {
+    pointer-events: auto !important;
+    cursor: text !important;
+    z-index: 10 !important;
+    position: relative !important;
+}
+
+#chatForm input:focus {
+    outline: 2px solid var(--primary-blue) !important;
+    outline-offset: 2px;
+}
+
+#chatForm button {
+    cursor: pointer !important;
+}
+
+.chat-message {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary-blue);
+}
+
+/* ============================================ */
+/* CHATBOT WIDGET                              */
+/* ============================================ */
+#chatbotWidget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9998;
+}
+
+.chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient-main);
+    border: none;
+    color: #fff;
+    font-size: 26px;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.6);
+}
+
+.chatbot-toggle:active {
+    transform: scale(0.95);
+}
+
+.chatbot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 360px;
+    max-width: 80vw;
+    height: 450px;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.chatbot-header {
+    background: var(--gradient-main);
+    padding: 14px 20px;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-close {
+    background: transparent;
+    border: none;
+}
+
+/* ==========================================================================
+   STYLISATION PROFESSIONNELLE DU LOGO ET DU TITRE
+   ========================================================================== */
+
+.logo-premium {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.logo-premium:hover {
+    transform: translateY(-1px);
+}
+
+.logo-premium-icon {
+    font-size: 1.5rem;
+    color: var(--primary-blue, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-premium-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary, #ffffff);
+    text-transform: capitalize;
+    line-height: 1.2;
+}
+
+.logo-premium-text .highlight {
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-premium-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--primary-blue, #3b82f6);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+.footer-brand-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-primary, #ffffff);
+    display: flex;
+    align-items: center;
+}
+
+.footer-brand-title i {
+    color: var(--primary-blue, #3b82f6);
+}
+
+/* ============================================
+   RESPONSIVE BANDEAU
+============================================ */
+@media (max-width: 768px) {
+    .market-data-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px 0;
+        padding: 4px 0;
+    }
+    .market-weather {
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+    .market-prices {
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .market-data-section {
+        font-size: 0.7rem;
+        padding: 4px 0;
+    }
+    .market-item {
+        font-size: 0.7rem;
+        padding: 1px 4px;
+    }
+}
+
+/* ============================================
+   FORÇAGE DE L'AFFICHAGE DU BANDEAU
+   (écrase les styles précédents si nécessaire)
+============================================ */
+#marketData,
+.market-data-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 1029 !important;
+    color: #f8fafc !important;
+    background: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(4px) !important;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+    padding: 6px 0 !important;
+    margin-top: 0 !important;
+}
+
+#marketData .weather-city,
+#marketData .weather-temp,
+#marketData .market-label,
+#marketData .market-item {
+    color: #ffffff !important;
+}
+
+#marketData .weather-desc {
+    color: #94a3b8 !important;
+}
+
+#marketData .weather-icon {
+    color: #3b82f6 !important;
+    opacity: 0.9 !important;
+}
+
+body[data-theme="light"] #marketData {
+    background: rgba(241, 245, 249, 0.95) !important;
+    border-bottom-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body[data-theme="light"] #marketData .weather-city,
+body[data-theme="light"] #marketData .weather-temp,
+body[data-theme="light"] #marketData .market-label,
+body[data-theme="light"] #marketData .market-item {
+    color: #0f172a !important;
+}
+
+body[data-theme="light"] #marketData .weather-desc {
+    color: #475569 !important;
+}
