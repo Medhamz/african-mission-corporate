@@ -26,12 +26,28 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
-    <!-- Forcer l'affichage du bandeau même avant JS -->
+    <!-- STYLE POUR CORRIGER L'AFFICHAGE DU BANDEAU -->
     <style>
+        /* Forcer l'affichage du bandeau */
         #marketData {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
+            position: relative !important;
+            z-index: 4 !important;
+            margin-top: 0 !important;
+            padding-top: 6px !important;
+        }
+
+        /* La navbar doit rester au-dessus */
+        .premium-navbar {
+            z-index: 1030 !important;
+        }
+
+        /* Éviter que le bandeau soit écrasé par d'autres éléments */
+        .market-data-section {
+            position: relative;
+            z-index: 4 !important;
         }
     </style>
 </head>
@@ -44,7 +60,7 @@
 <div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
 
 <!-- ========== NAVBAR ========== -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav" style="z-index:1030 !important;">
     <div class="container">
         <a class="logo-premium" href="/">
             <span class="logo-premium-icon"><i class="fas fa-globe-africa"></i></span>
@@ -111,7 +127,7 @@
 </div>
 
 <!-- ========== BANDEAU MÉTÉO & MARCHÉS (INTÉGRÉ DIRECTEMENT) ========== -->
-<div id="marketData" class="market-data-section" style="display: block !important;">
+<div id="marketData" class="market-data-section" style="display: block !important; position: relative; z-index: 4 !important; margin-top: 0 !important; padding-top: 6px !important; background: var(--bg-secondary); border-bottom: 1px solid var(--border-light);">
     <div class="container">
         <div class="market-data-row">
             <!-- Météo -->
@@ -134,7 +150,7 @@
 </div>
 
 <!-- ========== HERO SECTION ========== -->
-<section class="hero-premium" id="heroSection">
+<section class="hero-premium" id="heroSection" style="padding-top: 0;">
     <div class="hero-grid"></div>
     <div class="hero-glow-orb orb-1"></div>
     <div class="hero-glow-orb orb-2"></div>
@@ -471,10 +487,12 @@
 <!-- ========== SCRIPTS ========== -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<!-- ====== SCRIPTS CORRECTEMENT CHARGÉS ====== -->
+<!-- NE PAS UTILISER /admin/login comme source de script ! -->
 <script th:src="@{/js/chatbot.js}"></script>
 <script th:src="@{/js/micro-interactions.js}"></script>
 <script th:src="@{/js/sw-register.js}"></script>
-<!-- SCRIPT MARKET-DATA.js chargé normalement -->
 <script th:src="@{/js/market-data.js}"></script>
 <script th:src="@{/js/timeline.js}"></script>
 <script th:src="@{/js/project-timeline.js}"></script>
