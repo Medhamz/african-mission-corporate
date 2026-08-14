@@ -417,10 +417,10 @@
 </section>
 
 <!-- ========== TIMELINE 3D ========== -->
-<div th:replace="fragments/timeline :: #timeline"></div>
+<div th:replace="~{fragments/timeline :: #timeline}"></div>
 
 <!-- ========== PROJECT TIMELINE ========== -->
-<div th:replace="fragments/project-timeline :: #projectTimeline"></div>
+<div th:replace="~{fragments/project-timeline :: #projectTimeline}"></div>
 
 <!-- ========== FOOTER ========== -->
 <footer class="footer-premium">
@@ -696,7 +696,7 @@
     });
 </script>
 
-<script>
+<script th:inline="javascript">
     // ============================================
     // RECHERCHE FRONT-END
     // ============================================
@@ -854,11 +854,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const toastMessage = /*[[${toastMessage}]]*/ null;
-        const toastType = /*[[${toastType}]]*/ 'success';
-        if (toastMessage) {
-            showToast(toastMessage, toastType);
-        }
+        /*[# th:if="${toastMessage}"]*/
+        showToast(/*[[${toastMessage}]]*/ 'Information', /*[[${toastType}]]*/ 'success');
+        /*[/]*/
     });
 
     const style = document.createElement('style');
