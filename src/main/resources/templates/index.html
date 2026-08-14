@@ -25,6 +25,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+    <!-- Forcer l'affichage du bandeau même avant JS -->
+    <style>
+        #marketData {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -101,8 +110,28 @@
     </div>
 </div>
 
-<!-- ========== BANDEAU MÉTÉO & MARCHÉS ========== -->
-<div th:replace="fragments/market-data :: #marketData"></div>
+<!-- ========== BANDEAU MÉTÉO & MARCHÉS (INTÉGRÉ DIRECTEMENT) ========== -->
+<div id="marketData" class="market-data-section" style="display: block !important;">
+    <div class="container">
+        <div class="market-data-row">
+            <!-- Météo -->
+            <div class="market-weather">
+                <i class="fas fa-cloud-sun weather-icon"></i>
+                <span class="weather-city" id="weatherCity">Chargement...</span>
+                <span class="weather-temp" id="weatherTemp">--°C</span>
+                <span class="weather-desc" id="weatherDesc">--</span>
+            </div>
+
+            <!-- Marchés -->
+            <div class="market-prices">
+                <span class="market-label">📈 Marchés</span>
+                <span class="market-item" id="marketCOTTON">Coton: --</span>
+                <span class="market-item" id="marketLUMBER">Bois: --</span>
+                <span class="market-item" id="marketSTEEL">Acier: --</span>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ========== HERO SECTION ========== -->
 <section class="hero-premium" id="heroSection">
@@ -445,6 +474,7 @@
 <script th:src="@{/js/chatbot.js}"></script>
 <script th:src="@{/js/micro-interactions.js}"></script>
 <script th:src="@{/js/sw-register.js}"></script>
+<!-- SCRIPT MARKET-DATA.js chargé normalement -->
 <script th:src="@{/js/market-data.js}"></script>
 <script th:src="@{/js/timeline.js}"></script>
 <script th:src="@{/js/project-timeline.js}"></script>
