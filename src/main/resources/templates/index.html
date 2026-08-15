@@ -78,6 +78,32 @@
             z-index: 1030 !important;
         }
 
+        /* Personnalisation des fonds de section harmonisés */
+        .news-section-custom {
+            background: linear-gradient(180deg, #0b1329 0%, #111c38 100%);
+            border-top: 1px solid rgba(0, 210, 255, 0.15);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.15);
+        }
+
+        .realisations-section-custom {
+            background: linear-gradient(180deg, #111c38 0%, #0b1329 100%);
+            border-bottom: 1px solid rgba(0, 210, 255, 0.15);
+        }
+
+        .card-news-custom, .card-project-custom {
+            background: rgba(17, 28, 56, 0.7) !important;
+            border: 1px solid rgba(0, 210, 255, 0.2) !important;
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-news-custom:hover, .card-project-custom:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 210, 255, 0.6) !important;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+        }
+
         .suggestion-container {
             display: flex;
             flex-wrap: wrap;
@@ -127,7 +153,7 @@
 <!-- TOAST NOTIFICATIONS CONTAINER -->
 <div id="toastContainer" style="position: fixed; top: 90px; right: 20px; z-index: 9999;"></div>
 
-<!-- NAVBAR COMPLÈTE -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
         <a class="logo-premium" href="/">
@@ -286,45 +312,45 @@
     </div>
 </section>
 
-<!-- FIL D'ACTUALITÉS / DERNIÈRES NEWS -->
-<section class="py-5 bg-dark-subtle">
+<!-- FIL D'ACTUALITÉS / DERNIÈRES NEWS (HARMONISÉ AVEC FOND SOMBRE DU SITE) -->
+<section class="py-5 news-section-custom">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-up">
             <div>
-                <span class="badge bg-primary px-3 py-2 mb-2">FIL D'ACTUALITÉS</span>
-                <h2 class="section-title">Dernières Actualités & Publications</h2>
+                <span class="hero-badge mb-2">FIL D'ACTUALITÉS</span>
+                <h2 class="section-title text-white">Dernières Actualités & Publications</h2>
             </div>
-            <a href="/blog" class="btn btn-outline-info rounded-pill"><i class="fas fa-newspaper me-1"></i> Voir tout le blog</a>
+            <a href="/blog" class="btn-outline-premium"><i class="fas fa-newspaper me-1"></i> Voir tout le blog</a>
         </div>
 
         <div class="row g-4">
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card card-premium h-100">
-                    <div class="card-body">
-                        <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> 15 Août 2026</span>
-                        <h5 class="card-title mt-2">Inauguration de notre nouveau complexe à Bamako</h5>
-                        <p class="card-text text-secondary">African Mission Corporate renforce sa présence au Mali avec un nouveau siège moderne axé sur la durabilité.</p>
-                        <a href="/blog" class="text-info text-decoration-none fw-bold">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="card card-news-custom h-100 p-4">
+                    <div class="card-body p-0">
+                        <span class="text-info small"><i class="far fa-calendar-alt me-1"></i> 15 Août 2026</span>
+                        <h5 class="card-title text-white mt-2 font-weight-bold">Inauguration du nouveau siège à Bamako</h5>
+                        <p class="card-text text-slate-300" style="color: #94a3b8;">African Mission Corporate renforce sa présence au Mali avec un pôle administratif moderne et écologique.</p>
+                        <a href="/blog" class="text-cyan text-decoration-none fw-bold" style="color: #00d2ff;">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="card card-premium h-100">
-                    <div class="card-body">
-                        <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> 10 Août 2026</span>
-                        <h5 class="card-title mt-2">Développement Agrobusiness & Exportation</h5>
-                        <p class="card-text text-secondary">Lancement de nouvelles filières d'exportation de produits agricoles transformés vers la sous-région.</p>
-                        <a href="/blog" class="text-info text-decoration-none fw-bold">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="card card-news-custom h-100 p-4">
+                    <div class="card-body p-0">
+                        <span class="text-info small"><i class="far fa-calendar-alt me-1"></i> 10 Août 2026</span>
+                        <h5 class="card-title text-white mt-2 font-weight-bold">Agrobusiness & Exportation Régionale</h5>
+                        <p class="card-text text-slate-300" style="color: #94a3b8;">Lancement de nouvelles filières d'exportation de produits agricoles transformés vers la sous-région.</p>
+                        <a href="/blog" class="text-cyan text-decoration-none fw-bold" style="color: #00d2ff;">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="card card-premium h-100">
-                    <div class="card-body">
-                        <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> 02 Août 2026</span>
-                        <h5 class="card-title mt-2">Projet Énergies Renouvelables & Impact Solaire</h5>
-                        <p class="card-text text-secondary">Mise en place de solutions solaires durables pour les infrastructures industrielles et résidentielles.</p>
-                        <a href="/blog" class="text-info text-decoration-none fw-bold">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
+                <div class="card card-news-custom h-100 p-4">
+                    <div class="card-body p-0">
+                        <span class="text-info small"><i class="far fa-calendar-alt me-1"></i> 02 Août 2026</span>
+                        <h5 class="card-title text-white mt-2 font-weight-bold">Projet Énergies Renouvelables</h5>
+                        <p class="card-text text-slate-300" style="color: #94a3b8;">Déploiement de solutions solaires durables destinées aux infrastructures agricoles et industrielles.</p>
+                        <a href="/blog" class="text-cyan text-decoration-none fw-bold" style="color: #00d2ff;">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
             </div>
@@ -370,29 +396,29 @@
     </div>
 </section>
 
-<!-- SECTION PROJETS EN VEDETTE -->
-<section class="py-5 bg-dark">
+<!-- SECTION PROJETS EN VEDETTE / RÉALISATIONS (HARMONISÉE AVEC FOND SOMBRE) -->
+<section class="py-5 realisations-section-custom">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <span class="hero-badge mb-2">RÉALISATIONS</span>
-            <h2 class="section-title">Nos Projets Phares</h2>
-            <p class="text-secondary">Un aperçu de nos grands chantiers et réalisations d'envergure au Mali.</p>
+            <h2 class="section-title text-white">Nos Projets Phares</h2>
+            <p style="color: #94a3b8;">Un aperçu de nos grands chantiers et réalisations d'envergure au Mali.</p>
         </div>
         <div class="row g-4">
             <div class="col-md-6" data-aos="fade-right">
-                <div class="p-4 rounded border border-secondary bg-dark-subtle">
-                    <span class="badge bg-info mb-2">Immobilier & BTP</span>
-                    <h4 class="fw-bold">Résidence Moderne Bamako</h4>
-                    <p class="text-secondary">Conception et construction de complexes résidentiels sécurisés, économes en énergie et dotés d'équipements modernes.</p>
-                    <a href="/projects" class="btn btn-sm btn-outline-info">En savoir plus</a>
+                <div class="card-project-custom p-4">
+                    <span class="badge bg-info text-dark font-weight-bold mb-3 px-3 py-2">Immobilier & BTP</span>
+                    <h4 class="fw-bold text-white">Résidence Moderne Bamako</h4>
+                    <p style="color: #94a3b8;">Conception et construction de complexes résidentiels sécurisés, économes en énergie et équipés de technologies domotiques de pointe.</p>
+                    <a href="/projects" class="btn-outline-premium mt-2"><i class="fas fa-info-circle me-1"></i> En savoir plus</a>
                 </div>
             </div>
             <div class="col-md-6" data-aos="fade-left">
-                <div class="p-4 rounded border border-secondary bg-dark-subtle">
-                    <span class="badge bg-success mb-2">Agrobusiness</span>
-                    <h4 class="fw-bold">Ferme Agro-Écologique Intégrée</h4>
-                    <p class="text-secondary">Projet de production agricole biologique couplé à des centres de conditionnement pour le marché local et l'exportation.</p>
-                    <a href="/projects" class="btn btn-sm btn-outline-info">En savoir plus</a>
+                <div class="card-project-custom p-4">
+                    <span class="badge bg-success text-dark font-weight-bold mb-3 px-3 py-2">Agrobusiness</span>
+                    <h4 class="fw-bold text-white">Ferme Agro-Écologique Intégrée</h4>
+                    <p style="color: #94a3b8;">Projet global de production biologique couplé à des unités industrielles de transformation pour approvisionner les marchés locaux et sous-régionaux.</p>
+                    <a href="/projects" class="btn-outline-premium mt-2"><i class="fas fa-info-circle me-1"></i> En savoir plus</a>
                 </div>
             </div>
         </div>
@@ -400,11 +426,11 @@
 </section>
 
 <!-- SECTION DIAGNOSTIC RAPIDE -->
-<section class="py-5 bg-primary text-white text-center">
+<section class="py-5 text-center" style="background: linear-gradient(135deg, #00d2ff 0%, #0077ff 100%); color: #ffffff;">
     <div class="container" data-aos="zoom-in">
-        <h2 class="fw-bold mb-3">Besoin d'un accompagnement sur mesure ?</h2>
-        <p class="lead mb-4">Effectuez un diagnostic rapide de vos besoins en promotion immobilière, import-export ou agrobusiness.</p>
-        <a href="/diagnostic" class="btn btn-light btn-lg px-4 rounded-pill fw-bold"><i class="fas fa-stethoscope me-2"></i> Faire un diagnostic gratuit</a>
+        <h2 class="fw-bold mb-3 text-white">Besoin d'un accompagnement sur mesure ?</h2>
+        <p class="lead mb-4 text-white opacity-90">Effectuez un diagnostic rapide de vos besoins en promotion immobilière, import-export ou agrobusiness.</p>
+        <a href="/diagnostic" class="btn btn-light btn-lg px-4 rounded-pill fw-bold text-primary shadow"><i class="fas fa-stethoscope me-2"></i> Faire un diagnostic gratuit</a>
     </div>
 </section>
 
@@ -531,7 +557,7 @@
             return;
         }
 
-        const searchableItems = document.querySelectorAll('.card-premium, .partner-premium');
+        const searchableItems = document.querySelectorAll('.card-premium, .partner-premium, .card-news-custom, .card-project-custom');
         let found = false;
 
         searchableItems.forEach(item => {
