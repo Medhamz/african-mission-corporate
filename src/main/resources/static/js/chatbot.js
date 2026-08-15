@@ -1,8 +1,7 @@
 // ============================================
-// CHATBOT WIDGET - VERSION INTELLIGENTE FIXÉE
+// CHATBOT WIDGET - VERSION ENRICHIE & INTELLIGENTE
 // ============================================
 
-// Déclaration globale immédiatement disponible pour le HTML
 window.toggleChatbot = function() {
     const windowEl = document.getElementById('chatbotWindow');
     const inputEl = document.getElementById('chatbotInput');
@@ -28,81 +27,82 @@ document.addEventListener('DOMContentLoaded', function() {
     const messagesEl = document.getElementById('chatbotMessages');
     const closeBtn = document.getElementById('chatbotClose');
 
-    // INTENTIONS & CONNAISSANCES
+    // BASE DE CONNAISSANCES COMPLÈTE DU SITE
     const intentions = [
         {
             id: 'salutation',
-            keywords: ['bonjour', 'salut', 'hello', 'coucou', 'bonsoir', 'hey', 'bienvenue', 'cc'],
+            keywords: ['bonjour', 'salut', 'hello', 'coucou', 'bonsoir', 'hey', 'cc'],
             response: function() {
                 const hour = new Date().getHours();
                 const greeting = (hour >= 18 || hour < 5) ? 'Bonsoir' : 'Bonjour';
-                return `${greeting} ! Ravi de vous accueillir sur African Mission Corporate. Comment puis-je vous guider ?`;
+                return `${greeting} ! Bienvenue chez African Mission Corporate. Comment puis-je vous aider aujourd'hui ?`;
             }
+        },
+        {
+            id: 'zoumana_equipe',
+            keywords: ['zoumana', 'qui est zoumana', 'zoumana traore', 'fondateur', 'pdg', 'ceo', 'directeur', 'patron', 'chef'],
+            response: '<strong>Zoumana</strong> fait partie de l\'équipe dirigeante et des figures clés d\'African Mission Corporate.<br><br>' +
+                      'Pour découvrir son parcours détaillé et l\'ensemble des membres de notre direction, visitez la page <a href="/team">Notre Équipe</a>.'
+        },
+        {
+            id: 'pays_localisation',
+            keywords: ['pays', 'quel pays', 'situe', 'situer', 'ou se trouve', 'emplacement', 'ville', 'adresse', 'bamako', 'mali', 'siège', 'siege'],
+            response: '📍 <strong>African Mission Corporate</strong> est basée au <strong>Mali</strong>, avec son siège social situé à <strong>Bamako</strong>.<br><br>' +
+                      'Nous opérons au Mali et sur l\'ensemble du continent africain. Consulter notre page <a href="/contact">Contact</a> pour nos coordonnées exactes.'
         },
         {
             id: 'services_generaux',
             keywords: ['service', 'activité', 'activite', 'prestation', 'secteur', 'faires', 'metier', 'domaine', 'proposer', 'offre', 'btp', 'immobilier', 'agrobusiness', 'import', 'export'],
-            response: 'African Mission Corporate est une entreprise polyvalente de référence au Mali :<br><br>' +
-                      '• 🏢 <strong>Promotion Immobilière & BTP</strong> : Construction durable et projets urbains.<br>' +
-                      '• 🌾 <strong>Agrobusiness</strong> : Transformation et valorisation agricole.<br>' +
-                      '• 📦 <strong>Import-Export</strong> : Logistique et négoce international.<br>' +
-                      '• ♻️ <strong>Développement Durable</strong> : Solutions écologiques et énergie.<br><br>' +
-                      'Découvrez nos offres détaillées sur la page <a href="/activities">Nos Activités</a>.'
+            response: 'African Mission Corporate propose des services stratégiques au Mali :<br><br>' +
+                      '• 🏢 <strong>Promotion Immobilière & BTP</strong> : Construction et aménagement.<br>' +
+                      '• 🌾 <strong>Agrobusiness</strong> : Production et transformation agricole.<br>' +
+                      '• 📦 <strong>Import-Export</strong> : Commerce international et logistique.<br>' +
+                      '• ♻️ <strong>Développement Durable</strong> : Solutions énergétiques et écologiques.<br><br>' +
+                      'Découvrez toutes nos offres sur la page <a href="/activities">Nos Activités</a>.'
         },
         {
             id: 'devis_tarif',
-            keywords: ['devis', 'tarif', 'prix', 'cout', 'coût', 'facture', 'estimation', 'payer', 'combien', 'budget', 'tarififcation'],
-            response: 'Chaque projet étant unique, nous établissons des devis sur mesure.<br><br>' +
-                      '📌 Vous pouvez solliciter un devis directement via notre <a href="/contact">Formulaire de contact</a> ou contacter notre service commercial au <strong>+223 44 39 12 03</strong>.'
+            keywords: ['devis', 'tarif', 'prix', 'cout', 'coût', 'facture', 'estimation', 'payer', 'combien', 'budget'],
+            response: 'Nos devis sont personnalisés selon la nature de votre projet.<br><br>' +
+                      '📌 Contactez notre service commercial via le <a href="/contact">Formulaire de contact</a> ou directement au <strong>+223 44 39 12 03</strong>.'
         },
         {
             id: 'contact_info',
-            keywords: ['contact', 'telephone', 'téléphone', 'email', 'mail', 'joindre', 'adresse', 'emplacement', 'situé', 'situer', 'ou', 'siège', 'bureau', 'bamako', 'mali', 'appel'],
-            response: '📍 <strong>Siège social :</strong> Bamako, Mali<br>' +
-                      '📞 <strong>Téléphone :</strong> +223 44 39 12 03<br>' +
+            keywords: ['contact', 'telephone', 'téléphone', 'email', 'mail', 'joindre', 'appeler', 'numero', 'numéro'],
+            response: '📞 <strong>Téléphone :</strong> +223 44 39 12 03<br>' +
                       '✉️ <strong>Email :</strong> contact@africanmission.com<br>' +
-                      '🕒 <strong>Horaires :</strong> Lun - Ven : 08h00 - 17h00'
+                      '📍 <strong>Adresse :</strong> Bamako, Mali<br>' +
+                      '🕒 <strong>Horaires :</strong> Lundi - Vendredi : 08h00 - 17h00'
         },
         {
-            id: 'horaires',
-            keywords: ['heure', 'horaire', 'ouverture', 'fermeture', 'quand', 'ouvert', 'disponibilité', 'jour', 'ferme', 'ouvre'],
-            response: '🕒 Nos locaux et nos services administratifs sont ouverts du <strong>Lundi au Vendredi de 08h00 à 17h00</strong>.'
-        },
-        {
-            id: 'projets',
-            keywords: ['projet', 'realisation', 'réalisation', 'chantier', 'client', 'travaux', 'portfolio', 'reference', 'accomplissement'],
-            response: 'Nous menons d\'envergure des projets structurants à Bamako et à l\'international.<br>' +
-                      'Consultez nos récentes réalisations sur notre page dédiée : <a href="/projects">Nos Projets</a>.'
-        },
-        {
-            id: 'equipe',
-            keywords: ['equipe', 'équipe', 'membre', 'collaborateur', 'employé', 'direction', 'fondateur', 'dirigeant', 'manager', 'ceo'],
-            response: 'African Mission Corporate s\'appuie sur des ingénieurs et managers chevronnés.<br>' +
-                      'Apprenez-en plus sur notre gouvernance via <a href="/team">Notre Équipe</a>.'
+            id: 'equipe_generale',
+            keywords: ['equipe', 'équipe', 'membre', 'collaborateur', 'employé', 'direction', 'qui travaille'],
+            response: 'Notre équipe réunit des experts et des ingénieurs qualifiés au service du développement de l\'Afrique.<br>' +
+                      'Retrouvez les profils de nos dirigeants sur la page <a href="/team">Notre Équipe</a>.'
         },
         {
             id: 'recrutement',
-            keywords: ['carriere', 'carrière', 'emploi', 'recrutement', 'poste', 'job', 'stage', 'travailler', 'embauche', 'candidature', 'cv', 'lettre'],
-            response: 'Nous recrutons régulièrement des talents passionnés.<br>' +
-                      'Retrouvez nos opportunités et déposez votre candidature spontanée sur <a href="/careers">Carrières</a>.'
+            keywords: ['carriere', 'carrière', 'emploi', 'recrutement', 'poste', 'job', 'stage', 'travailler', 'embauche', 'cv'],
+            response: 'Vous souhaitez rejoindre African Mission Corporate ?<br>' +
+                      'Consultez nos offres et déposez votre candidature sur notre page <a href="/careers">Carrières</a>.'
         },
         {
-            id: 'faq',
-            keywords: ['faq', 'question', 'aide', 'support', 'info', 'information', 'aidez', 'comment'],
-            response: 'Pour répondre rapidement à vos questions fréquentes, visitez notre <a href="/faq">Centre d\'aide / FAQ</a>.'
+            id: 'projets',
+            keywords: ['projet', 'realisation', 'réalisation', 'chantier', 'travaux', 'portfolio', 'reference'],
+            response: 'Découvrez nos projets structurants au Mali et en Afrique subsaharienne sur la page <a href="/projects">Nos Projets</a>.'
         },
         {
             id: 'remerciement',
-            keywords: ['merci', 'ok', 'super', 'parfait', 'genial', 'génial', 'merci beaucoup', 'top', 'daccord', 'd\'accord', 'bravo'],
-            response: 'Je vous en prie ! C\'est un plaisir de vous assister. Avez-vous besoin d\'autre chose ? 😊'
+            keywords: ['merci', 'ok', 'super', 'parfait', 'top', 'daccord', 'd\'accord'],
+            response: 'Je vous en prie ! C\'est un plaisir de vous renseigner. Avez-vous d\'autres questions ? 😊'
         }
     ];
 
     const defaultSuggestions = [
+        'Qui est Zoumana ?',
+        'Dans quel pays êtes-vous ?',
         'Quels sont vos services ?',
-        'Comment obtenir un devis ?',
-        'Où vous trouvez-vous ?',
-        'Consulter les offres d\'emploi'
+        'Comment demander un devis ?'
     ];
 
     function normalizeText(text) {
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function getBotResponse(input) {
         const cleanInput = normalizeText(input);
-        if (!cleanInput) return 'Veuillez saisir une question ou un terme de recherche.';
+        if (!cleanInput) return 'Veuillez poser une question.';
 
         const words = cleanInput.split(/\s+/);
         let bestMatch = null;
@@ -151,17 +151,18 @@ document.addEventListener('DOMContentLoaded', function() {
             intent.keywords.forEach(keyword => {
                 const cleanKeyword = normalizeText(keyword);
 
+                // Correspondance exacte ou partielle de phrase
                 if (cleanInput.includes(cleanKeyword)) {
-                    score += cleanKeyword.length > 4 ? 4 : 2.5;
+                    score += cleanKeyword.length > 5 ? 6 : 4;
                 }
 
+                // Correspondance mot par mot avec tolérance aux fautes
                 words.forEach(word => {
                     if (word === cleanKeyword) {
                         score += 5;
                     } else if (word.length > 3 && cleanKeyword.length > 3) {
                         const dist = levenshteinDistance(word, cleanKeyword);
                         if (dist <= 1) score += 3;
-                        else if (dist <= 2) score += 1.5;
                     }
                 });
             });
@@ -176,8 +177,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return typeof bestMatch.response === 'function' ? bestMatch.response() : bestMatch.response;
         }
 
-        return 'Je ne suis pas sûr de bien comprendre votre demande.<br><br>' +
-               'Vous pouvez reformuler votre question, faire une recherche via notre barre de recherche, ou consulter notre <a href="/contact">Formulaire de contact</a>.';
+        return 'Je n\'ai pas la réponse exacte à cette question dans ma base de données.<br><br>' +
+               'Vous pouvez contacter notre équipe via la page <a href="/contact">Contact</a> ou nous appeler au <strong>+223 44 39 12 03</strong>.';
     }
 
     function addMessage(text, sender, isHtml = false) {
@@ -242,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 addSuggestions(defaultSuggestions);
             }, 300);
-        }, 500 + Math.random() * 400);
+        }, 400 + Math.random() * 300);
     }
 
     function handleSendMessage() {
