@@ -42,13 +42,12 @@ public class SecurityConfig {
     }
 
     // ============================================
-    // 2. SITE WEB (avec sessions)
+    // 2. SITE WEB & ADMIN (avec sessions)
     // ============================================
     @Bean
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/**")
                 .userDetailsService(userDetailsService)
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**"))
                 .authorizeHttpRequests(authz -> authz
@@ -72,7 +71,7 @@ public class SecurityConfig {
                                 "/eco", "/eco/**", "/eco-dashboard", "/api/eco/**",
 
                                 // Ressources statiques et médias
-                                "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json",
+                                "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json", "/favicon.ico",
 
                                 // Services publics & API frontend
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**",
