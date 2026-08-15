@@ -53,23 +53,31 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**"))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
-                                "/", "/about", "/activities", "/contact",
+                                // Pages principales
+                                "/", "/about", "/activities", "/contact", "/devis",
                                 "/services", "/projects", "/team", "/faq",
                                 "/blog", "/legal", "/sitemap", "/careers",
-                                "/testimonials", "/gallery", "/key-figures",
-                                "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/uploads/**",
+                                "/testimonials", "/gallery",
+
+                                // Chiffres clés (Route standard + alias éventuels)
+                                "/chiffres-cles", "/key-figures", "/key-figures/**",
+
+                                // Diagnostiqueur
+                                "/diagnostiqueur", "/diagnostiqueur/**", "/diagnostic",
+
+                                // Carte du Monde / Présence mondiale
+                                "/monde", "/monde/**", "/carte-monde", "/world-map", "/api/world/**",
+
+                                // Éco-responsabilité / Impact éco
+                                "/eco", "/eco/**", "/eco-dashboard", "/api/eco/**",
+
+                                // Ressources statiques et médias
+                                "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json",
+
+                                // Services publics & API frontend
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**",
-                                "/maintenance",
-                                "/api/market/**",
-                                "/api/projects/**",
-                                "/diagnostiqueur",
-                                "/monde",
-                                "/carte-monde",
-                                "/api/world/**",
-                                "/eco",
-                                "/api/eco/**",
-                                "/kiosk"
+                                "/maintenance", "/kiosk",
+                                "/api/market/**", "/api/projects/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
