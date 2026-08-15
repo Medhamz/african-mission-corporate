@@ -8,99 +8,182 @@
             left: 0;
             width: 260px;
             height: 100vh;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            border-right: 1px solid rgba(255,255,255,0.04);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             padding: 24px 16px;
             overflow-y: auto;
             z-index: 1000;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.1) transparent;
         }
+
+        .admin-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .admin-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
         .admin-sidebar .sidebar-brand {
             display: flex;
             align-items: center;
             gap: 12px;
             padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 24px;
         }
+
         .admin-sidebar .sidebar-brand .brand-icon {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
         }
+
         .admin-sidebar .sidebar-brand .brand-text {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 1.1rem;
             color: #f1f5f9;
             letter-spacing: -0.3px;
+            line-height: 1.2;
         }
+
         .admin-sidebar .sidebar-brand .brand-text small {
             display: block;
-            font-weight: 400;
-            font-size: 0.6rem;
+            font-weight: 500;
+            font-size: 0.65rem;
             color: #64748b;
-        }
-        .admin-sidebar .sidebar-section { margin-bottom: 20px; }
-        .admin-sidebar .sidebar-section .section-title {
-            font-size: 0.6rem;
-            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-sidebar .sidebar-section {
+            margin-bottom: 22px;
+        }
+
+        .admin-sidebar .sidebar-section .section-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
             color: #64748b;
             padding: 0 12px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
+
         .admin-sidebar .sidebar-link {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 8px 14px;
-            border-radius: 10px;
+            padding: 9px 14px;
+            border-radius: 12px;
             color: #94a3b8;
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 500;
             transition: all 0.25s ease;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
+            border: 1px solid transparent;
         }
+
         .admin-sidebar .sidebar-link:hover {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             color: #f1f5f9;
+            border-color: rgba(255, 255, 255, 0.06);
+            transform: translateX(3px);
         }
+
         .admin-sidebar .sidebar-link.active {
-            background: rgba(59,130,246,0.08);
+            background: rgba(59, 130, 246, 0.12);
             color: #3b82f6;
-            border-left: 3px solid #3b82f6;
+            border-color: rgba(59, 130, 246, 0.25);
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
         }
+
         .admin-sidebar .sidebar-link i {
             width: 20px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #64748b;
-            transition: color 0.25s ease;
+            transition: color 0.25s ease, transform 0.25s ease;
         }
-        .admin-sidebar .sidebar-link:hover i { color: #f1f5f9; }
-        .admin-sidebar .sidebar-link.active i { color: #3b82f6; }
+
+        .admin-sidebar .sidebar-link:hover i {
+            color: #f1f5f9;
+            transform: scale(1.1);
+        }
+
+        .admin-sidebar .sidebar-link.active i {
+            color: #3b82f6;
+        }
+
         .admin-sidebar .sidebar-link .badge-link {
             margin-left: auto;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             background: #ef4444;
             color: #fff;
-            padding: 1px 10px;
+            padding: 2px 8px;
             border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
         }
+
+        /* Toggle Bouton Mobile */
+        .sidebar-toggle-mobile {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1001;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            color: #f1f5f9;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 768px) {
-            .admin-sidebar { transform: translateX(-100%); width: 280px; }
-            .admin-sidebar.open { transform: translateX(0); }
-            .admin-sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 999; }
-            .admin-sidebar-overlay.active { display: block; }
+            .admin-sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .admin-sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-toggle-mobile {
+                display: flex;
+            }
+            .admin-sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                z-index: 999;
+            }
+            .admin-sidebar-overlay.active {
+                display: block;
+            }
         }
     </style>
 
@@ -117,7 +200,7 @@
         <a href="/admin/dashboard" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/dashboard')} ? 'active' : ''">
             <i class="fas fa-th-large"></i> Dashboard
         </a>
-        <a href="/admin/search" class="sidebar-link">
+        <a href="/admin/search" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/search')} ? 'active' : ''">
             <i class="fas fa-search"></i> Recherche
         </a>
     </div>
@@ -146,7 +229,7 @@
     </div>
 
     <div class="sidebar-section">
-        <div class="section-title" style="color: #f59e0b;">⭐ Nouvelles</div>
+        <div class="section-title" style="color: #f59e0b;"><i class="fas fa-star"></i> Nouveautés</div>
         <a href="/admin/diagnostic" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/diagnostic')} ? 'active' : ''"><i class="fas fa-stethoscope" style="color: #8b5cf6;"></i> Diagnostiqueur</a>
         <a href="/admin/countries" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/countries')} ? 'active' : ''"><i class="fas fa-globe-africa" style="color: #3b82f6;"></i> Carte du Monde</a>
         <a href="/admin/eco/indicators" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/eco')} ? 'active' : ''"><i class="fas fa-leaf" style="color: #22c55e;"></i> Éco-responsabilité</a>
@@ -164,8 +247,8 @@
         <a href="/admin/maintenance" class="sidebar-link" th:classappend="${currentUri != null && currentUri.startsWith('/admin/maintenance')} ? 'active' : ''"><i class="fas fa-tools"></i> Maintenance</a>
     </div>
 
-    <!-- Mobile toggle -->
-    <button class="sidebar-toggle-mobile" style="display:none; background:transparent; border:none; color:#f1f5f9; font-size:1.5rem; position:fixed; top:16px; left:16px; z-index:1001; cursor:pointer;">
+    <!-- Toggle Mobile -->
+    <button class="sidebar-toggle-mobile" aria-label="Menu">
         <i class="fas fa-bars"></i>
     </button>
 
@@ -173,12 +256,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const toggle = document.querySelector('.sidebar-toggle-mobile');
             const sidebar = document.querySelector('.admin-sidebar');
-            const overlay = document.createElement('div');
-            overlay.className = 'admin-sidebar-overlay';
-            document.body.prepend(overlay);
+            let overlay = document.querySelector('.admin-sidebar-overlay');
 
-            if (window.innerWidth <= 768) {
-                toggle.style.display = 'block';
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'admin-sidebar-overlay';
+                document.body.appendChild(overlay);
             }
 
             toggle?.addEventListener('click', function() {
@@ -189,16 +272,6 @@
             overlay.addEventListener('click', function() {
                 sidebar?.classList.remove('open');
                 this.classList.remove('active');
-            });
-
-            window.addEventListener('resize', function() {
-                if (window.innerWidth <= 768) {
-                    toggle.style.display = 'block';
-                } else {
-                    toggle.style.display = 'none';
-                    sidebar?.classList.remove('open');
-                    overlay.classList.remove('active');
-                }
             });
         });
     </script>

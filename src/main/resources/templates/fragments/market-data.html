@@ -1,20 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div id="marketData" class="market-data-section" style="display:block !important;">
+<div id="marketData" class="market-data-section">
+    <style>
+        .market-data-section {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 0;
+            color: var(--text-primary, #f1f5f9);
+            font-size: 0.88rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .market-data-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .market-weather, .market-prices {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .weather-icon {
+            color: #f59e0b;
+            font-size: 1.1rem;
+            filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+        }
+
+        .weather-city {
+            font-weight: 600;
+            color: var(--text-primary, #f1f5f9);
+        }
+
+        .weather-temp {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        .weather-desc {
+            color: var(--text-secondary, #94a3b8);
+            font-style: italic;
+        }
+
+        .market-label {
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .market-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 3px 10px;
+            border-radius: 8px;
+            color: var(--text-secondary, #94a3b8);
+            font-family: monospace;
+            font-size: 0.82rem;
+            transition: all 0.3s ease;
+        }
+
+        .market-item:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            color: var(--text-primary, #f1f5f9);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+        }
+    </style>
+
     <div class="container">
         <div class="market-data-row">
             <!-- Météo -->
             <div class="market-weather">
                 <i class="fas fa-cloud-sun weather-icon"></i>
-                <span class="weather-city" id="weatherCity">Chargement...</span>
+                <span class="weather-city" id="weatherCity">Bamako</span>
                 <span class="weather-temp" id="weatherTemp">--°C</span>
-                <span class="weather-desc" id="weatherDesc">--</span>
+                <span class="weather-desc" id="weatherDesc">Chargement...</span>
             </div>
 
             <!-- Marchés -->
             <div class="market-prices">
-                <span class="market-label">📈 Marchés</span>
+                <span class="market-label"><i class="fas fa-chart-line me-1"></i> Marchés</span>
                 <span class="market-item" id="marketCOTTON">Coton: --</span>
                 <span class="market-item" id="marketLUMBER">Bois: --</span>
                 <span class="market-item" id="marketSTEEL">Acier: --</span>

@@ -1,29 +1,78 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div id="projectTimeline" class="project-timeline-section">
+<div id="projectTimeline" class="project-timeline-section py-5">
+    <style>
+        .project-timeline-section {
+            background: transparent;
+            color: var(--text-primary, #f1f5f9);
+            position: relative;
+        }
+
+        .gantt-container {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .gantt-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            color: var(--text-secondary, #94a3b8);
+            font-weight: 500;
+            gap: 10px;
+        }
+
+        .gantt-legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            color: var(--text-secondary, #94a3b8);
+        }
+
+        .gantt-legend-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+
     <div class="container">
-        <div class="section-header text-center" data-aos="fade-up">
-            <h2 class="section-title">
-                <span class="gradient-text">Timeline</span> des projets
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="fw-bold fs-2">
+                <span class="bg-gradient-text">Timeline</span> des projets
             </h2>
-            <div class="section-line centered"></div>
-            <p class="section-desc">Visualisez l’avancement de nos projets, avec les prévisions météo impactant les délais</p>
+            <div class="mx-auto my-3" style="width: 60px; height: 3px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 2px;"></div>
+            <p class="text-secondary max-w-2xl mx-auto">Visualisez l’avancement de nos chantiers et l'impact prévisionnel de la météo sur les délais d'exécution.</p>
         </div>
 
-        <div id="ganttContainer" class="gantt-container" style="position:relative; overflow-x:auto; margin-top:32px;">
-            <div id="ganttChart" style="min-height:300px; position:relative;">
-                <!-- Le diagramme sera dessiné ici en JS -->
-                <div class="gantt-loading">Chargement du planning...</div>
+        <div id="ganttContainer" class="gantt-container" data-aos="fade-up" data-aos-delay="100">
+            <div id="ganttChart" style="min-height:280px; position:relative;">
+                <div class="gantt-loading">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                    Chargement du planning interactif...
+                </div>
             </div>
         </div>
 
-        <div class="gantt-legend d-flex flex-wrap justify-content-center gap-3 mt-4" style="font-size:0.85rem; color: var(--text-muted);">
-            <span><span class="badge" style="background:#22c55e;">●</span> En cours</span>
-            <span><span class="badge" style="background:#3b82f6;">●</span> À venir</span>
-            <span><span class="badge" style="background:#f59e0b;">●</span> Prévu</span>
-            <span><span class="badge" style="background:#ef4444;">●</span> En retard (météo)</span>
-            <span><i class="fas fa-cloud-rain" style="color:var(--primary-blue);"></i> Jours de pluie prévus</span>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-4" data-aos="fade-up" data-aos-delay="200">
+            <span class="gantt-legend-item"><span class="dot" style="background:#22c55e; box-shadow:0 0 8px #22c55e;"></span> En cours</span>
+            <span class="gantt-legend-item"><span class="dot" style="background:#3b82f6; box-shadow:0 0 8px #3b82f6;"></span> À venir</span>
+            <span class="gantt-legend-item"><span class="dot" style="background:#f59e0b; box-shadow:0 0 8px #f59e0b;"></span> Prévu</span>
+            <span class="gantt-legend-item"><span class="dot" style="background:#ef4444; box-shadow:0 0 8px #ef4444;"></span> Retard (Météo)</span>
+            <span class="gantt-legend-item"><i class="fas fa-cloud-rain text-info"></i> Impact Pluie</span>
         </div>
     </div>
 </div>

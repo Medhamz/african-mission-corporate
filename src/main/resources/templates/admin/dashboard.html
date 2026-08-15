@@ -5,68 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">Dashboard</title>
 
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <!-- Fonts & Icons & Frameworks -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* ============================================
-           ROOT VARIABLES
-           ============================================ */
         :root {
             --bg-primary: #0b1120;
-            --bg-card: rgba(255, 255, 255, 0.03);
-            --bg-card-hover: rgba(255, 255, 255, 0.06);
-            --border-light: rgba(255, 255, 255, 0.05);
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            --border-light: rgba(255, 255, 255, 0.08);
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            --gradient-gold: linear-gradient(135deg, #f59e0b, #f97316);
-            --gradient-green: linear-gradient(135deg, #22c55e, #16a34a);
-            --gradient-pink: linear-gradient(135deg, #ec4899, #f43f5e);
-            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.25);
+            --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
             --radius-lg: 20px;
-            --radius-md: 12px;
+            --radius-md: 14px;
             --radius-sm: 8px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
+            background-color: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* ============================================
-           LAYOUT PRINCIPAL
-           ============================================ */
+        /* Canvas Particules d'arrière-plan */
+        #bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         .dashboard-wrapper {
             max-width: 1440px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
-        /* ============================================
-           HEADER
-           ============================================ */
+        /* HEADER */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
-            padding: 20px 0 24px;
+            padding-bottom: 24px;
             border-bottom: 1px solid var(--border-light);
             margin-bottom: 32px;
         }
@@ -74,78 +73,56 @@
         .dashboard-header .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .dashboard-header .brand .brand-icon {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             background: var(--gradient-main);
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #fff;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
         }
 
         .dashboard-header .brand h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 800;
             letter-spacing: -0.5px;
             background: var(--gradient-main);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .dashboard-header .brand small {
-            font-size: 0.65rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            display: block;
-            -webkit-text-fill-color: var(--text-muted);
-            background: none;
-        }
-
-        .dashboard-header .right-section {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
+            margin: 0;
         }
 
         .search-glass {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-light);
             border-radius: 50px;
             padding: 4px 4px 4px 18px;
             transition: all 0.3s ease;
-            min-width: 220px;
+            min-width: 240px;
         }
 
         .search-glass:focus-within {
             border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
             background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05);
         }
 
         .search-glass input {
             background: transparent;
             border: none;
             color: var(--text-primary);
-            font-size: 0.85rem;
-            padding: 6px 0;
-            width: 100%;
+            font-size: 0.88rem;
             outline: none;
-        }
-
-        .search-glass input::placeholder {
-            color: var(--text-muted);
-            font-weight: 300;
+            width: 100%;
         }
 
         .search-glass .search-btn {
@@ -155,324 +132,219 @@
             color: #fff;
             padding: 8px 18px;
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
+            transition: transform 0.2s ease;
         }
 
         .search-glass .search-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.15);
+            transform: scale(1.04);
         }
 
         .btn-logout-glass {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.12);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
             color: #f87171;
             padding: 8px 20px;
             border-radius: 50px;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.85rem;
             transition: all 0.3s ease;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .btn-logout-glass:hover {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
             transform: translateY(-2px);
         }
 
-        /* ============================================
-           STATS CARDS (GLASSMORPHISM)
-           ============================================ */
-        .stat-card {
+        /* 3D CARDS */
+        .stat-card-3d, .chart-card-3d, .quick-action-3d {
             background: var(--bg-card);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
-            padding: 24px 20px;
-            transition: all 0.4s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .stat-card-3d {
+            padding: 24px;
             height: 100%;
             position: relative;
             overflow: hidden;
         }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--gradient-main);
-            opacity: 0.3;
-            transition: opacity 0.4s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(59, 130, 246, 0.15);
-            box-shadow: var(--shadow-card);
+        .stat-card-3d:hover {
+            transform: translateY(-6px) rotateX(4deg) rotateY(-2deg);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.5), 0 0 30px rgba(59, 130, 246, 0.15);
             background: var(--bg-card-hover);
         }
 
-        .stat-card:hover::before {
-            opacity: 1;
-        }
-
-        .stat-card .stat-icon {
+        .stat-card-3d .stat-icon {
             font-size: 1.8rem;
-            color: var(--primary-blue);
-            margin-bottom: 8px;
-            display: inline-block;
-            background: rgba(59, 130, 246, 0.06);
-            padding: 8px;
-            border-radius: var(--radius-sm);
-            transition: all 0.4s ease;
-        }
-
-        .stat-card:hover .stat-icon {
+            color: #3b82f6;
             background: rgba(59, 130, 246, 0.1);
-            transform: scale(1.05);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
         }
 
-        .stat-card .stat-number {
+        .stat-card-3d .stat-number {
             font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
-        .stat-card .stat-label {
+        .stat-card-3d .stat-label {
             color: var(--text-secondary);
             font-size: 0.85rem;
             font-weight: 500;
-            margin-top: 2px;
         }
 
-        .stat-card .stat-change {
+        .stat-change {
             font-size: 0.75rem;
-            padding: 2px 14px;
+            padding: 2px 12px;
             border-radius: 50px;
             font-weight: 600;
             display: inline-block;
-            margin-top: 6px;
+            margin-top: 8px;
         }
+        .stat-change.up { color: #4ade80; background: rgba(34, 197, 94, 0.1); }
+        .stat-change.down { color: #f87171; background: rgba(239, 68, 68, 0.1); }
 
-        .stat-change.up {
-            color: #22c55e;
-            background: rgba(34, 197, 94, 0.08);
-        }
-
-        .stat-change.down {
-            color: #ef4444;
-            background: rgba(239, 68, 68, 0.08);
-        }
-
-        /* ============================================
-           CHART CARDS
-           ============================================ */
-        .chart-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 20px 18px;
+        /* CHARTS */
+        .chart-card-3d {
+            padding: 20px;
             height: 100%;
-            transition: all 0.4s ease;
         }
-
-        .chart-card:hover {
-            border-color: rgba(59, 130, 246, 0.08);
+        .chart-card-3d:hover {
+            border-color: rgba(139, 92, 246, 0.25);
             box-shadow: var(--shadow-card);
         }
-
-        .chart-card h6 {
-            font-size: 0.9rem;
+        .chart-card-3d h6 {
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
+        .chart-card-3d h6 i { color: #3b82f6; }
 
-        .chart-card h6 i {
-            color: var(--primary-blue);
-        }
-
-        /* ============================================
-           QUICK ACTION CARDS
-           ============================================ */
-        .quick-action {
-            background: var(--bg-card);
-            backdrop-filter: blur(4px);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
+        /* QUICK ACTIONS 3D */
+        .quick-action-3d {
             padding: 20px 12px;
             text-align: center;
             text-decoration: none;
             color: var(--text-primary);
-            transition: all 0.35s ease;
-            height: 100%;
             display: block;
-            position: relative;
-            overflow: hidden;
+            height: 100%;
+            border-radius: var(--radius-md);
         }
 
-        .quick-action::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--gradient-main);
-            transition: width 0.4s ease;
-        }
-
-        .quick-action:hover {
-            border-color: rgba(59, 130, 246, 0.1);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-card);
+        .quick-action-3d:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.3);
+            background: var(--bg-card-hover);
             color: var(--text-primary);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.2);
         }
 
-        .quick-action:hover::after {
-            width: 60%;
-        }
-
-        .quick-action .qa-icon {
+        .quick-action-3d .qa-icon {
             font-size: 1.8rem;
-            color: var(--primary-blue);
-            margin-bottom: 6px;
+            color: #3b82f6;
+            margin-bottom: 8px;
             transition: transform 0.3s ease;
         }
 
-        .quick-action:hover .qa-icon {
-            transform: scale(1.05);
+        .quick-action-3d:hover .qa-icon {
+            transform: scale(1.15) translateZ(10px);
         }
 
-        .quick-action .qa-label {
+        .quick-action-3d .qa-label {
             font-weight: 500;
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
 
-        .quick-action .qa-badge {
+        .quick-action-3d .qa-badge {
             background: #ef4444;
             color: #fff;
             border-radius: 50px;
-            padding: 1px 10px;
+            padding: 2px 8px;
             font-size: 0.65rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-left: 4px;
         }
 
-        /* ============================================
-           SECTION TITLES
-           ============================================ */
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.15rem;
+            font-weight: 700;
             color: var(--text-primary);
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border-light);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .section-title i {
-            color: var(--primary-blue);
-        }
-
         .section-title .title-badge {
-            font-size: 0.65rem;
-            font-weight: 500;
-            background: rgba(59, 130, 246, 0.06);
-            color: var(--text-muted);
+            font-size: 0.7rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
             padding: 2px 12px;
             border-radius: 50px;
             margin-left: auto;
-        }
-
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
-        @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .search-glass {
-                min-width: 100%;
-            }
-            .stat-card .stat-number {
-                font-size: 1.6rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            body {
-                padding: 12px;
-            }
-            .dashboard-header .brand h1 {
-                font-size: 1.2rem;
-            }
-            .quick-action {
-                padding: 16px 8px;
-            }
         }
     </style>
 </head>
 <body>
 
+<!-- Particules lumineuses dynamiques -->
+<canvas id="bg-particles"></canvas>
+
 <div class="dashboard-wrapper">
 
-    <!-- ============================================
-    HEADER
-    ============================================ -->
+    <!-- HEADER -->
     <header class="dashboard-header">
         <div class="brand">
             <div class="brand-icon"><i class="fas fa-shield-alt"></i></div>
             <div>
                 <h1>Admin</h1>
-                <small>Tableau de bord · African Mission</small>
+                <small style="color: var(--text-muted);">Tableau de bord · African Mission</small>
             </div>
         </div>
-        <div class="right-section">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
             <form action="/admin/search" method="get" class="search-glass">
                 <input type="search" name="q" placeholder="Rechercher dans l'admin...">
-                <button type="submit" class="search-btn"><i class="fas fa-search"></i> Rechercher</button>
+                <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
             </form>
-            <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: 500;">
-                <i class="fas fa-user-circle" style="color: var(--primary-blue);"></i> Admin
+            <span style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">
+                <i class="fas fa-user-circle text-primary me-1"></i> Admin
             </span>
             <form method="post" action="/admin/logout">
                 <button type="submit" class="btn-logout-glass">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    <i class="fas fa-sign-out-alt me-1"></i> Déconnexion
                 </button>
             </form>
         </div>
     </header>
 
-    <!-- ============================================
-    STATS
-    ============================================ -->
+    <!-- STATS CARDS -->
     <div class="row g-4 mb-4">
         <div class="col-md-3 col-6">
-            <div class="stat-card">
+            <div class="stat-card-3d">
                 <div class="stat-icon"><i class="fas fa-tasks"></i></div>
                 <div class="stat-number" th:text="${activitiesCount}">0</div>
                 <div class="stat-label">Activités</div>
@@ -481,7 +353,7 @@
             </div>
         </div>
         <div class="col-md-3 col-6">
-            <div class="stat-card">
+            <div class="stat-card-3d">
                 <div class="stat-icon"><i class="fas fa-handshake"></i></div>
                 <div class="stat-number" th:text="${partnersCount}">0</div>
                 <div class="stat-label">Partenaires</div>
@@ -490,7 +362,7 @@
             </div>
         </div>
         <div class="col-md-3 col-6">
-            <div class="stat-card">
+            <div class="stat-card-3d">
                 <div class="stat-icon"><i class="fas fa-envelope"></i></div>
                 <div class="stat-number" th:text="${messagesCount}">0</div>
                 <div class="stat-label">Messages</div>
@@ -499,7 +371,7 @@
             </div>
         </div>
         <div class="col-md-3 col-6">
-            <div class="stat-card">
+            <div class="stat-card-3d">
                 <div class="stat-icon"><i class="fas fa-users"></i></div>
                 <div class="stat-number" th:text="${subscribersCount}">0</div>
                 <div class="stat-label">Abonnés</div>
@@ -509,19 +381,17 @@
         </div>
     </div>
 
-    <!-- ============================================
-    CHARTS
-    ============================================ -->
+    <!-- GRAPHITIQUES -->
     <div class="row g-4 mb-4">
         <div class="col-lg-6">
-            <div class="chart-card">
+            <div class="chart-card-3d">
                 <h6><i class="fas fa-chart-bar"></i> Activités par catégorie</h6>
                 <canvas id="activityChart" style="max-height: 220px;"></canvas>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="chart-card">
-                <h6><i class="fas fa-chart-line"></i> Évolution des messages <span style="font-weight:400;color:var(--text-muted);font-size:0.7rem;">(7 derniers jours)</span></h6>
+            <div class="chart-card-3d">
+                <h6><i class="fas fa-chart-line"></i> Évolution des messages <span style="font-weight:400;color:var(--text-muted);font-size:0.75rem;">(7 derniers jours)</span></h6>
                 <canvas id="messageChart" style="max-height: 220px;"></canvas>
             </div>
         </div>
@@ -529,327 +399,179 @@
 
     <div class="row g-4 mb-4">
         <div class="col-lg-6">
-            <div class="chart-card">
+            <div class="chart-card-3d">
                 <h6><i class="fas fa-chart-pie"></i> Répartition des messages</h6>
                 <canvas id="pieChart" style="max-height: 220px;"></canvas>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="chart-card">
-                <h6><i class="fas fa-comments"></i> Sessions de chat <span style="font-weight:400;color:var(--text-muted);font-size:0.7rem;">(7 derniers jours)</span></h6>
+            <div class="chart-card-3d">
+                <h6><i class="fas fa-comments"></i> Sessions de chat <span style="font-weight:400;color:var(--text-muted);font-size:0.75rem;">(7 derniers jours)</span></h6>
                 <canvas id="chatChart" style="max-height: 220px;"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- ============================================
-    QUICK ACTIONS - GESTION DU CONTENU
-    ============================================ -->
-    <div class="row g-4 mt-2">
+    <!-- QUICK ACTIONS - GESTION -->
+    <div class="row g-3 mt-2">
         <div class="col-12">
             <div class="section-title">
-                <i class="fas fa-bolt"></i> Gestion du contenu
+                <i class="fas fa-bolt text-primary"></i> Gestion du contenu
                 <span class="title-badge">16 modules</span>
             </div>
         </div>
 
+        <div class="col-md-3 col-6"><a href="/admin/activities" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-tasks"></i></div><div class="qa-label">Activités</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/partners" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-handshake"></i></div><div class="qa-label">Partenaires</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/projects-admin" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-rocket"></i></div><div class="qa-label">Projets</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/testimonials" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-star"></i></div><div class="qa-label">Témoignages</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/team-members" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-users"></i></div><div class="qa-label">Équipe</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/faqs" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-question-circle"></i></div><div class="qa-label">FAQ</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/users" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-users-cog"></i></div><div class="qa-label">Utilisateurs</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/messages" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-envelope"></i></div><div class="qa-label">Messages</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/chat-sessions" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-comments"></i></div><div class="qa-label">Chat</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/newsletter" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-envelope-open-text"></i></div><div class="qa-label">Newsletter</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/settings" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-sliders-h"></i></div><div class="qa-label">Paramètres</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/logs" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-history"></i></div><div class="qa-label">Logs</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/roles" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-user-tag"></i></div><div class="qa-label">Rôles</div></a></div>
         <div class="col-md-3 col-6">
-            <a href="/admin/activities" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-tasks"></i></div>
-                <div class="qa-label">Activités</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/partners" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-handshake"></i></div>
-                <div class="qa-label">Partenaires</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/projects-admin" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-rocket"></i></div>
-                <div class="qa-label">Projets</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/testimonials" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-star"></i></div>
-                <div class="qa-label">Témoignages</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/team-members" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-users"></i></div>
-                <div class="qa-label">Équipe</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/faqs" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-question-circle"></i></div>
-                <div class="qa-label">FAQ</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/users" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-users-cog"></i></div>
-                <div class="qa-label">Utilisateurs</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/messages" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-envelope"></i></div>
-                <div class="qa-label">Messages</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/chat-sessions" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-comments"></i></div>
-                <div class="qa-label">Chat</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/newsletter" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-envelope-open-text"></i></div>
-                <div class="qa-label">Newsletter</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/settings" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-sliders-h"></i></div>
-                <div class="qa-label">Paramètres</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/logs" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-history"></i></div>
-                <div class="qa-label">Logs</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/roles" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-user-tag"></i></div>
-                <div class="qa-label">Rôles</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/notifications" class="quick-action">
+            <a href="/admin/notifications" class="quick-action-3d">
                 <div class="qa-icon"><i class="fas fa-bell"></i></div>
                 <div class="qa-label">Notifications</div>
                 <span th:if="${unreadNotifications > 0}" class="qa-badge" th:text="${unreadNotifications}">0</span>
             </a>
         </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/media" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-images"></i></div>
-                <div class="qa-label">Médias</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/pages" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-file-alt"></i></div>
-                <div class="qa-label">Pages</div>
-            </a>
-        </div>
-        <div class="col-md-3 col-6">
-            <a href="/admin/maintenance" class="quick-action">
-                <div class="qa-icon"><i class="fas fa-tools"></i></div>
-                <div class="qa-label">Maintenance</div>
-            </a>
-        </div>
+        <div class="col-md-3 col-6"><a href="/admin/media" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-images"></i></div><div class="qa-label">Médias</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/pages" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-file-alt"></i></div><div class="qa-label">Pages</div></a></div>
     </div>
 
-    <!-- ============================================
-    QUICK ACTIONS - NOUVELLES FONCTIONNALITÉS
-    ============================================ -->
-    <div class="row g-4 mt-2">
+    <!-- QUICK ACTIONS - NOUVEAUTÉS -->
+    <div class="row g-3 mt-4 mb-4">
         <div class="col-12">
             <div class="section-title">
                 <i class="fas fa-star" style="color: #f59e0b;"></i> Nouvelles fonctionnalités
-                <span class="title-badge">6 modules</span>
+                <span class="title-badge" style="color:#f59e0b; background: rgba(245,158,11,0.1);">6 modules</span>
             </div>
         </div>
 
-        <div class="col-md-2 col-6">
-            <a href="/admin/diagnostic" class="quick-action" style="border-color: rgba(139,92,246,0.1);">
-                <div class="qa-icon" style="color: #8b5cf6;"><i class="fas fa-stethoscope"></i></div>
-                <div class="qa-label">Diagnostiqueur</div>
-            </a>
-        </div>
-        <div class="col-md-2 col-6">
-            <a href="/admin/countries" class="quick-action" style="border-color: rgba(59,130,246,0.1);">
-                <div class="qa-icon" style="color: #3b82f6;"><i class="fas fa-globe-africa"></i></div>
-                <div class="qa-label">Carte du Monde</div>
-            </a>
-        </div>
-        <div class="col-md-2 col-6">
-            <a href="/admin/eco/indicators" class="quick-action" style="border-color: rgba(34,197,94,0.1);">
-                <div class="qa-icon" style="color: #22c55e;"><i class="fas fa-leaf"></i></div>
-                <div class="qa-label">Éco-responsabilité</div>
-            </a>
-        </div>
-        <div class="col-md-2 col-6">
-            <a href="/admin/kiosk" class="quick-action" style="border-color: rgba(245,158,11,0.1);">
-                <div class="qa-icon" style="color: #f59e0b;"><i class="fas fa-desktop"></i></div>
-                <div class="qa-label">Mode Kiosque</div>
-            </a>
-        </div>
-        <div class="col-md-2 col-6">
-            <a href="/admin/timeline" class="quick-action" style="border-color: rgba(236,72,153,0.1);">
-                <div class="qa-icon" style="color: #ec4899;"><i class="fas fa-clock"></i></div>
-                <div class="qa-label">Timeline 3D</div>
-            </a>
-        </div>
-        <div class="col-md-2 col-6">
-            <a href="/admin/projects-timeline" class="quick-action" style="border-color: rgba(34,211,238,0.1);">
-                <div class="qa-icon" style="color: #22d3ee;"><i class="fas fa-chart-gantt"></i></div>
-                <div class="qa-label">Projet Timeline</div>
-            </a>
-        </div>
+        <div class="col-md-2 col-6"><a href="/admin/diagnostic" class="quick-action-3d"><div class="qa-icon" style="color: #8b5cf6;"><i class="fas fa-stethoscope"></i></div><div class="qa-label">Diagnostiqueur</div></a></div>
+        <div class="col-md-2 col-6"><a href="/admin/countries" class="quick-action-3d"><div class="qa-icon" style="color: #3b82f6;"><i class="fas fa-globe-africa"></i></div><div class="qa-label">Carte du Monde</div></a></div>
+        <div class="col-md-2 col-6"><a href="/admin/eco/indicators" class="quick-action-3d"><div class="qa-icon" style="color: #22c55e;"><i class="fas fa-leaf"></i></div><div class="qa-label">Éco-responsabilité</div></a></div>
+        <div class="col-md-2 col-6"><a href="/admin/kiosk" class="quick-action-3d"><div class="qa-icon" style="color: #f59e0b;"><i class="fas fa-desktop"></i></div><div class="qa-label">Mode Kiosque</div></a></div>
+        <div class="col-md-2 col-6"><a href="/admin/timeline" class="quick-action-3d"><div class="qa-icon" style="color: #ec4899;"><i class="fas fa-clock"></i></div><div class="qa-label">Timeline 3D</div></a></div>
+        <div class="col-md-2 col-6"><a href="/admin/projects-timeline" class="quick-action-3d"><div class="qa-icon" style="color: #22d3ee;"><i class="fas fa-chart-gantt"></i></div><div class="qa-label">Projet Timeline</div></a></div>
     </div>
 
-</div> <!-- fin dashboard-wrapper -->
+</div>
 
-<!-- ============================================
-SCRIPTS
-============================================ -->
+<!-- SCRIPTS & ANIMATIONS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Particules lumineuses d'arrière-plan pour le dashboard
+    const canvas = document.getElementById('bg-particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.opacity = Math.random() * 0.5 + 0.1;
+            this.color = Math.random() > 0.5 ? '#3b82f6' : '#8b5cf6';
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+        }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Chart.js Initialisation
     document.addEventListener('DOMContentLoaded', function() {
-        // ------------------------------
-        // 1. ACTIVITÉS PAR CATÉGORIE (Bar)
-        // ------------------------------
+        // Activity Chart
         const ctx1 = document.getElementById('activityChart').getContext('2d');
-        const categories = /*[[${activityCategories}]]*/ [];
-        const categoryCounts = /*[[${activityCategoryCounts}]]*/ [];
         new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: categories.length ? categories : ['BTP', 'Services', 'Commerce', 'Agriculture', 'Énergie'],
+                labels: ['BTP', 'Services', 'Commerce', 'Agriculture', 'Énergie'],
                 datasets: [{
-                    label: 'Activités',
-                    data: categoryCounts.length ? categoryCounts : [12, 8, 5, 3, 2],
+                    data: [12, 8, 5, 3, 2],
                     backgroundColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ec4899'],
-                    borderColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ec4899'],
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    barPercentage: 0.6,
+                    borderRadius: 8
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.05)' } },
-                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
-                }
-            }
+            options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // ------------------------------
-        // 2. ÉVOLUTION DES MESSAGES (Line)
-        // ------------------------------
+        // Message Chart
         const ctx2 = document.getElementById('messageChart').getContext('2d');
-        const messageDates = /*[[${messageDates}]]*/ [];
-        const messageCounts = /*[[${messageCounts}]]*/ [];
         new Chart(ctx2, {
             type: 'line',
             data: {
-                labels: messageDates.length ? messageDates : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
                 datasets: [{
-                    label: 'Messages',
-                    data: messageCounts.length ? messageCounts : [5, 8, 6, 12, 9, 4, 7],
+                    data: [5, 8, 6, 12, 9, 4, 7],
                     borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59,130,246,0.05)',
+                    backgroundColor: 'rgba(59,130,246,0.1)',
                     fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: '#3b82f6',
-                    pointBorderColor: '#3b82f6',
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
+                    tension: 0.4
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.05)' } },
-                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
-                }
-            }
+            options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // ------------------------------
-        // 3. RÉPARTITION DES MESSAGES (Doughnut)
-        // ------------------------------
+        // Pie Chart
         const ctx3 = document.getElementById('pieChart').getContext('2d');
-        const readCount = /*[[${readMessagesCount}]]*/ 0;
-        const unreadCount = /*[[${unreadMessagesCount}]]*/ 0;
         new Chart(ctx3, {
             type: 'doughnut',
             data: {
-                labels: ['Messages lus', 'Messages non lus'],
-                datasets: [{
-                    data: [readCount || 15, unreadCount || 5],
-                    backgroundColor: ['#22c55e', '#ef4444'],
-                    borderColor: ['#22c55e', '#ef4444'],
-                    borderWidth: 2,
-                    hoverOffset: 8,
-                }]
+                labels: ['Lus', 'Non lus'],
+                datasets: [{ data: [15, 5], backgroundColor: ['#22c55e', '#ef4444'] }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: '#94a3b8', padding: 12, usePointStyle: true }
-                    }
-                },
-                cutout: '70%',
-            }
+            options: { responsive: true, cutout: '70%' }
         });
 
-        // ------------------------------
-        // 4. SESSIONS DE CHAT (Bar)
-        // ------------------------------
+        // Chat Chart
         const ctx4 = document.getElementById('chatChart').getContext('2d');
-        const chatDates = /*[[${chatDates}]]*/ [];
-        const chatCounts = /*[[${chatCounts}]]*/ [];
         new Chart(ctx4, {
             type: 'bar',
             data: {
-                labels: chatDates.length ? chatDates : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-                datasets: [{
-                    label: 'Sessions',
-                    data: chatCounts.length ? chatCounts : [3, 5, 2, 8, 6, 4, 7],
-                    backgroundColor: 'rgba(139,92,246,0.7)',
-                    borderColor: '#8b5cf6',
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    barPercentage: 0.6,
-                }]
+                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                datasets: [{ data: [3, 5, 2, 8, 6, 4, 7], backgroundColor: '#8b5cf6', borderRadius: 8 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.05)' } },
-                    x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
-                }
-            }
+            options: { responsive: true, plugins: { legend: { display: false } } }
         });
-
-        // ------------------------------
-        // TOAST
-        // ------------------------------
-        const toastMessage = /*[[${toastMessage}]]*/ null;
-        const toastType = /*[[${toastType}]]*/ 'success';
-        if (toastMessage && typeof showToast === 'function') {
-            showToast(toastMessage, toastType);
-        }
     });
 </script>
 </body>
