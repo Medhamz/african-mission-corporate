@@ -139,12 +139,51 @@ body {
 }
 
 .logo-premium-text { font-size: 1.3rem; font-weight: 800; color: var(--text-primary); }
-.logo-premium-text .highlight {
-    background: var(--gradient-cyber);
+
+/* ============================================
+   ANIMATIONS & JEUX DE LUMIÈRE (NOM DE L'ENTREPRISE)
+============================================ */
+.animated-company-name {
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(120deg, #ffffff 0%, #00d2ff 25%, #6a11cb 50%, #ff416c 75%, #ffffff 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: companyLightFlow 6s ease-in-out infinite, companyPulseGlow 3s ease-in-out infinite alternate;
+    text-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+}
+
+@keyframes companyLightFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes companyPulseGlow {
+    0% {
+        filter: drop-shadow(0 0 2px rgba(0, 210, 255, 0.3));
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.8)) drop-shadow(0 0 25px rgba(106, 17, 203, 0.6));
+    }
+}
+
+.brand-text-animated {
+    background: linear-gradient(90deg, #ffffff, #00d2ff, #6a11cb, #00d2ff, #ffffff);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textShimmer 4s linear infinite;
+    font-weight: 800;
+}
+
+.brand-text-animated .highlight {
+    background: linear-gradient(135deg, #00d2ff 0%, #f7b731 50%, #ff416c 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShimmer 3s linear infinite reverse;
 }
 
 .menu-premium .nav-link {
