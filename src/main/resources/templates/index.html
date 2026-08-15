@@ -334,20 +334,20 @@
 
 <!-- CHATBOT WIDGET RESTAURÉ -->
 <div id="chatbotWidget">
-    <button id="chatbotToggle" class="chatbot-toggle" onclick="toggleChatbot()">
+    <button id="chatbotToggle" class="chatbot-toggle">
         <i class="fas fa-comment-dots"></i>
     </button>
     <div id="chatbotWindow" class="chatbot-window" style="display:none;">
         <div class="chatbot-header">
-            <span><i class="fas fa-robot me-2"></i>Assistant Virtual</span>
-            <button class="chatbot-close" onclick="toggleChatbot()"><i class="fas fa-times"></i></button>
+            <span><i class="fas fa-robot me-2"></i>Assistant Virtuel</span>
+            <button id="chatbotClose" class="chatbot-close"><i class="fas fa-times"></i></button>
         </div>
         <div id="chatbotMessages" class="chatbot-messages">
             <div class="message bot">Bonjour ! Je suis votre assistant African Mission. Comment puis-je vous aider aujourd'hui ?</div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="chatbotInput" placeholder="Posez votre question..." onkeypress="handleChatKey(event)">
-            <button id="chatbotSend" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+            <input type="text" id="chatbotInput" placeholder="Posez votre question...">
+            <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 </div>
@@ -355,6 +355,7 @@
 <!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script th:src="@{/js/chatbot.js}"></script>
 
 <script>
     // Initialisation AOS
@@ -404,42 +405,6 @@
         } else {
             showToast('Aucun résultat trouvé pour: ' + query, 'error');
         }
-    }
-
-    // Gestion du Chatbot Widget
-    function toggleChatbot() {
-        const win = document.getElementById('chatbotWindow');
-        win.style.display = (win.style.display === 'none' || win.style.display === '') ? 'flex' : 'none';
-    }
-
-    function handleChatKey(e) {
-        if (e.key === 'Enter') sendChatMessage();
-    }
-
-    function sendChatMessage() {
-        const input = document.getElementById('chatbotInput');
-        const msgContainer = document.getElementById('chatbotMessages');
-        const text = input.value.trim();
-
-        if (!text) return;
-
-        // Message Utilisateur
-        const userMsg = document.createElement('div');
-        userMsg.className = 'message user';
-        userMsg.textContent = text;
-        msgContainer.appendChild(userMsg);
-        input.value = '';
-
-        // Réponse Automatique
-        setTimeout(() => {
-            const botMsg = document.createElement('div');
-            botMsg.className = 'message bot';
-            botMsg.textContent = "Merci pour votre message ! Un de nos conseillers examinera votre demande concernant : " + text;
-            msgContainer.appendChild(botMsg);
-            msgContainer.scrollTop = msgContainer.scrollHeight;
-        }, 800);
-
-        msgContainer.scrollTop = msgContainer.scrollHeight;
     }
 
     // Toggle Thème
@@ -523,7 +488,6 @@
 
             ctx.fillStyle = '#ffffff';
 
-            // Simulation stylisée des continents (Afrique, Europe, Asie, Amériques)
             function drawBlob(x, y, r) {
                 ctx.beginPath();
                 ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -549,7 +513,7 @@
 
         const continentMap = generateWorldTexture();
 
-        // 4. Sphère Océanique de base avec Reflets
+        // 4. Sphère Océanique de base
         const globeGeo = new THREE.SphereGeometry(1.3, 64, 64);
         const globeMat = new THREE.MeshPhongMaterial({
             color: 0x0b1329,
@@ -562,7 +526,7 @@
         const globe = new THREE.Mesh(globeGeo, globeMat);
         mainGroup.add(globe);
 
-        // 5. Couche des Continents Lumineux (Shader/Alpha map)
+        // 5. Couche des Continents Lumineux
         const continentMat = new THREE.MeshStandardMaterial({
             color: 0x00d2ff,
             emissive: 0x0077ff,
@@ -611,7 +575,7 @@
         const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
         mainGroup.add(atmosphere);
 
-        // 8. Nuage de Particules de Lumière Steller
+        // 8. Nuage de Particules
         const particleCount = 350;
         const particleGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -661,12 +625,11 @@
         ring.rotation.x = Math.PI / 2.5;
         mainGroup.add(ring);
 
-        // 10. Boucle d'Animation Continuous
+        // 10. Boucle d'Animation
         let clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
-
             const elapsedTime = clock.getElapsedTime();
 
             if (controls) {
@@ -675,7 +638,6 @@
                 mainGroup.rotation.y += 0.003;
             }
 
-            // Animation propre des composants
             wireframe.rotation.y -= 0.001;
             particles.rotation.y += 0.0008;
             particles.rotation.x = Math.sin(elapsedTime * 0.2) * 0.1;
@@ -686,7 +648,6 @@
 
         animate();
 
-        // Responsive Resizing
         window.addEventListener('resize', function() {
             if (!container) return;
             camera.aspect = container.clientWidth / container.clientHeight;
