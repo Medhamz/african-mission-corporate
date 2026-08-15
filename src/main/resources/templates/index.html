@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${pageTitle}">African Mission Corporate</title>
+    <title th:text="${pageTitle}">African Mission Corporate - Accueil</title>
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -127,7 +127,7 @@
 <!-- TOAST NOTIFICATIONS CONTAINER -->
 <div id="toastContainer" style="position: fixed; top: 90px; right: 20px; z-index: 9999;"></div>
 
-<!-- NAVBAR -->
+<!-- NAVBAR COMPLÈTE -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
         <a class="logo-premium" href="/">
@@ -147,19 +147,40 @@
                 <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle nav-icon"></i>À propos</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-cogs nav-icon"></i>Services
+                        <i class="fas fa-cogs nav-icon"></i>Services & Offres
                     </a>
                     <ul class="dropdown-menu dropdown-premium">
                         <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase me-2"></i>Nos services</a></li>
                         <li><a class="dropdown-item" href="/activities"><i class="fas fa-tasks me-2"></i>Activités</a></li>
-                        <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket me-2"></i>Projets</a></li>
+                        <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket me-2"></i>Projets & Réalisations</a></li>
+                        <li><a class="dropdown-item" href="/key-figures"><i class="fas fa-chart-line me-2"></i>Chiffres Clés</a></li>
                         <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/diagnostic"><i class="fas fa-stethoscope me-2"></i>Diagnostic Gratuit</a></li>
                         <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle me-2"></i>FAQ</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="/team"><i class="fas fa-users nav-icon"></i>Équipe</a></li>
-                <li class="nav-item"><a class="nav-link" href="/careers"><i class="fas fa-briefcase nav-icon"></i>Carrières</a></li>
-                <li class="nav-item"><a class="nav-link" href="/blog"><i class="fas fa-newspaper nav-icon"></i>Blog</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="companyDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-building nav-icon"></i>Entreprise
+                    </a>
+                    <ul class="dropdown-menu dropdown-premium">
+                        <li><a class="dropdown-item" href="/team"><i class="fas fa-users me-2"></i>Notre Équipe</a></li>
+                        <li><a class="dropdown-item" href="/careers"><i class="fas fa-user-tie me-2"></i>Carrières & Emploi</a></li>
+                        <li><a class="dropdown-item" href="/testimonials"><i class="fas fa-quote-left me-2"></i>Témoignages</a></li>
+                        <li><a class="dropdown-item" href="/gallery"><i class="fas fa-images me-2"></i>Galerie Photos</a></li>
+                        <li><a class="dropdown-item" href="/world-map"><i class="fas fa-map-marked-alt me-2"></i>Présence Mondiale</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-newspaper nav-icon"></i>Actualités
+                    </a>
+                    <ul class="dropdown-menu dropdown-premium">
+                        <li><a class="dropdown-item" href="/blog"><i class="fas fa-newspaper me-2"></i>Fil d'actualités / Blog</a></li>
+                        <li><a class="dropdown-item" href="/kiosk"><i class="fas fa-store me-2"></i>Kiosque Média</a></li>
+                        <li><a class="dropdown-item" href="/eco-dashboard"><i class="fas fa-leaf me-2"></i>Impact Éco</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-envelope nav-icon"></i>Contact</a></li>
             </ul>
 
@@ -230,7 +251,7 @@
 
                 <p class="hero-subtitle">
                     Entreprise polyvalente, leader dans les prestations de services, la promotion immobilière,
-                    l'agrobusiness, l'import-export et le développement durable.
+                    l'agrobusiness, l'import-export et le développement durable au Mali et à l'international.
                 </p>
 
                 <div class="d-flex flex-wrap gap-3">
@@ -242,7 +263,7 @@
                     </a>
                 </div>
 
-                <div class="hero-stats">
+                <div class="hero-stats mt-4">
                     <div class="hero-stat">
                         <div class="hero-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">30+</div>
                         <div class="hero-stat-label">Activités</div>
@@ -260,6 +281,52 @@
 
             <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-duration="1000">
                 <div id="three-container"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FIL D'ACTUALITÉS / DERNIÈRES NEWS -->
+<section class="py-5 bg-dark-subtle">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-up">
+            <div>
+                <span class="badge bg-primary px-3 py-2 mb-2">FIL D'ACTUALITÉS</span>
+                <h2 class="section-title">Dernières Actualités & Publications</h2>
+            </div>
+            <a href="/blog" class="btn btn-outline-info rounded-pill"><i class="fas fa-newspaper me-1"></i> Voir tout le blog</a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card card-premium h-100">
+                    <div class="card-body">
+                        <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> 15 Août 2026</span>
+                        <h5 class="card-title mt-2">Inauguration de notre nouveau complexe à Bamako</h5>
+                        <p class="card-text text-secondary">African Mission Corporate renforce sa présence au Mali avec un nouveau siège moderne axé sur la durabilité.</p>
+                        <a href="/blog" class="text-info text-decoration-none fw-bold">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card card-premium h-100">
+                    <div class="card-body">
+                        <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> 10 Août 2026</span>
+                        <h5 class="card-title mt-2">Développement Agrobusiness & Exportation</h5>
+                        <p class="card-text text-secondary">Lancement de nouvelles filières d'exportation de produits agricoles transformés vers la sous-région.</p>
+                        <a href="/blog" class="text-info text-decoration-none fw-bold">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card card-premium h-100">
+                    <div class="card-body">
+                        <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> 02 Août 2026</span>
+                        <h5 class="card-title mt-2">Projet Énergies Renouvelables & Impact Solaire</h5>
+                        <p class="card-text text-secondary">Mise en place de solutions solaires durables pour les infrastructures industrielles et résidentielles.</p>
+                        <a href="/blog" class="text-info text-decoration-none fw-bold">Lire la suite <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -303,6 +370,44 @@
     </div>
 </section>
 
+<!-- SECTION PROJETS EN VEDETTE -->
+<section class="py-5 bg-dark">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="hero-badge mb-2">RÉALISATIONS</span>
+            <h2 class="section-title">Nos Projets Phares</h2>
+            <p class="text-secondary">Un aperçu de nos grands chantiers et réalisations d'envergure au Mali.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6" data-aos="fade-right">
+                <div class="p-4 rounded border border-secondary bg-dark-subtle">
+                    <span class="badge bg-info mb-2">Immobilier & BTP</span>
+                    <h4 class="fw-bold">Résidence Moderne Bamako</h4>
+                    <p class="text-secondary">Conception et construction de complexes résidentiels sécurisés, économes en énergie et dotés d'équipements modernes.</p>
+                    <a href="/projects" class="btn btn-sm btn-outline-info">En savoir plus</a>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-left">
+                <div class="p-4 rounded border border-secondary bg-dark-subtle">
+                    <span class="badge bg-success mb-2">Agrobusiness</span>
+                    <h4 class="fw-bold">Ferme Agro-Écologique Intégrée</h4>
+                    <p class="text-secondary">Projet de production agricole biologique couplé à des centres de conditionnement pour le marché local et l'exportation.</p>
+                    <a href="/projects" class="btn btn-sm btn-outline-info">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION DIAGNOSTIC RAPIDE -->
+<section class="py-5 bg-primary text-white text-center">
+    <div class="container" data-aos="zoom-in">
+        <h2 class="fw-bold mb-3">Besoin d'un accompagnement sur mesure ?</h2>
+        <p class="lead mb-4">Effectuez un diagnostic rapide de vos besoins en promotion immobilière, import-export ou agrobusiness.</p>
+        <a href="/diagnostic" class="btn btn-light btn-lg px-4 rounded-pill fw-bold"><i class="fas fa-stethoscope me-2"></i> Faire un diagnostic gratuit</a>
+    </div>
+</section>
+
 <!-- PARTENAIRES -->
 <section class="py-5 partners-section">
     <div class="container">
@@ -319,7 +424,7 @@
     </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER EXHAUSTIF -->
 <footer class="footer-premium">
     <div class="container">
         <div class="row g-5">
@@ -339,13 +444,16 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <h5 class="fw-bold mb-3">Liens rapides</h5>
+                <h5 class="fw-bold mb-3">Plan du site</h5>
                 <ul class="list-unstyled footer-links">
                     <li><a href="/">Accueil</a></li>
                     <li><a href="/about">À propos</a></li>
                     <li><a href="/services">Services</a></li>
                     <li><a href="/activities">Activités</a></li>
                     <li><a href="/projects">Projets</a></li>
+                    <li><a href="/team">Équipe</a></li>
+                    <li><a href="/careers">Carrières</a></li>
+                    <li><a href="/blog">Actualités / Blog</a></li>
                     <li><a href="/contact">Contact</a></li>
                 </ul>
             </div>
@@ -364,7 +472,8 @@
                 &copy; 2026 <span class="animated-company-name" style="font-size: 0.95rem;">African Mission Corporate</span>. Tous droits réservés.
             </div>
             <div class="col-md-6 text-center text-md-end copyright-links">
-                <a href="/legal">Mentions légales</a>
+                <a href="/legal" class="me-3">Mentions légales</a>
+                <a href="/sitemap">Sitemap</a>
             </div>
         </div>
     </div>
@@ -390,7 +499,7 @@
     </div>
 </div>
 
-<!-- CHARGEMENT DU CHATBOT EN PREMIER POUR GARANTIR LE DÉCLENCHEMENT -->
+<!-- SCRIPTS DE CHARGEMENT -->
 <script th:src="@{/js/chatbot.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
