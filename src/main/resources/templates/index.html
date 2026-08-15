@@ -7,7 +7,7 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0b1120">
+    <meta name="theme-color" content="#0b1329">
 
     <!-- Bootstrap + FontAwesome + AOS + Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,11 +26,8 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
-    <!-- ============================================ -->
-    <!-- RÈGLE DE FORCE POUR LE BANDEAU MÉTÉO        -->
-    <!-- ============================================ -->
+    <!-- RÈGLE POUR LE BANDEAU MÉTÉO -->
     <style>
-        /* Forcer l'affichage du bandeau météo */
         #marketData,
         .market-data-section {
             display: block !important;
@@ -38,9 +35,9 @@
             opacity: 1 !important;
             position: relative !important;
             z-index: 1029 !important;
-            background: rgba(15, 23, 42, 0.95) !important;
+            background: rgba(17, 28, 56, 0.95) !important;
             backdrop-filter: blur(8px) !important;
-            border-bottom: 1px solid rgba(59, 130, 246, 0.2) !important;
+            border-bottom: 1px solid rgba(0, 210, 255, 0.2) !important;
             padding: 8px 0 !important;
             margin-top: 0 !important;
             color: #ffffff !important;
@@ -58,7 +55,7 @@
         }
 
         #marketData .weather-icon {
-            color: #22d3ee !important;
+            color: #00d2ff !important;
             opacity: 1 !important;
         }
 
@@ -85,19 +82,13 @@
 </head>
 <body>
 
-<!-- ============================================ -->
-<!-- BARRE DE PROGRESSION DE SCROLL              -->
-<!-- ============================================ -->
+<!-- BARRE DE PROGRESSION DE SCROLL -->
 <div id="scrollProgress"></div>
 
-<!-- ============================================ -->
-<!-- TOAST NOTIFICATIONS CONTAINER              -->
-<!-- ============================================ -->
-<div id="toastContainer"></div>
+<!-- TOAST NOTIFICATIONS CONTAINER -->
+<div id="toastContainer" style="position: fixed; top: 90px; right: 20px; z-index: 9999;"></div>
 
-<!-- ============================================ -->
-<!-- NAVBAR - CORPORATE PREMIUM 4.0             -->
-<!-- ============================================ -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
     <div class="container">
         <a class="logo-premium" href="/">
@@ -120,20 +111,16 @@
                         <i class="fas fa-cogs nav-icon"></i>Services
                     </a>
                     <ul class="dropdown-menu dropdown-premium">
-                        <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase"></i>Nos services <span class="item-shortcut">↗</span></a></li>
-                        <li><a class="dropdown-item" href="/activities"><i class="fas fa-tasks"></i>Activités</a></li>
-                        <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket"></i>Projets</a></li>
+                        <li><a class="dropdown-item" href="/services"><i class="fas fa-briefcase me-2"></i>Nos services</a></li>
+                        <li><a class="dropdown-item" href="/activities"><i class="fas fa-tasks me-2"></i>Activités</a></li>
+                        <li><a class="dropdown-item" href="/projects"><i class="fas fa-rocket me-2"></i>Projets</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle"></i>FAQ</a></li>
+                        <li><a class="dropdown-item" href="/faq"><i class="fas fa-question-circle me-2"></i>FAQ</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="/team"><i class="fas fa-users nav-icon"></i>Équipe</a></li>
                 <li class="nav-item"><a class="nav-link" href="/careers"><i class="fas fa-briefcase nav-icon"></i>Carrières</a></li>
                 <li class="nav-item"><a class="nav-link" href="/blog"><i class="fas fa-newspaper nav-icon"></i>Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="/diagnostiqueur"><i class="fas fa-stethoscope nav-icon"></i>Diagnostiqueur</a></li>
-                <li class="nav-item"><a class="nav-link" href="/monde"><i class="fas fa-globe-africa nav-icon"></i>Carte du Monde</a></li>
-                <li class="nav-item"><a class="nav-link" href="/eco"><i class="fas fa-leaf nav-icon"></i>Éco-responsabilité</a></li>
-                <li class="nav-item"><a class="nav-link" href="/kiosk"><i class="fas fa-desktop nav-icon"></i>Mode Kiosque</a></li>
                 <li class="nav-item"><a class="nav-link" href="/contact"><i class="fas fa-envelope nav-icon"></i>Contact</a></li>
             </ul>
 
@@ -153,9 +140,7 @@
     </div>
 </nav>
 
-<!-- ============================================ -->
-<!-- MOBILE SEARCH                               -->
-<!-- ============================================ -->
+<!-- RECHERCHE MOBILE -->
 <div class="mobile-search-premium" id="mobileSearch">
     <div style="display: flex; gap: 8px;">
         <input type="text" id="searchInputMobile" placeholder="Rechercher...">
@@ -165,46 +150,32 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- BANDEAU MÉTÉO & MARCHÉS                     -->
-<!-- ============================================ -->
+<!-- BANDEAU MÉTÉO & MARCHÉS -->
 <div id="marketData" class="market-data-section">
     <div class="container">
-        <div class="market-data-row">
-            <div class="market-weather">
+        <div class="market-data-row d-flex justify-content-between align-items-center">
+            <div class="market-weather d-flex align-items-center gap-2">
                 <i class="fas fa-cloud-sun weather-icon"></i>
-                <span class="weather-city" id="weatherCity">Chargement...</span>
-                <span class="weather-temp" id="weatherTemp">--°C</span>
-                <span class="weather-desc" id="weatherDesc">--</span>
+                <span class="weather-city" id="weatherCity">Bamako</span>
+                <span class="weather-temp" id="weatherTemp">32°C</span>
+                <span class="weather-desc" id="weatherDesc">Ensoleillé</span>
             </div>
 
-            <div class="market-prices">
-                <span class="market-label">📈 Marchés</span>
-                <span class="market-item" id="marketCOTTON">Coton: --</span>
-                <span class="market-item" id="marketLUMBER">Bois: --</span>
-                <span class="market-item" id="marketSTEEL">Acier: --</span>
+            <div class="market-prices d-flex gap-3">
+                <span class="market-label">📈 Marchés:</span>
+                <span class="market-item" id="marketCOTTON">Coton: +1.2%</span>
+                <span class="market-item" id="marketLUMBER">Bois: -0.4%</span>
+                <span class="market-item" id="marketSTEEL">Acier: +0.8%</span>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- HERO - CORPORATE PREMIUM 4.0 3D             -->
-<!-- ============================================ -->
+<!-- HERO SECTION -->
 <section class="hero-premium" id="heroSection">
     <div class="hero-grid"></div>
     <div class="hero-glow-orb orb-1"></div>
     <div class="hero-glow-orb orb-2"></div>
-    <div class="hero-glow-orb orb-3"></div>
-
-    <!-- PARTICULES LUMINEUSES DE FOND -->
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
-    <div class="hero-particle"></div>
 
     <div class="container hero-content">
         <div class="row align-items-center">
@@ -215,8 +186,8 @@
                 </div>
 
                 <h1 class="hero-title">
-                    <span class="gradient-text">African Mission</span>
-                    <span class="light-text">Corporate</span>
+                    <span class="gradient-text">African Mission</span><br>
+                    <span>Corporate</span>
                 </h1>
 
                 <p class="hero-subtitle">
@@ -226,10 +197,10 @@
 
                 <div class="d-flex flex-wrap gap-3">
                     <a href="/activities" class="btn-primary-premium">
-                        <i class="fas fa-rocket"></i> Découvrir nos activités
+                        <i class="fas fa-rocket"></i> Nos activités
                     </a>
                     <a href="/contact" class="btn-secondary-premium">
-                        <i class="fas fa-phone"></i> Nous contacter
+                        <i class="fas fa-phone"></i> Contactez-nous
                     </a>
                 </div>
 
@@ -237,22 +208,19 @@
                     <div class="hero-stat">
                         <div class="hero-stat-number" th:text="${activities != null ? activities.size() : 0} + '+'">30+</div>
                         <div class="hero-stat-label">Activités</div>
-                        <div class="stat-line"></div>
                     </div>
                     <div class="hero-stat">
                         <div class="hero-stat-number">15+</div>
                         <div class="hero-stat-label">Domaines</div>
-                        <div class="stat-line"></div>
                     </div>
                     <div class="hero-stat">
                         <div class="hero-stat-number">100%</div>
                         <div class="hero-stat-label">Engagement</div>
-                        <div class="stat-line"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- RENAISSANCE DE LA PLANÈTE 3D AMÉLIORÉE -->
+            <!-- PLANÈTE 3D -->
             <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-duration="1000">
                 <div id="three-container"></div>
             </div>
@@ -260,18 +228,13 @@
     </div>
 </section>
 
-<!-- ============================================ -->
-<!-- ACTIVITIES PREVIEW (avec AR)                -->
-<!-- ============================================ -->
+<!-- ACTIVITÉS SECTION -->
 <section class="py-5 activities-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <div class="section-tag">✦ SERVICES ✦</div>
-            <h2 class="section-title">
-                <span class="gradient-text">Nos activités</span> principales
-            </h2>
-            <div class="section-line centered"></div>
-            <p style="color: var(--text-secondary); font-size: 1.05rem;">Découvrez l'étendue de nos compétences et services d'excellence</p>
+            <div class="hero-badge mb-2">SERVICES D'EXCELLENCE</div>
+            <h2 class="section-title">Nos activités principales</h2>
+            <p style="color: var(--text-secondary);">Découvrez l'étendue de nos compétences au service de vos projets</p>
         </div>
 
         <div class="row g-4">
@@ -281,9 +244,9 @@
                     <div class="card-premium-icon">
                         <i th:class="${activity.icon != null ? activity.icon : 'fas fa-check-circle'}"></i>
                     </div>
-                    <h5 class="card-premium-title" th:text="${activity.title}">Titre</h5>
-                    <p class="card-premium-text" th:text="${activity.description}">Description</p>
-                    <span class="card-premium-badge" th:text="${activity.category}">Catégorie</span>
+                    <h5 class="card-premium-title" th:text="${activity.title}">Promotion Immobilière</h5>
+                    <p class="card-premium-text" th:text="${activity.description}">Construction et gestion de biens immobiliers modernes et durables.</p>
+                    <span class="card-premium-badge" th:text="${activity.category}">Immobilier</span>
                     <div class="mt-3">
                         <button class="btn btn-sm btn-outline-primary ar-trigger"
                                 data-model="/models/activity.glb"
@@ -291,7 +254,6 @@
                             <i class="fas fa-cube me-1"></i> Voir en AR
                         </button>
                     </div>
-                    <div class="card-premium-border"></div>
                 </div>
             </div>
         </div>
@@ -304,122 +266,23 @@
     </div>
 </section>
 
-<!-- ============================================ -->
-<!-- MODAL AR (MODEL-VIEWER)                     -->
-<!-- ============================================ -->
-<div class="modal fade" id="arModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content modal-ar-premium">
-            <div class="modal-header">
-                <h5 class="modal-title" id="arModalLabel">Visualisation en réalité augmentée</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <model-viewer id="arViewer"
-                              src="/models/activity.glb"
-                              alt="Modèle 3D"
-                              ar
-                              ar-modes="webxr scene-viewer quick-look"
-                              camera-controls
-                              touch-action="pan-y"
-                              poster="/images/ar-poster.png"
-                              shadow-intensity="1.5"
-                              exposure="1.2"
-                              auto-rotate
-                              auto-rotate-delay="0"
-                              rotation-per-second="10deg">
-                    <div slot="poster">
-                        <div class="ar-poster-fallback">
-                            <i class="fas fa-cube ar-fallback-icon"></i>
-                            <p style="font-size:1.1rem;max-width:300px;text-align:center;">
-                                Ajoutez un modèle 3D (.glb) dans le dossier <br>
-                                <code>/static/models/</code>
-                            </p>
-                            <p style="font-size:0.85rem;color:var(--text-muted);">
-                                ou téléchargez un modèle gratuit sur
-                                <a href="https://sketchfab.com/search?type=models&features=free&downloadable=true" target="_blank">Sketchfab</a>
-                            </p>
-                        </div>
-                    </div>
-                </model-viewer>
-                <div class="mt-3 text-center">
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">
-                        <i class="fas fa-mobile-alt me-1"></i>
-                        Utilisez votre téléphone pour visualiser ce modèle en réalité augmentée.
-                        <br>
-                        <span class="badge bg-primary mt-1">📱 AR compatible sur mobile</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================ -->
-<!-- ABOUT PREVIEW                              -->
-<!-- ============================================ -->
-<section class="py-5 about-preview-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6" data-aos="fade-right">
-                <div class="section-tag">✦ À PROPOS ✦</div>
-                <h2 class="section-title">
-                    <span class="gradient-text">Qui sommes-</span>nous ?
-                </h2>
-                <div class="section-line"></div>
-                <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;">
-                    African Mission Corporate est une entreprise malienne polyvalente, engagée dans le développement
-                    durable et l'excellence opérationnelle.
-                </p>
-                <ul class="list-unstyled mt-4 feature-list">
-                    <li><span class="icon-box"><i class="fas fa-check"></i></span> Plus de 33 activités variées</li>
-                    <li><span class="icon-box"><i class="fas fa-check"></i></span> Présence au Mali et à l'international</li>
-                    <li><span class="icon-box"><i class="fas fa-check"></i></span> Engagement pour le développement durable</li>
-                    <li><span class="icon-box"><i class="fas fa-check"></i></span> Expertise multi-sectorielle</li>
-                </ul>
-                <a href="/about" class="btn-primary-premium mt-4">
-                    En savoir plus <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-            <div class="col-lg-6 text-center mt-5 mt-lg-0" data-aos="fade-left">
-                <div class="about-image-wrapper">
-                    <img src="https://via.placeholder.com/600x400/1e293b/3b82f6?text=African+Mission"
-                         alt="African Mission" class="img-fluid rounded-4">
-                    <div class="about-image-glow"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================ -->
-<!-- PARTNERS                                   -->
-<!-- ============================================ -->
+<!-- PARTENAIRES -->
 <section class="py-5 partners-section">
     <div class="container">
         <div class="text-center mb-4" data-aos="fade-up">
-            <div class="section-tag">✦ PARTENAIRES ✦</div>
-            <h3 class="section-title">
-                <span class="gradient-text">Nos</span> partenaires
-            </h3>
-            <div class="section-line centered"></div>
+            <h3 class="section-title">Nos Partenaires de Confiance</h3>
         </div>
         <div class="row align-items-center justify-content-center g-3">
-            <div class="col-md-2 col-4 text-center" th:each="partner : ${partners}" data-aos="zoom-in">
+            <div class="col-md-2 col-6" th:each="partner : ${partners}" data-aos="zoom-in">
                 <div class="partner-premium">
-                    <span class="partner-premium-name" th:text="${partner.name}">Partenaire</span>
+                    <span th:text="${partner.name}">Partenaire</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<div th:replace="fragments/timeline :: #timeline"></div>
-<div th:replace="fragments/project-timeline :: #projectTimeline"></div>
-
-<!-- ============================================ -->
-<!-- FOOTER - CORPORATE PREMIUM 4.0             -->
-<!-- ============================================ -->
+<!-- FOOTER -->
 <footer class="footer-premium">
     <div class="container">
         <div class="row g-5">
@@ -429,7 +292,7 @@
                     African Mission Corporate
                 </h4>
                 <p class="mt-3" style="line-height: 1.8;">
-                    Entreprise spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et bien plus.
+                    Spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et l'innovation.
                 </p>
                 <div class="mt-4 d-flex gap-2">
                     <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
@@ -446,296 +309,74 @@
                     <li><a href="/services">Services</a></li>
                     <li><a href="/activities">Activités</a></li>
                     <li><a href="/projects">Projets</a></li>
-                    <li><a href="/team">Équipe</a></li>
-                    <li><a href="/careers">Carrières</a></li>
-                    <li><a href="/blog">Blog</a></li>
-                    <li><a href="/faq">FAQ</a></li>
                     <li><a href="/contact">Contact</a></li>
-                    <li><a href="/diagnostiqueur">🔍 Diagnostiqueur</a></li>
-                    <li><a href="/monde">🌍 Carte du Monde</a></li>
-                    <li><a href="/eco">🌿 Éco-responsabilité</a></li>
-                    <li><a href="/kiosk">🖥️ Mode Kiosque</a></li>
-                    <li><a href="/legal">Mentions légales</a></li>
-                    <li><a href="/maintenance">🔧 Maintenance</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
                 <h5 class="fw-bold mb-3">Contact</h5>
                 <ul class="list-unstyled contact-list">
-                    <li><i class="fas fa-map-marker-alt"></i> Bamako, Mali</li>
-                    <li><i class="fas fa-phone"></i> +223 44 39 12 03</li>
-                    <li><i class="fas fa-envelope"></i> contact@africanmission.com</li>
-                    <li><i class="fas fa-clock"></i> Lun - Ven : 8h00 - 17h00</li>
+                    <li><i class="fas fa-map-marker-alt me-2"></i> Bamako, Mali</li>
+                    <li><i class="fas fa-phone me-2"></i> +223 44 39 12 03</li>
+                    <li><i class="fas fa-envelope me-2"></i> contact@africanmission.com</li>
                 </ul>
-                <div class="mt-4">
-                    <h6 style="font-size: 0.9rem; font-weight: 600;">📩 Restez informé</h6>
-                    <form action="/newsletter/subscribe" method="post" class="d-flex gap-2 mt-2">
-                        <input type="email" name="email" class="form-control form-control-sm newsletter-input"
-                               placeholder="Votre email" required>
-                        <button type="submit" class="btn btn-sm btn-newsletter">
-                            <i class="fas fa-paper-plane"></i> S'abonner
-                        </button>
-                    </form>
-                </div>
             </div>
         </div>
-        <hr class="mt-5 footer-divider">
+        <hr class="mt-5 border-secondary">
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start copyright-text">
                 &copy; 2026 African Mission Corporate. Tous droits réservés.
             </div>
             <div class="col-md-6 text-center text-md-end copyright-links">
-                <a href="/legal" class="me-3">Mentions légales</a>
-                <a href="/sitemap">Plan du site</a>
+                <a href="/legal">Mentions légales</a>
             </div>
         </div>
     </div>
 </footer>
 
-<!-- ============================================ -->
-<!-- CHATBOT WIDGET                              -->
-<!-- ============================================ -->
+<!-- CHATBOT WIDGET RESTAURÉ -->
 <div id="chatbotWidget">
-    <button id="chatbotToggle" class="chatbot-toggle">
+    <button id="chatbotToggle" class="chatbot-toggle" onclick="toggleChatbot()">
         <i class="fas fa-comment-dots"></i>
     </button>
     <div id="chatbotWindow" class="chatbot-window" style="display:none;">
         <div class="chatbot-header">
-            <span>Assistant African Mission</span>
-            <button id="chatbotClose" class="chatbot-close"><i class="fas fa-times"></i></button>
+            <span><i class="fas fa-robot me-2"></i>Assistant Virtual</span>
+            <button class="chatbot-close" onclick="toggleChatbot()"><i class="fas fa-times"></i></button>
         </div>
         <div id="chatbotMessages" class="chatbot-messages">
-            <div class="message bot">Bonjour ! Je suis votre assistant. Comment puis-je vous aider ?</div>
+            <div class="message bot">Bonjour ! Je suis votre assistant African Mission. Comment puis-je vous aider aujourd'hui ?</div>
         </div>
         <div class="chatbot-input">
-            <input type="text" id="chatbotInput" placeholder="Posez votre question...">
-            <button id="chatbotSend"><i class="fas fa-paper-plane"></i></button>
+            <input type="text" id="chatbotInput" placeholder="Posez votre question..." onkeypress="handleChatKey(event)">
+            <button id="chatbotSend" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- SCRIPTS                                     -->
-<!-- ============================================ -->
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script th:src="@{/js/chatbot.js}"></script>
-<script th:src="@{/js/micro-interactions.js}"></script>
-<script th:src="@{/js/sw-register.js}"></script>
-<script th:src="@{/js/market-data.js}"></script>
-<script th:src="@{/js/timeline.js}"></script>
-<script th:src="@{/js/project-timeline.js}"></script>
 
-<!-- ============================================ -->
-<!-- THREE.JS PLANÈTE 3D ULTRA-DYNAMIQUE         -->
-<!-- ============================================ -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('three-container');
-        if (!container) return;
+    // Initialisation AOS
+    AOS.init({ duration: 800, once: true });
 
-        if (typeof THREE === 'undefined') {
-            console.warn('Three.js non chargé');
-            container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding-top:40%;">Chargement de la planète 3D...</p>';
-            return;
-        }
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(0, 0, 4.8);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        container.appendChild(renderer.domElement);
-
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = false;
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 1.2;
-
-        // Lumières Néons & Hologrammes
-        const ambientLight = new THREE.AmbientLight(0x0b0f19, 1.5);
-        scene.add(ambientLight);
-
-        const light1 = new THREE.PointLight(0x00f2fe, 3, 50);
-        light1.position.set(6, 6, 6);
-        scene.add(light1);
-
-        const light2 = new THREE.PointLight(0x7f00ff, 3, 50);
-        light2.position.set(-6, -6, -6);
-        scene.add(light2);
-
-        const light3 = new THREE.PointLight(0xff0844, 2, 50);
-        light3.position.set(0, -6, 6);
-        scene.add(light3);
-
-        // PLANÈTE 3D (Cœur & Reliefs du globe)
-        const planetGroup = new THREE.Group();
-        scene.add(planetGroup);
-
-        // Globe Central
-        const sphereGeo = new THREE.SphereGeometry(1.35, 64, 64);
-        const sphereMat = new THREE.MeshStandardMaterial({
-            color: 0x071126,
-            roughness: 0.2,
-            metalness: 0.8,
-            emissive: 0x020d20,
-            emissiveIntensity: 0.5
-        });
-        const planet = new THREE.Mesh(sphereGeo, sphereMat);
-        planetGroup.add(planet);
-
-        // Continents / Maillage Holographique
-        const landGeo = new THREE.IcosahedronGeometry(1.365, 12);
-        const landMat = new THREE.MeshStandardMaterial({
-            color: 0x00f2fe,
-            wireframe: true,
-            emissive: 0x00f2fe,
-            emissiveIntensity: 0.6,
-            transparent: true,
-            opacity: 0.5
-        });
-        const landMesh = new THREE.Mesh(landGeo, landMat);
-        planetGroup.add(landMesh);
-
-        // Atmosphère lumineuse
-        const atmosGeo = new THREE.SphereGeometry(1.42, 64, 64);
-        const atmosMat = new THREE.MeshBasicMaterial({
-            color: 0x00f2fe,
-            transparent: true,
-            opacity: 0.12,
-            side: THREE.BackSide
-        });
-        const atmosphere = new THREE.Mesh(atmosGeo, atmosMat);
-        planetGroup.add(atmosphere);
-
-        // ANNEAUX D'ÉNERGIE HOLOGRAPHIQUES
-        const ring1Geo = new THREE.TorusGeometry(1.85, 0.015, 16, 100);
-        const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x00f2fe, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
-        const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-        ring1.rotation.x = Math.PI / 2.5;
-        scene.add(ring1);
-
-        const ring2Geo = new THREE.TorusGeometry(2.1, 0.01, 16, 100);
-        const ring2Mat = new THREE.MeshBasicMaterial({ color: 0x7f00ff, side: THREE.DoubleSide, transparent: true, opacity: 0.6 });
-        const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-        ring2.rotation.x = Math.PI / 1.8;
-        ring2.rotation.y = Math.PI / 4;
-        scene.add(ring2);
-
-        // NUAGE DE PARTICULES SATELLITES
-        const particlesCount = 350;
-        const particlesGeo = new THREE.BufferGeometry();
-        const positions = new Float32Array(particlesCount * 3);
-
-        for (let i = 0; i < particlesCount * 3; i += 3) {
-            const radius = 1.6 + Math.random() * 1.2;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos((Math.random() * 2) - 1);
-
-            positions[i] = radius * Math.sin(phi) * Math.cos(theta);
-            positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
-            positions[i + 2] = radius * Math.cos(phi);
-        }
-
-        particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particlesMat = new THREE.PointsMaterial({
-            color: 0x00f2fe,
-            size: 0.025,
-            transparent: true,
-            opacity: 0.85
-        });
-        const particleSystem = new THREE.Points(particlesGeo, particlesMat);
-        scene.add(particleSystem);
-
-        // Inclinant la planète sur son axe réel
-        planetGroup.rotation.z = 0.41;
-
-        // ANIMATION LOOP
-        function animate() {
-            requestAnimationFrame(animate);
-            planetGroup.rotation.y += 0.003;
-            landMesh.rotation.y += 0.001;
-            ring1.rotation.z += 0.004;
-            ring2.rotation.z -= 0.003;
-            particleSystem.rotation.y += 0.0015;
-
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            if (width > 0 && height > 0) {
-                renderer.setSize(width, height);
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-            }
-        });
-    });
-</script>
-
-<!-- ============================================ -->
-<!-- AR LOGIC INLINE                             -->
-<!-- ============================================ -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const arModal = document.getElementById('arModal');
-        const arViewer = document.getElementById('arViewer');
-        const arLabel = document.getElementById('arModalLabel');
-
-        if (!arModal || !arViewer || !arLabel) return;
-
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.ar-trigger');
-            if (!btn) return;
-
-            e.preventDefault();
-            const modelUrl = btn.dataset.model || '/models/activity.glb';
-            const title = btn.dataset.title || 'Visualisation 3D';
-
-            arViewer.setAttribute('src', modelUrl);
-            arLabel.textContent = title;
-
-            try {
-                const modal = new bootstrap.Modal(arModal);
-                modal.show();
-            } catch (err) {
-                console.error('❌ Erreur ouverture modal AR :', err);
-            }
-        });
-    });
-</script>
-
-<!-- ============================================ -->
-<!-- RECHERCHE, AOS, NAVBAR, THEME, TOAST, SCROLL -->
-<!-- ============================================ -->
-<script th:inline="javascript">
+    // Gestion de la Recherche
     function performSearch() {
         const desktopInput = document.getElementById('searchInputDesktop');
         const mobileInput = document.getElementById('searchInputMobile');
-        let query = '';
-        if (desktopInput && desktopInput.value.trim() !== '') {
-            query = desktopInput.value.trim().toLowerCase();
-        } else if (mobileInput && mobileInput.value.trim() !== '') {
-            query = mobileInput.value.trim().toLowerCase();
-        } else {
-            resetSearch();
+        let query = (desktopInput && desktopInput.value.trim()) || (mobileInput && mobileInput.value.trim());
+
+        if (!query) {
+            showToast('Veuillez entrer un terme de recherche', 'error');
             return;
         }
 
-        const searchableItems = document.querySelectorAll('.card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item');
-        const textElements = document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag');
-
+        const searchableItems = document.querySelectorAll('.card-premium, .partner-premium');
         let found = false;
+
         searchableItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            if (text.includes(query)) {
+            if (item.textContent.toLowerCase().includes(query.toLowerCase())) {
                 item.style.display = '';
                 found = true;
             } else {
@@ -743,146 +384,104 @@
             }
         });
 
-        textElements.forEach(el => {
-            const text = el.textContent.toLowerCase();
-            if (text.includes(query)) {
-                el.style.backgroundColor = 'rgba(34, 211, 238, 0.2)';
-                el.style.transition = 'background 0.3s';
-                if (!found) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    found = true;
-                }
-            } else {
-                el.style.backgroundColor = 'transparent';
-            }
-        });
-
-        if (!found) {
-            showToast('Aucun résultat trouvé pour "' + query + '"', 'error');
+        if (found) {
+            showToast('Résultats mis à jour pour: ' + query, 'success');
         } else {
-            showToast('Résultats trouvés pour "' + query + '"', 'success');
+            showToast('Aucun résultat trouvé pour: ' + query, 'error');
         }
     }
 
-    function resetSearch() {
-        document.querySelectorAll('.card-premium, .partner-premium, .project-item, .blog-item, .faq-item, .team-member, .service-item')
-            .forEach(item => item.style.display = '');
-        document.querySelectorAll('.hero-title, .hero-subtitle, .section-title, .section-tag')
-            .forEach(el => el.style.backgroundColor = 'transparent');
-        const desktopInput = document.getElementById('searchInputDesktop');
-        const mobileInput = document.getElementById('searchInputMobile');
-        if (desktopInput) desktopInput.value = '';
-        if (mobileInput) mobileInput.value = '';
+    // Gestion du Chatbot Widget
+    function toggleChatbot() {
+        const win = document.getElementById('chatbotWindow');
+        win.style.display = (win.style.display === 'none' || win.style.display === '') ? 'flex' : 'none';
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const desktopInput = document.getElementById('searchInputDesktop');
-        const mobileInput = document.getElementById('searchInputMobile');
-        if (desktopInput) {
-            desktopInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-        if (mobileInput) {
-            mobileInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-    });
+    function handleChatKey(e) {
+        if (e.key === 'Enter') sendChatMessage();
+    }
 
-    AOS.init({ duration: 900, once: true, offset: 80, easing: 'ease-out-cubic' });
+    function sendChatMessage() {
+        const input = document.getElementById('chatbotInput');
+        const msgContainer = document.getElementById('chatbotMessages');
+        const text = input.value.trim();
 
-    const navbar = document.getElementById('mainNav');
-    const mobileSearch = document.getElementById('mobileSearch');
+        if (!text) return;
 
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) navbar.classList.add('scrolled');
-        else navbar.classList.remove('scrolled');
+        // Message Utilisateur
+        const userMsg = document.createElement('div');
+        userMsg.className = 'message user';
+        userMsg.textContent = text;
+        msgContainer.appendChild(userMsg);
+        input.value = '';
 
-        if (mobileSearch) {
-            if (window.scrollY > 150) mobileSearch.classList.remove('visible');
-            else mobileSearch.classList.add('visible');
-        }
+        // Réponse Automatique
+        setTimeout(() => {
+            const botMsg = document.createElement('div');
+            botMsg.className = 'message bot';
+            botMsg.textContent = "Merci pour votre message ! Un de nos conseillers examinera votre demande concernant : " + text;
+            msgContainer.appendChild(botMsg);
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        }, 800);
 
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        document.getElementById('scrollProgress').style.width = scrollPercent + '%';
-    });
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
 
-    if (mobileSearch) mobileSearch.classList.add('visible');
-
+    // Toggle Thème
     function toggleTheme() {
         const body = document.body;
         const icon = document.getElementById('themeIcon');
-        const isDark = body.getAttribute('data-theme') !== 'light';
-        if (isDark) {
-            body.setAttribute('data-theme', 'light');
-            icon.className = 'fas fa-sun';
-            localStorage.setItem('theme', 'light');
-        } else {
+        if (body.getAttribute('data-theme') === 'light') {
             body.removeAttribute('data-theme');
             icon.className = 'fas fa-moon';
             localStorage.setItem('theme', 'dark');
+        } else {
+            body.setAttribute('data-theme', 'light');
+            icon.className = 'fas fa-sun';
+            localStorage.setItem('theme', 'light');
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.body.setAttribute('data-theme', 'light');
-            document.getElementById('themeIcon').className = 'fas fa-sun';
-        }
-    });
-
+    // Notification Toast
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
-        const isDark = document.body.getAttribute('data-theme') !== 'light';
-        const bgColor = type === 'success' ? (isDark ? '#0f172a' : '#ffffff') : '#ef4444';
-        const textColor = type === 'success' ? (isDark ? '#f8fafc' : '#0f172a') : '#ffffff';
-        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-
-        toast.style.cssText = `
-            background: ${bgColor};
-            color: ${textColor};
-            padding: 16px 24px;
-            border-radius: 14px;
-            border-left: 4px solid ${type === 'success' ? '#00f2fe' : '#ef4444'};
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(10px);
-        `;
-        toast.innerHTML = `<i class="fas ${icon}" style="font-size: 1.2rem; color: ${type === 'success' ? '#00f2fe' : '#ef4444'}"></i><span>${message}</span>`;
+        toast.className = `alert alert-${type === 'success' ? 'info' : 'danger'} alert-dismissible fade show`;
+        toast.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
         container.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(100px)';
-            toast.style.transition = 'all 0.3s ease';
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
+        setTimeout(() => toast.remove(), 4000);
     }
 
+    // Animation 3D Three.js
     document.addEventListener('DOMContentLoaded', function() {
-        /*[# th:if="${toastMessage}"]*/
-        showToast(/*[[${toastMessage}]]*/ 'Information', /*[[${toastType}]]*/ 'success');
-        /*[/]*/
-    });
+        const container = document.getElementById('three-container');
+        if (!container || typeof THREE === 'undefined') return;
 
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(60px); }
-            to { opacity: 1; transform: translateX(0); }
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 4.5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const geo = new THREE.IcosahedronGeometry(1.3, 2);
+        const mat = new THREE.MeshBasicMaterial({ color: 0x00d2ff, wireframe: true, transparent: true, opacity: 0.6 });
+        const sphere = new THREE.Mesh(geo, mat);
+        group.add(sphere);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            group.rotation.y += 0.003;
+            group.rotation.x += 0.001;
+            renderer.render(scene, camera);
         }
-    `;
-    document.head.appendChild(style);
+        animate();
+    });
 </script>
 </body>
 </html>
