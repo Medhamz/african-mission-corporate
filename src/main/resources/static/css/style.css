@@ -125,7 +125,13 @@ body {
     display: flex; align-items: center; justify-content: center;
     font-size: 1.3rem; color: #fff;
     box-shadow: var(--shadow-neon);
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    animation: iconGlow 3s infinite alternate;
+}
+
+@keyframes iconGlow {
+    0% { box-shadow: 0 0 10px rgba(0, 210, 255, 0.4); }
+    100% { box-shadow: 0 0 25px rgba(106, 17, 203, 0.8); }
 }
 
 .logo-premium:hover .logo-premium-icon {
@@ -138,6 +144,7 @@ body {
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: textShimmer 4s linear infinite;
 }
 
 .menu-premium .nav-link {
@@ -150,6 +157,7 @@ body {
 
 .menu-premium .nav-link:hover, .menu-premium .nav-link.active {
     color: var(--primary-cyan) !important;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
 }
 
 /* ============================================
@@ -307,7 +315,7 @@ body {
 }
 
 /* ============================================
-   HERO 3D IMMERSION & ATMOSPHÈRE
+   HERO 3D IMMERSION & ATMOSPHÈRE ET JEUX DE LUMIÈRE
 ============================================ */
 .hero-premium {
     min-height: 88vh;
@@ -335,15 +343,27 @@ body {
 .hero-glow-orb {
     position: absolute; border-radius: 50%;
     filter: blur(90px); pointer-events: none; opacity: 0.5;
+    animation: orbPulse 6s ease-in-out infinite alternate;
 }
 .hero-glow-orb.orb-1 { top: -10%; right: -5%; width: 500px; height: 500px; background: rgba(0, 210, 255, 0.25); }
-.hero-glow-orb.orb-2 { bottom: -10%; left: -5%; width: 550px; height: 550px; background: rgba(106, 17, 203, 0.3); }
+.hero-glow-orb.orb-2 { bottom: -10%; left: -5%; width: 550px; height: 550px; background: rgba(106, 17, 203, 0.3); animation-delay: -3s; }
+
+@keyframes orbPulse {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+    100% { transform: scale(1.15) translate(20px, -20px); opacity: 0.7; }
+}
 
 #three-container {
     width: 100%;
-    height: 480px;
+    height: 520px;
     position: relative;
     cursor: grab;
+    filter: drop-shadow(0 0 35px rgba(0, 210, 255, 0.3));
+    transition: filter 0.3s ease;
+}
+
+#three-container:active {
+    cursor: grabbing;
 }
 
 .hero-badge {
@@ -352,23 +372,67 @@ body {
     border: 1px solid var(--border-medium); border-radius: var(--radius-full);
     font-size: 0.8rem; font-weight: 700; color: var(--primary-cyan);
     letter-spacing: 1px; text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.15);
 }
 
 .hero-badge-dot {
     width: 8px; height: 8px; background: var(--primary-cyan);
     border-radius: 50%; box-shadow: 0 0 10px var(--primary-cyan);
+    animation: blinkDot 1.5s infinite;
 }
 
-.hero-title { font-size: calc(2.8rem + 1.5vw); font-weight: 900; line-height: 1.15; margin: 15px 0; }
+@keyframes blinkDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Jeux de Lumière sur les Titres */
+.hero-title {
+    font-size: calc(2.8rem + 1.5vw);
+    font-weight: 900;
+    line-height: 1.15;
+    margin: 15px 0;
+}
+
+.hero-title .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #00d2ff 50%, #3a7bd5 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShimmer 4s linear infinite;
+    text-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
+}
+
+.hero-title span:last-child {
+    background: linear-gradient(135deg, #00d2ff 0%, #6a11cb 50%, #ff416c 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShimmer 6s linear infinite reverse;
+    position: relative;
+}
+
+@keyframes textShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .hero-subtitle { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 25px; max-width: 540px; }
 
 /* Stats Hero */
 .hero-stats { display: flex; gap: 30px; margin-top: 35px; }
-.hero-stat-number { font-size: 1.8rem; font-weight: 800; color: var(--primary-cyan); }
+.hero-stat { position: relative; }
+.hero-stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-cyan);
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+}
 .hero-stat-label { font-size: 0.85rem; color: var(--text-muted); }
 
 /* ============================================
-   CARTES 3D ET SERVICES
+   CARTES 3D ET SERVICES ET ANIMATIONS
 ============================================ */
 .card-premium {
     background: var(--bg-card);
@@ -376,13 +440,26 @@ body {
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 30px 25px; height: 100%;
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative; overflow: hidden;
     box-shadow: var(--shadow-3d);
 }
 
+.card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.15), transparent);
+    transition: left 0.6s ease;
+}
+
+.card-premium:hover::before {
+    left: 100%;
+}
+
 .card-premium:hover {
-    transform: translateY(-8px);
+    transform: translateY(-10px) rotateX(3deg);
     border-color: var(--primary-cyan);
     box-shadow: var(--shadow-neon);
     background: var(--bg-card-hover);
@@ -393,6 +470,14 @@ body {
     display: inline-flex; align-items: center; justify-content: center;
     width: 60px; height: 60px;
     background: rgba(0, 210, 255, 0.1); border-radius: var(--radius-md);
+    transition: transform 0.4s ease, background 0.4s ease;
+}
+
+.card-premium:hover .card-premium-icon {
+    transform: scale(1.15) rotate(5deg);
+    background: var(--gradient-cyber);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
 }
 
 .card-premium-title { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
@@ -409,6 +494,14 @@ body {
     border: 1px solid var(--border-light);
     padding: 15px; border-radius: var(--radius-md);
     text-align: center; font-weight: 600; color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.partner-premium:hover {
+    border-color: var(--primary-cyan);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2);
+    color: var(--primary-cyan);
 }
 
 /* ============================================
@@ -420,6 +513,7 @@ body {
     border-radius: var(--radius-md); font-weight: 700; font-size: 0.95rem;
     box-shadow: 0 4px 20px rgba(0, 210, 255, 0.3); transition: all 0.3s ease;
     display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    position: relative; overflow: hidden;
 }
 
 .btn-primary-premium:hover {
@@ -452,6 +546,7 @@ body {
 .btn-outline-premium:hover {
     background: var(--gradient-cyber);
     color: #fff;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
 }
 
 /* ============================================
@@ -478,6 +573,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: floatChat 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatChat {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
 }
 
 .chatbot-toggle:hover {
@@ -622,6 +723,6 @@ body {
 ============================================ */
 @media (max-width: 992px) {
     .hero-title { font-size: 2.5rem; }
-    #three-container { height: 360px; }
+    #three-container { height: 380px; }
     .chatbot-window { width: 300px; right: -10px; }
 }
