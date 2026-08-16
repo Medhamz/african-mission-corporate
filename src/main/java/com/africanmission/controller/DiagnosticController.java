@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DiagnosticController {
 
-    @GetMapping({"/diagnostiqueur", "/diagnostic", "/diagnostic.html"})
+    @GetMapping({"/diagnostiqueur", "/diagnostiqueur/**", "/diagnostic", "/diagnostic.html"})
     public String diagnostiqueur() {
-        return "diagnostic"; // Renvoie le template templates/diagnostic.html
+        return "diagnostic";
     }
 }

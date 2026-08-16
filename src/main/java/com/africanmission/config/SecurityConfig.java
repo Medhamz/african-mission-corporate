@@ -1,6 +1,7 @@
 package com.africanmission.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -33,7 +34,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/mobile/auth/**").permitAll() // login & register
+                        .requestMatchers("/api/mobile/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -49,31 +50,35 @@ public class SecurityConfig {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(userDetailsService)
-                // Exclure TOUTES les API du CSRF pour éviter le blocage des fetch JavaScript
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**", "/api/**"))
                 .authorizeHttpRequests(authz -> authz
+                        // Autoriser les ressources statiques par défaut de Spring Boot
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+
+                        // Autoriser toutes les API publiques
+                        .requestMatchers("/api/market/**", "/api/projects/**", "/api/diagnostic/**", "/api/world/**", "/api/eco/**").permitAll()
+
+                        // Pages publiques et routes du Diagnostiqueur
                         .requestMatchers(
-                                // Pages principales
                                 "/", "/about", "/activities", "/contact", "/devis",
                                 "/services", "/projects", "/team", "/faq",
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery",
 
-                                // Route de diagnostiqueur (inclus l'extension .html et toutes sous-routes)
+                                // Diagnostic
                                 "/diagnostiqueur", "/diagnostiqueur/**", "/diagnostic", "/diagnostic.html",
 
-                                // Carte / Éco / Chiffres clés
+                                // Autres fonctionnalités publiques
                                 "/chiffres-cles", "/key-figures", "/key-figures/**",
-                                "/monde", "/monde/**", "/carte-monde", "/world-map", "/api/world/**",
-                                "/eco", "/eco/**", "/eco-dashboard", "/api/eco/**",
+                                "/monde", "/monde/**", "/carte-monde", "/world-map",
+                                "/eco", "/eco/**", "/eco-dashboard",
 
-                                // API publiques appelées par le frontend
-                                "/api/market/**", "/api/projects/**", "/api/diagnostic/**",
-
-                                // Ressources statiques et médias
+                                // Ressources statiques explicites
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json", "/favicon.ico",
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**", "/maintenance", "/kiosk"
                         ).permitAll()
+
+                        // Administration
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
                 )
