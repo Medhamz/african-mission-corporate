@@ -49,6 +49,7 @@ public class SecurityConfig {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(userDetailsService)
+                // Exclure TOUTES les API du CSRF pour éviter le blocage des fetch JavaScript
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**", "/api/**"))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
@@ -58,25 +59,20 @@ public class SecurityConfig {
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery",
 
-                                // Chiffres clés
+                                // Route de diagnostiqueur (inclus l'extension .html et toutes sous-routes)
+                                "/diagnostiqueur", "/diagnostiqueur/**", "/diagnostic", "/diagnostic.html",
+
+                                // Carte / Éco / Chiffres clés
                                 "/chiffres-cles", "/key-figures", "/key-figures/**",
-
-                                // Diagnostiqueur
-                                "/diagnostiqueur", "/diagnostiqueur/**", "/diagnostic",
-
-                                // Carte du Monde / Présence mondiale
                                 "/monde", "/monde/**", "/carte-monde", "/world-map", "/api/world/**",
-
-                                // Éco-responsabilité / Impact éco
                                 "/eco", "/eco/**", "/eco-dashboard", "/api/eco/**",
+
+                                // API publiques appelées par le frontend
+                                "/api/market/**", "/api/projects/**", "/api/diagnostic/**",
 
                                 // Ressources statiques et médias
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json", "/favicon.ico",
-
-                                // Services publics & API frontend
-                                "/newsletter/**", "/search", "/chat/**", "/contact/**",
-                                "/maintenance", "/kiosk",
-                                "/api/market/**", "/api/projects/**"
+                                "/newsletter/**", "/search", "/chat/**", "/contact/**", "/maintenance", "/kiosk"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()
