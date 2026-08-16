@@ -133,4 +133,9 @@ public class HomeController {
         model.addAttribute("pageTitle", "Chiffres Clés - African Mission Corporate");
         return "key-figures";
     }
+
+    @GetMapping("/devis")
+    public String devisRedirect() {
+        return "redirect:/contact?type=devis";
+    }
 }
