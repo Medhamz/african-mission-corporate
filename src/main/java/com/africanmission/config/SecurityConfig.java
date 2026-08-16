@@ -49,7 +49,7 @@ public class SecurityConfig {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(userDetailsService)
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**", "/api/**"))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(
                                 // Pages principales
@@ -58,7 +58,7 @@ public class SecurityConfig {
                                 "/blog", "/legal", "/sitemap", "/careers",
                                 "/testimonials", "/gallery",
 
-                                // Chiffres clés (Route standard + alias éventuels)
+                                // Chiffres clés
                                 "/chiffres-cles", "/key-figures", "/key-figures/**",
 
                                 // Diagnostiqueur
