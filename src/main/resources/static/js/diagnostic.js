@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const optionBtns = document.querySelectorAll('.option-btn');
     const prevBtn = document.getElementById('prevStep');
     const nextBtn = document.getElementById('nextStep');
-    const resetBtn = document.getElementById('resetDiagnostic');
 
     let currentStep = 1;
     let answers = {};
@@ -26,12 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         currentStep = step;
-    }
 
-    // Fonction pour collecter la réponse d'une étape
-    function getAnswerForStep(step) {
-        const selected = document.querySelector(`.step[data-step="${step}"] .option-btn.selected`);
-        return selected ? selected.dataset.value : null;
+        // Vérifier si une option est déjà sélectionnée pour cette étape
+        if (answers[step]) {
+            nextBtn.disabled = false;
+        } else {
+            nextBtn.disabled = true;
+        }
     }
 
     // Gestion des clics sur les options
@@ -39,20 +39,22 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             const parentStep = this.closest('.step');
             const step = parseInt(parentStep.dataset.step);
-            // Désélectionner les autres dans cette étape
+
+            // Désélectionner les autres options de la même étape
             parentStep.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
             this.classList.add('selected');
+
             // Stocker la réponse
             answers[step] = this.dataset.value;
-            // Activer le bouton suivant
+
+            // Activer le bouton Suivant/Analyser
             nextBtn.disabled = false;
         });
     });
 
-    // Bouton Suivant
+    // Bouton Suivant / Analyser
     nextBtn.addEventListener('click', function() {
         if (this.textContent === 'Analyser') {
-            // Vérifier que toutes les réponses sont remplies
             for (let i = 1; i <= 5; i++) {
                 if (!answers[i]) {
                     alert('Veuillez répondre à toutes les questions.');
@@ -66,15 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const next = currentStep + 1;
         if (next <= 5) {
             showStep(next);
-            // Vérifier si cette étape a déjà une réponse
-            if (answers[next]) {
-                const selected = document.querySelector(`.step[data-step="${next}"] .option-btn[data-value="${answers[next]}"]`);
-                if (selected) selected.classList.add('selected');
-                // Activer le bouton suivant
-                nextBtn.disabled = false;
-            } else {
-                nextBtn.disabled = true;
-            }
         }
     });
 
@@ -82,43 +75,39 @@ document.addEventListener('DOMContentLoaded', function() {
     prevBtn.addEventListener('click', function() {
         if (currentStep > 1) {
             showStep(currentStep - 1);
-            nextBtn.disabled = false;
         }
     });
 
-    // Fonction pour générer le résultat (simulé avec données météo / marchés)
+    // Fonction pour générer le résultat
     async function generateResult() {
         const resultDiv = document.getElementById('diagnosticResult');
         const formDiv = document.getElementById('diagnosticForm');
 
-        // Afficher un loading
+        formDiv.style.display = 'none';
         resultDiv.style.display = 'block';
-        resultDiv.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--primary-blue);"></i><p>Analyse en cours...</p></div>';
+        resultDiv.innerHTML = '<div class="text-center py-5"><i class="fas fa-spinner fa-spin" style="font-size:2.5rem;color:var(--primary-blue);"></i><p class="mt-3" style="color:var(--text-secondary);">Analyse de vos données en cours...</p></div>';
 
-        // Récupérer les données météo et marchés (via vos API)
         try {
             const [weatherRes, marketRes] = await Promise.all([
-                fetch('/api/market/weather'),
-                fetch('/api/market/prices')
+                fetch('/api/market/weather').catch(() => null),
+                fetch('/api/market/prices').catch(() => null)
             ]);
-            const weather = await weatherRes.json();
-            const markets = await marketRes.json();
 
-            // Simuler un calcul basé sur les réponses
+            const weather = weatherRes ? await weatherRes.json().catch(() => null) : null;
+            const markets = marketRes ? await marketRes.json().catch(() => null) : null;
+
             const projectType = answers[1];
             const budget = answers[2];
             const location = answers[3];
             const duration = answers[4];
             const priority = answers[5];
 
-            // Estimation délai (simulé)
             let baseDuration = 0;
             if (duration.includes('3 mois')) baseDuration = 2;
             else if (duration.includes('6 mois')) baseDuration = 5;
             else if (duration.includes('12 mois')) baseDuration = 10;
             else baseDuration = 15;
 
-            // Ajustement météo (pluie)
             let rainDays = 0;
             if (weather && weather.weather && weather.weather[0]) {
                 const desc = weather.weather[0].description.toLowerCase();
@@ -127,15 +116,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const totalDuration = baseDuration + rainDays;
 
-            // Estimation coût (simulé)
             let cost = 0;
             if (budget.includes('< 50k')) cost = 30 + Math.random() * 20;
             else if (budget.includes('50k - 200k')) cost = 120 + Math.random() * 80;
             else if (budget.includes('200k - 500k')) cost = 350 + Math.random() * 150;
             else cost = 600 + Math.random() * 300;
 
-            // Ajustement marché (prix matières)
-            let marketImpact = 0;
+            let marketImpact = 1.0;
             if (markets && Array.isArray(markets)) {
                 const steel = markets.find(m => m.symbol === 'STEEL');
                 if (steel) {
@@ -147,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const totalCost = Math.round(cost * marketImpact);
 
-            // Score de risque (simulé)
             let riskScore = 0;
             let riskLabel = '';
             let recommendations = '';
@@ -157,10 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (projectType === 'import-export') riskScore = 40 + Math.random() * 20;
             else riskScore = 15 + Math.random() * 15;
 
-            // Ajustement météo et marché
             riskScore += rainDays * 5;
             riskScore += (marketImpact > 1.05) ? 5 : 0;
-
             riskScore = Math.min(100, Math.max(10, riskScore));
 
             if (riskScore < 30) {
@@ -174,10 +158,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 recommendations = 'Prévoyez des marges de sécurité et un suivi rapproché.';
             }
 
-            // Afficher les résultats
             resultDiv.innerHTML = `
-                <h3 class="text-center"><span class="gradient-text">Analyse</span> de votre projet</h3>
-                <div class="result-grid">
+                <h3 class="text-center" style="color: var(--text-primary);"><span class="gradient-text">Analyse</span> de votre projet</h3>
+                <div class="result-grid mt-4">
                     <div class="result-card">
                         <i class="fas fa-calendar-alt"></i>
                         <h5>Délai estimé</h5>
@@ -199,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="result-card">
                         <i class="fas fa-lightbulb"></i>
                         <h5>Recommandations</h5>
-                        <p>${recommendations}</p>
+                        <p style="font-size:0.9rem; font-weight: normal;">${recommendations}</p>
                     </div>
                 </div>
                 <div class="chart-container mt-4">
@@ -210,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
 
-            // Créer le graphique radar
             const ctx = document.getElementById('radarChart').getContext('2d');
             new Chart(ctx, {
                 type: 'radar',
@@ -248,16 +230,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Réinitialiser
             document.getElementById('resetDiagnostic').addEventListener('click', resetDiagnostic);
 
         } catch (error) {
             console.error('Erreur diagnostic :', error);
             resultDiv.innerHTML = `
-                <div class="text-center">
-                    <i class="fas fa-exclamation-triangle" style="font-size:2rem;color:#ef4444;"></i>
-                    <p>Erreur lors de l'analyse. Veuillez réessayer.</p>
-                    <button id="resetDiagnostic" class="btn btn-outline-primary">Réessayer</button>
+                <div class="text-center py-4">
+                    <i class="fas fa-exclamation-triangle mb-3" style="font-size:2.5rem;color:#ef4444;"></i>
+                    <p style="color:var(--text-primary);">Erreur lors de l'analyse. Veuillez réessayer.</p>
+                    <button id="resetDiagnostic" class="btn btn-outline-primary mt-2">Réessayer</button>
                 </div>
             `;
             document.getElementById('resetDiagnostic')?.addEventListener('click', resetDiagnostic);
@@ -267,17 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function resetDiagnostic() {
         document.getElementById('diagnosticResult').style.display = 'none';
         document.getElementById('diagnosticForm').style.display = 'block';
-        // Réinitialiser les réponses
         answers = {};
         document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         showStep(1);
-        nextBtn.disabled = true;
-        // Afficher le formulaire
-        document.getElementById('diagnosticForm').style.display = 'block';
     }
 
-    // Initialiser
+    // Initialisation
     showStep(1);
-    nextBtn.disabled = true;
 });
