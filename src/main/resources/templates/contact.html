@@ -71,18 +71,16 @@
                 <div class="card-premium" style="padding: 40px; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-md);">
                     <h3 class="fw-bold mb-4" style="color: var(--text-primary);">Envoyez-nous un message</h3>
 
-                    <!-- Notification de succès -->
                     <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="fas fa-check-circle me-2"></i>
                         <span th:text="${successMessage}">Votre message a été envoyé avec succès.</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
 
-                    <!-- Notification d'erreur -->
                     <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="fas fa-exclamation-triangle me-2"></i>
                         <span th:text="${errorMessage}">Une erreur s'est produite lors de l'envoi.</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
 
                     <form th:action="@{/contact}" method="post">
@@ -178,8 +176,59 @@
     </div>
 </section>
 
+<!-- SECTION CHAT EN DIRECT / SUPPORT -->
+<section class="py-5" style="background: var(--bg-secondary);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10" data-aos="fade-up">
+                <div class="card-premium" style="padding: 32px; background: var(--bg-primary); border: 1px solid var(--border-light); border-radius: var(--radius-md);">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+                        <div>
+                            <h4 style="color: var(--text-primary); font-weight: 700;" class="mb-1">
+                                <i class="fas fa-comments me-2" style="color: var(--primary-blue);"></i> Support & Chat en direct
+                            </h4>
+                            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+                                Échangez directement avec un conseiller African Mission Corporate.
+                            </p>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill mt-2 mt-md-0">
+                            <i class="fas fa-circle me-1" style="font-size: 0.6rem;"></i> <span id="chatStatus">En ligne</span>
+                        </span>
+                    </div>
+
+                    <!-- Zone d'affichage des messages -->
+                    <div id="chatMessages" style="height: 350px; overflow-y: auto; background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-light);">
+                        <div class="text-center text-muted my-5">
+                            <i class="fas fa-headset mb-3" style="font-size: 2.5rem; opacity: 0.4;"></i>
+                            <p class="mb-0">Posez vos questions ci-dessous, notre équipe vous répondra dans les plus brefs délais.</p>
+                        </div>
+                    </div>
+
+                    <!-- Formulaire de saisie du chat -->
+                    <form id="chatForm" class="row g-2 align-items-center">
+                        <div class="col-md-3">
+                            <input type="text" id="chatUsername" class="form-control" placeholder="Votre Nom / Pseudo" required>
+                        </div>
+                        <div class="col-md-7">
+                            <input type="text" id="chatMessageInput" class="form-control" placeholder="Tapez votre message..." required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100 fw-bold">
+                                <i class="fas fa-paper-plane me-1"></i> Envoyer
+                            </button>
+                        </div>
+                    </form>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-shield-alt me-1"></i> Vos échanges sont sécurisés et transmis directement à l'administration.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- FOOTER -->
-<footer class="footer-premium py-4 border-top border-secondary mt-5" style="background: var(--bg-secondary);">
+<footer class="footer-premium py-4 border-top border-secondary" style="background: var(--bg-secondary);">
     <div class="container text-center">
         <p class="mb-0" style="color: var(--text-muted);">&copy; 2026 African Mission Corporate. Tous droits réservés.</p>
     </div>
@@ -211,6 +260,32 @@
             if(icon) icon.className = 'fas fa-sun';
         }
     });
+
+    // Logique basique pour la démo de chat en direct
+    const chatForm = document.getElementById('chatForm');
+    const chatMessages = document.getElementById('chatMessages');
+
+    if (chatForm) {
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('chatUsername').value.trim();
+            const message = document.getElementById('chatMessageInput').value.trim();
+
+            if (username && message) {
+                const msgElement = document.createElement('div');
+                msgElement.className = 'mb-3 text-end';
+                msgElement.innerHTML = `
+                    <div class="d-inline-block text-start p-3 rounded-3" style="background: var(--primary-blue); color: #fff; max-width: 80%;">
+                        <div class="fw-bold small mb-1">${username}</div>
+                        <div>${message}</div>
+                    </div>
+                `;
+                chatMessages.appendChild(msgElement);
+                document.getElementById('chatMessageInput').value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+    }
 </script>
 </body>
 </html>
