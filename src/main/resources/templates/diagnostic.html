@@ -178,7 +178,7 @@
             <!-- Navigation -->
             <div class="step-nav d-flex justify-content-between mt-4">
                 <button id="prevStep" class="btn btn-secondary" disabled>Précédent</button>
-                <button id="nextStep" class="btn btn-primary">Suivant</button>
+                <button id="nextStep" class="btn btn-primary" disabled>Suivant</button>
             </div>
         </div>
 
@@ -239,6 +239,103 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+
+    // ============================================
+    // GESTION DU DIAGNOSTIQUEUR MULTI-ÉTAPES
+    // ============================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const steps = document.querySelectorAll('.step');
+        const optionBtns = document.querySelectorAll('.option-btn');
+        const prevBtn = document.getElementById('prevStep');
+        const nextBtn = document.getElementById('nextStep');
+        const resultDiv = document.getElementById('diagnosticResult');
+        const formDiv = document.getElementById('diagnosticForm');
+
+        let currentStep = 1;
+        let answers = {};
+
+        function showStep(step) {
+            steps.forEach(s => s.classList.remove('active'));
+            const target = document.querySelector(`.step[data-step="${step}"]`);
+            if (target) target.classList.add('active');
+
+            prevBtn.disabled = (step === 1);
+            if (step === 5) {
+                nextBtn.textContent = 'Analyser';
+            } else {
+                nextBtn.textContent = 'Suivant';
+            }
+
+            // Activer ou désactiver le bouton suivant selon si l'étape a une réponse
+            nextBtn.disabled = !answers[step];
+            currentStep = step;
+        }
+
+        // Écouteur sur chaque bouton d'option
+        optionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const parentStep = this.closest('.step');
+                const step = parseInt(parentStep.dataset.step);
+
+                // Désélectionner les autres options
+                parentStep.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+
+                // Sauvegarder et débloquer
+                answers[step] = this.dataset.value;
+                nextBtn.disabled = false;
+            });
+        });
+
+        // Bouton Suivant / Analyser
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                if (currentStep === 5) {
+                    // Vérification globale avant affichage des résultats
+                    for (let i = 1; i <= 5; i++) {
+                        if (!answers[i]) {
+                            showToast('Veuillez répondre à toutes les questions.', 'error');
+                            return;
+                        }
+                    }
+                    formDiv.style.display = 'none';
+                    resultDiv.style.display = 'block';
+                    return;
+                }
+
+                if (currentStep < 5) {
+                    showStep(currentStep + 1);
+                }
+            });
+        }
+
+        // Bouton Précédent
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    showStep(currentStep - 1);
+                }
+            });
+        }
+
+        // Écouteurs de la recherche globale
+        const desktopInput = document.getElementById('searchInputDesktop');
+        const mobileInput = document.getElementById('searchInputMobile');
+        if (desktopInput) {
+            desktopInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+        if (mobileInput) {
+            mobileInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+
+        // Initialisation de la première étape
+        showStep(1);
+    });
+
     // ============================================
     // RECHERCHE
     // ============================================
@@ -299,21 +396,6 @@
         if (desktopInput) desktopInput.value = '';
         if (mobileInput) mobileInput.value = '';
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const desktopInput = document.getElementById('searchInputDesktop');
-        const mobileInput = document.getElementById('searchInputMobile');
-        if (desktopInput) {
-            desktopInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-        if (mobileInput) {
-            mobileInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-    });
 
     function showToast(message, type) {
         const container = document.getElementById('toastContainer');
