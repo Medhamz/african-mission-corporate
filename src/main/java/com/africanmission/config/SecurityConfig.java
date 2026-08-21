@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +37,7 @@ public class SecurityConfig {
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/mobile/**")
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
@@ -49,14 +56,17 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .userDetailsService(userDetailsService)
-                // Désactivation ciblée de la protection CSRF sur les endpoints de formulaire POST back-office et APIs
+                // Désactivation ciblée de la protection CSRF sur les endpoints de formulaire POST back-office, APIs et médias
                 .csrf(csrf -> csrf.ignoringRequestMatchers(
                         "/admin/**",
                         "/newsletter/**",
                         "/chat/**",
                         "/contact/**",
-                        "/api/**"
+                        "/api/**",
+                        "/media/**",
+                        "/uploads/**"
                 ))
                 .authorizeHttpRequests(authz -> authz
                         // Autoriser les ressources statiques par défaut de Spring Boot
@@ -65,7 +75,7 @@ public class SecurityConfig {
                         // Autoriser toutes les API publiques
                         .requestMatchers("/api/market/**", "/api/projects/**", "/api/diagnostic/**", "/api/world/**", "/api/eco/**").permitAll()
 
-                        // Pages publiques et routes du Diagnostiqueur
+                        // Pages publiques et routes d'upload/fichiers
                         .requestMatchers(
                                 "/", "/about", "/activities", "/contact", "/devis",
                                 "/services", "/projects", "/team", "/faq",
@@ -82,7 +92,10 @@ public class SecurityConfig {
 
                                 // Ressources statiques explicites & dossier des fichiers envoyés
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json", "/favicon.ico",
-                                "/newsletter/**", "/search", "/chat/**", "/contact/**", "/maintenance", "/kiosk"
+                                "/newsletter/**", "/search", "/chat/**", "/contact/**", "/maintenance", "/kiosk",
+
+                                // Endpoints médias/uploads
+                                "/media/**"
                         ).permitAll()
 
                         // Administration
@@ -103,6 +116,22 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    // ============================================
+    // 3. CONFIGURATION GLOBAL CORS
+    // ============================================
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
