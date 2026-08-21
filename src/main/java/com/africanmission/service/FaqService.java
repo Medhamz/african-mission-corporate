@@ -31,7 +31,7 @@ public class FaqService {
 
     public Faq getFaqById(Long id) {
         return faqRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("FAQ non trouvée"));
+                .orElseThrow(() -> new RuntimeException("FAQ non trouvée avec l'ID : " + id));
     }
 
     public Faq save(Faq faq) {

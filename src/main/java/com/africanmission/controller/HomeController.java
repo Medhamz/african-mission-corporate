@@ -4,6 +4,7 @@ import com.africanmission.model.Activity;
 import com.africanmission.model.Partner;
 import com.africanmission.model.Project;
 import com.africanmission.service.ActivityService;
+import com.africanmission.service.FaqService;
 import com.africanmission.service.MediaService;
 import com.africanmission.service.PartnerService;
 import com.africanmission.service.ProjectService;
@@ -22,6 +23,7 @@ public class HomeController {
     private final PartnerService partnerService;
     private final MediaService mediaService;
     private final ProjectService projectService;
+    private final FaqService faqService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -90,6 +92,7 @@ public class HomeController {
 
     @GetMapping("/faq")
     public String faq(Model model) {
+        model.addAttribute("faqs", faqService.getActiveFaqs());
         model.addAttribute("pageTitle", "FAQ - African Mission Corporate");
         return "faq";
     }

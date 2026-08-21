@@ -20,14 +20,14 @@ public class Faq {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 500)
     private String question;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String answer;
 
-    @Column(name = "category", length = 50)
-    private String category;
+    @Column(name = "category", length = 100)
+    private String category = "Général";
 
     @Column(name = "display_order")
     private Integer displayOrder = 0;

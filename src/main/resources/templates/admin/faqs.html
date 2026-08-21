@@ -69,7 +69,7 @@
             <tr th:if="${faqs.isEmpty()}">
                 <td colspan="6" class="text-center text-muted" style="padding: 40px;">
                     <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
-                    <p>Aucune FAQ</p>
+                    <p>Aucune FAQ enregistrée</p>
                 </td>
             </tr>
             </tbody>
@@ -113,12 +113,43 @@
     </div>
 </div>
 
+<!-- Toast Container pour notifications Javascript -->
+<div id="toastContainer" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px;"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+<script th:inline="javascript">
+    function showToast(message, type) {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const toast = document.createElement('div');
+        const bgColor = type === 'success' ? '#1e293b' : '#ef4444';
+        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        toast.style.cssText = `
+            background: ${bgColor};
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-left: 4px solid ${type === 'success' ? '#3b82f6' : '#ef4444'};
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        `;
+        toast.innerHTML = `<i class="fas ${icon}" style="font-size: 1.2rem;"></i><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'all 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const toastMessage = /*[[${toastMessage}]]*/ null;
         const toastType = /*[[${toastType}]]*/ 'success';
-        if (toastMessage && typeof showToast === 'function') {
+        if (toastMessage) {
             showToast(toastMessage, toastType);
         }
     });

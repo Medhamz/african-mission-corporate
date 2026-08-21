@@ -423,7 +423,7 @@ public class AdminController {
         return "admin/newsletter";
     }
 
-    // MÉMBRES DE L'ÉQUIPE
+    // MEMBRES DE L'ÉQUIPE
     @GetMapping("/team-members")
     public String manageTeamMembers(Model model) {
         model.addAttribute("members", teamMemberService.getAllMembers());
@@ -502,11 +502,11 @@ public class AdminController {
         Faq faq = new Faq();
         faq.setQuestion(question);
         faq.setAnswer(answer);
-        faq.setCategory(category);
+        faq.setCategory(category != null && !category.trim().isEmpty() ? category.trim() : "Général");
         faq.setDisplayOrder(displayOrder);
         faq.setIsActive(true);
         faqService.save(faq);
-        redirectAttributes.addFlashAttribute("toastMessage", "FAQ ajoutée !");
+        redirectAttributes.addFlashAttribute("toastMessage", "FAQ ajoutée avec succès !");
         redirectAttributes.addFlashAttribute("toastType", "success");
         adminLogService.log(getCurrentUsername(), "ADD_FAQ", "Ajout de la FAQ: " + question, request.getRemoteAddr());
         return "redirect:/admin/faqs";
