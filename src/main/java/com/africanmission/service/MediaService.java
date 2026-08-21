@@ -2,20 +2,16 @@ package com.africanmission.service;
 
 import com.africanmission.model.Media;
 import com.africanmission.repository.MediaRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,48 +19,32 @@ import java.util.stream.Collectors;
 public class MediaService {
 
     private final MediaRepository mediaRepository;
-
-    // Utilise un dossier 'uploads' relatif à l'exécution
-    private static final String UPLOAD_DIR = "uploads";
+    private final Cloudinary cloudinary;
 
     public Media uploadFile(MultipartFile file, String altText) throws IOException {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("Le fichier téléchargé est vide.");
         }
 
-        // Définition et création sécurisée du répertoire
-        File uploadFolder = new File(UPLOAD_DIR);
-        if (!uploadFolder.exists()) {
-            boolean created = uploadFolder.mkdirs();
-            if (!created && !uploadFolder.exists()) {
-                throw new IOException("Impossible de créer le répertoire: " + uploadFolder.getAbsolutePath());
-            }
-        }
-
-        Path uploadPath = uploadFolder.toPath().toAbsolutePath().normalize();
-
-        // Nettoyage du nom pour éviter le Path Traversal
+        // Nettoyage du nom de fichier original
         String rawFilename = file.getOriginalFilename();
         String originalFilename = rawFilename != null ? StringUtils.cleanPath(rawFilename) : "";
 
-        String extension = "";
-        if (originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        }
+        // Envoi direct du fichier sur Cloudinary sans stockage local
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "folder", "african_mission_uploads",
+                "resource_type", "auto"
+        ));
 
-        String uniqueFilename = UUID.randomUUID().toString() + extension;
-        Path filePath = uploadPath.resolve(uniqueFilename);
-
-        // Copie du flux
-        try (InputStream inputStream = file.getInputStream()) {
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        }
+        // Récupération de l'URL publique HTTPS de l'image
+        String imageUrl = (String) uploadResult.get("secure_url");
+        String publicId = (String) uploadResult.get("public_id"); // Utile pour la suppression
 
         Media media = new Media();
-        media.setFilename(!originalFilename.isBlank() ? originalFilename : uniqueFilename);
+        media.setFilename(!originalFilename.isBlank() ? originalFilename : publicId);
 
-        // URL accessible côté client (ex: /uploads/uuid.png)
-        media.setFilePath("/uploads/" + uniqueFilename);
+        // On enregistre l'URL absolue HTTPS hébergée sur Cloudinary
+        media.setFilePath(imageUrl);
 
         media.setFileType(file.getContentType());
         media.setFileSize(file.getSize());
@@ -92,14 +72,8 @@ public class MediaService {
     public void delete(Long id) throws IOException {
         Media media = getById(id);
 
-        if (media.getFilePath() != null) {
-            String filename = media.getFilePath().replace("/uploads/", "");
-            Path filePath = Paths.get(UPLOAD_DIR).resolve(filename).toAbsolutePath().normalize();
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
-            }
-        }
-
+        // Optionnel : Suppression du fichier sur Cloudinary s'il y a un ID public
+        // Si vous souhaitez juste supprimer la référence BDD :
         mediaRepository.delete(media);
     }
 

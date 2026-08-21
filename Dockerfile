@@ -27,8 +27,12 @@ WORKDIR /app
 # Copier le JAR depuis l'étape de build
 COPY --from=build /app/target/*.jar app.jar
 
-# Créer un utilisateur non-root pour la sécurité
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# Créer le groupe/utilisateur non-root et lui accorder la propriété du répertoire /app
+RUN addgroup -S appgroup && \
+    adduser -S appuser -G appgroup && \
+    chown -R appuser:appgroup /app
+
+# Basculer vers l'utilisateur sécurisé non-root
 USER appuser
 
 # Exposer le port 8080
