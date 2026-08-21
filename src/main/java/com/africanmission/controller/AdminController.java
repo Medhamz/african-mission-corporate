@@ -10,11 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.africanmission.service.MediaService;
-import com.africanmission.service.PageService;
-import com.africanmission.service.MaintenanceService;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,9 +51,6 @@ public class AdminController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        // ============================================
-        // STATISTIQUES DE BASE
-        // ============================================
         model.addAttribute("activitiesCount", activityService.getAllActiveActivities().size());
         model.addAttribute("partnersCount", partnerService.getAllPartners().size());
         model.addAttribute("messagesCount", contactService.getAllMessages().size());
@@ -67,18 +61,12 @@ public class AdminController {
         model.addAttribute("recentLogs", adminLogService.getRecentLogs());
         model.addAttribute("unreadNotifications", notificationService.getUnreadCount());
 
-        // ============================================
-        // DONNÉES POUR LES GRAPHIQUES
-        // ============================================
-
-        // 1. Activités par catégorie
         List<Activity> allActivities = activityService.getAllActiveActivities();
         Map<String, Long> categoryMap = allActivities.stream()
                 .collect(Collectors.groupingBy(Activity::getCategory, Collectors.counting()));
         model.addAttribute("activityCategories", new ArrayList<>(categoryMap.keySet()));
         model.addAttribute("activityCategoryCounts", new ArrayList<>(categoryMap.values()));
 
-        // 2. Évolution des messages (7 derniers jours)
         List<ContactMessage> allMessages = contactService.getAllMessages();
         Map<LocalDate, Long> messageDateMap = allMessages.stream()
                 .filter(m -> m.getCreatedAt() != null)
@@ -95,13 +83,11 @@ public class AdminController {
         model.addAttribute("messageDates", dates);
         model.addAttribute("messageCounts", counts);
 
-        // 3. Répartition des messages lus/non lus
         long readCount = allMessages.stream().filter(ContactMessage::getIsRead).count();
         long unreadCount = allMessages.size() - readCount;
         model.addAttribute("readMessagesCount", readCount);
         model.addAttribute("unreadMessagesCount", unreadCount);
 
-        // 4. Sessions de chat (7 derniers jours)
         List<ChatSession> allSessions = chatSessionService.getActiveSessions();
         Map<LocalDate, Long> chatDateMap = allSessions.stream()
                 .filter(s -> s.getLastActivity() != null)
@@ -118,7 +104,6 @@ public class AdminController {
         model.addAttribute("chatDates", chatDates);
         model.addAttribute("chatCounts", chatCounts);
 
-        // 5. Tendances (croissance) - À adapter selon vos données réelles
         model.addAttribute("activitiesGrowth", 5);
         model.addAttribute("partnersGrowth", 2);
         model.addAttribute("messagesGrowth", 8);
@@ -128,9 +113,7 @@ public class AdminController {
         return "admin/dashboard";
     }
 
-    // ============================================
     // GESTION DES UTILISATEURS ADMIN
-    // ============================================
     @GetMapping("/users")
     public String manageUsers(Model model) {
         model.addAttribute("users", adminUserService.getAllUsers());
@@ -174,9 +157,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    // ============================================
-    // GESTION DES PARAMÈTRES DU SITE
-    // ============================================
+    // PARAMÈTRES
     @GetMapping("/settings")
     public String manageSettings(Model model) {
         model.addAttribute("settings", siteSettingService.getAllSettings());
@@ -209,9 +190,7 @@ public class AdminController {
         return "redirect:/admin/settings";
     }
 
-    // ============================================
-    // GESTION DES TÉMOIGNAGES
-    // ============================================
+    // TÉMOIGNAGES
     @GetMapping("/testimonials")
     public String manageTestimonials(Model model) {
         model.addAttribute("testimonials", testimonialService.getAllTestimonials());
@@ -257,9 +236,7 @@ public class AdminController {
         return "redirect:/admin/testimonials";
     }
 
-    // ============================================
-    // GESTION DES PROJETS
-    // ============================================
+    // PROJETS
     @GetMapping("/projects-admin")
     public String manageProjects(Model model) {
         model.addAttribute("projects", projectService.getAllProjects());
@@ -301,9 +278,7 @@ public class AdminController {
         return "redirect:/admin/projects-admin";
     }
 
-    // ============================================
-    // LOGS ADMIN
-    // ============================================
+    // LOGS
     @GetMapping("/logs")
     public String viewLogs(Model model) {
         model.addAttribute("logs", adminLogService.getRecentLogs());
@@ -320,9 +295,7 @@ public class AdminController {
         return "redirect:/admin/logs";
     }
 
-    // ============================================
     // ACTIVITÉS
-    // ============================================
     @GetMapping("/activities")
     public String manageActivities(Model model) {
         model.addAttribute("activities", activityService.getAllActiveActivities());
@@ -359,9 +332,7 @@ public class AdminController {
         return "redirect:/admin/activities";
     }
 
-    // ============================================
     // PARTENAIRES
-    // ============================================
     @GetMapping("/partners")
     public String managePartners(Model model) {
         model.addAttribute("partners", partnerService.getAllPartners());
@@ -394,9 +365,7 @@ public class AdminController {
         return "redirect:/admin/partners";
     }
 
-    // ============================================
-    // MESSAGES DE CONTACT
-    // ============================================
+    // MESSAGES
     @GetMapping("/messages")
     public String manageMessages(Model model) {
         model.addAttribute("messages", contactService.getAllMessages());
@@ -422,9 +391,7 @@ public class AdminController {
         return "redirect:/admin/messages";
     }
 
-    // ============================================
-    // CHAT
-    // ============================================
+    // CHAT & NEWSLETTER
     @GetMapping("/chat")
     public String manageChat() {
         return "redirect:/admin/chat-sessions";
@@ -436,9 +403,6 @@ public class AdminController {
         return "admin/chat-sessions";
     }
 
-    // ============================================
-    // NEWSLETTER
-    // ============================================
     @GetMapping("/newsletter")
     public String manageNewsletter(Model model) {
         model.addAttribute("subscribers", newsletterService.getAllActiveSubscribers());
@@ -446,17 +410,7 @@ public class AdminController {
         return "admin/newsletter";
     }
 
-    // ============================================
-    // MÉTHODE UTILITAIRE
-    // ============================================
-    private String getCurrentUsername() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth != null ? auth.getName() : "system";
-    }
-
-    // ============================================
-    // GESTION DES MEMBRES DE L'ÉQUIPE
-    // ============================================
+    // MÉMBRES DE L'ÉQUIPE
     @GetMapping("/team-members")
     public String manageTeamMembers(Model model) {
         model.addAttribute("members", teamMemberService.getAllMembers());
@@ -510,16 +464,13 @@ public class AdminController {
         return "redirect:/admin/team-members";
     }
 
-    // ============================================
-    // GESTION DES FAQ
-    // ============================================
+    // FAQS
     @GetMapping("/faqs")
     public String manageFaqs(Model model) {
         try {
             model.addAttribute("faqs", faqService.getAllFaqs());
             model.addAttribute("categories", faqService.getAllCategories());
         } catch (Exception e) {
-            e.printStackTrace();
             model.addAttribute("error", "Erreur : " + e.getMessage());
             model.addAttribute("faqs", List.of());
             model.addAttribute("categories", List.of());
@@ -558,9 +509,7 @@ public class AdminController {
         return "redirect:/admin/faqs";
     }
 
-    // ============================================
-    // GESTION DES RÔLES
-    // ============================================
+    // RÔLES
     @GetMapping("/roles")
     public String manageRoles(Model model) {
         model.addAttribute("roles", adminRoleService.getAllRoles());
@@ -595,9 +544,7 @@ public class AdminController {
         return "redirect:/admin/roles";
     }
 
-    // ============================================
     // NOTIFICATIONS
-    // ============================================
     @GetMapping("/notifications")
     public String getNotifications(Model model) {
         model.addAttribute("notifications", notificationService.getUnreadNotifications());
@@ -638,9 +585,7 @@ public class AdminController {
         return "redirect:/admin/notifications";
     }
 
-    // ============================================
-    // EXPORT DES DONNÉES
-    // ============================================
+    // EXPORT
     @GetMapping("/export/messages")
     public void exportMessages(HttpServletResponse response) throws IOException {
         List<ContactMessage> messages = contactService.getAllMessages();
@@ -703,9 +648,7 @@ public class AdminController {
         writer.flush();
     }
 
-    // ============================================
-// GESTION DES MÉDIAS
-// ============================================
+    // GESTION DES MÉDIAS
     @GetMapping("/media")
     public String manageMedia(Model model) {
         model.addAttribute("media", mediaService.getAllActive());
@@ -714,32 +657,29 @@ public class AdminController {
     }
 
     @PostMapping("/media/upload")
-    @ResponseBody
-    public org.springframework.http.ResponseEntity<?> uploadMedia(@RequestParam("file") MultipartFile file,
-                                                                  @RequestParam(required = false) String altText) {
+    public String uploadMedia(@RequestParam("file") MultipartFile file,
+                              @RequestParam(required = false) String altText,
+                              HttpServletRequest request,
+                              RedirectAttributes redirectAttributes) {
         try {
             Media savedMedia = mediaService.uploadFile(file, altText);
-
-            // Renvoyer une réponse JSON (Statut 200 OK) sans redirection
-            return org.springframework.http.ResponseEntity.ok(Map.of(
-                    "success", true,
-                    "message", "Fichier uploadé avec succès !",
-                    "url", savedMedia != null ? savedMedia.getFilePath() : ""
-            ));
+            redirectAttributes.addFlashAttribute("toastMessage", "Fichier uploadé avec succès !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "UPLOAD_MEDIA", "Upload du média: " + savedMedia.getFilename(), request.getRemoteAddr());
         } catch (Exception e) {
-            return org.springframework.http.ResponseEntity.status(500).body(Map.of(
-                    "success", false,
-                    "message", "Erreur: " + e.getMessage()
-            ));
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de l'upload : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
         }
+        return "redirect:/admin/media";
     }
 
     @PostMapping("/media/delete/{id}")
-    public String deleteMedia(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteMedia(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
             mediaService.delete(id);
             redirectAttributes.addFlashAttribute("toastMessage", "Média supprimé !");
             redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "DELETE_MEDIA", "Suppression du média ID: " + id, request.getRemoteAddr());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("toastMessage", "Erreur: " + e.getMessage());
             redirectAttributes.addFlashAttribute("toastType", "error");
@@ -747,9 +687,7 @@ public class AdminController {
         return "redirect:/admin/media";
     }
 
-    // ============================================
-// GESTION DES PAGES STATIQUES
-// ============================================
+    // GESTION DES PAGES
     @GetMapping("/pages")
     public String managePages(Model model) {
         model.addAttribute("pages", pageService.getAllPages());
@@ -789,9 +727,7 @@ public class AdminController {
         return "redirect:/admin/pages";
     }
 
-    // ============================================
-// MAINTENANCE MODE
-// ============================================
+    // MAINTENANCE
     @GetMapping("/maintenance")
     public String maintenanceMode(Model model) {
         model.addAttribute("isEnabled", maintenanceService.isMaintenanceMode());
@@ -815,12 +751,9 @@ public class AdminController {
         return "redirect:/admin/maintenance";
     }
 
-    // ============================================
-// RECHERCHE GLOBALE
-// ============================================
+    // RECHERCHE GLOBALE
     @GetMapping("/search")
     public String globalSearch(@RequestParam String q, Model model) {
-        // Recherche dans les activités, partenaires, projets, pages
         List<Activity> activities = activityService.searchByName(q);
         List<Partner> partners = partnerService.searchByName(q);
         List<Project> projects = projectService.searchByTitle(q);
@@ -833,5 +766,10 @@ public class AdminController {
         model.addAttribute("pages", pages);
         model.addAttribute("pageTitle", "Résultats de recherche");
         return "admin/search-results";
+    }
+
+    private String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null ? auth.getName() : "system";
     }
 }

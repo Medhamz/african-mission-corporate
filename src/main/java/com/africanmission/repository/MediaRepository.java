@@ -13,9 +13,9 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
     // Récupère les médias actifs triés du plus récent au plus ancien
     List<Media> findByIsActiveTrueOrderByCreatedAtDesc();
 
-    // Utile si vous souhaitez rechercher un média par son nom de fichier
+    // Recherche un média par son nom de fichier
     Optional<Media> findByFilename(String filename);
 
-    // Permet de filtrer uniquement les images actives (type MIME commençant par 'image/')
+    // Filtre les images actives par type MIME
     List<Media> findByIsActiveTrueAndFileTypeStartingWith(String fileType);
 }

@@ -17,7 +17,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // Exclure les ressources statiques et l'administration de l'intercepteur de maintenance
         registry.addInterceptor(maintenanceInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
@@ -32,14 +31,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 1. Conversion sécurisée en URI compatible multi-plateformes (Windows, Linux, Docker)
         Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
         String uploadUri = uploadDir.toUri().toString();
 
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations(uploadUri);
 
-        // 2. Autres ressources statiques
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/js/**")
