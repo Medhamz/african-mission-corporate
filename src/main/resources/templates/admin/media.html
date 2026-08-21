@@ -38,7 +38,7 @@
         </div>
     </header>
 
-    <!-- Upload Form -->
+    <!-- Formulaire d'upload -->
     <div class="mb-4">
         <form method="post" action="/admin/media/upload" enctype="multipart/form-data" class="upload-area">
             <i class="fas fa-cloud-upload-alt"></i>
@@ -57,15 +57,20 @@
         </form>
     </div>
 
-    <!-- Galerie Médias (Liste) -->
+    <!-- Galerie Médias -->
     <div class="media-grid">
         <div th:each="m : ${media}" class="media-item">
             <div class="preview">
-                <img th:src="@{${m.filePath}}" th:alt="${m.altText}" th:if="${m.fileType != null && m.fileType.startsWith('image/')}">
+                <!-- Chargement direct de l'URL absolue HTTPS (Cloudinary) -->
+                <img th:src="${m.filePath}" th:alt="${m.altText}" th:if="${m.fileType != null && m.fileType.startsWith('image/')}">
                 <i class="fas fa-file" style="font-size: 2rem; opacity: 0.3;" th:unless="${m.fileType != null && m.fileType.startsWith('image/')}"></i>
             </div>
             <div class="filename" th:text="${m.altText != null && !m.altText.isEmpty() ? m.altText : m.filename}">filename</div>
-            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px;" th:text="${#strings.format('%.0f KB', m.fileSize / 1024)}">size</div>
+
+            <!-- Calcul sécurisé de la taille du fichier en KB -->
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px;"
+                 th:text="${m.fileSize != null ? #numbers.formatDecimal(m.fileSize / 1024.0, 1, 0) + ' KB' : '0 KB'}">size</div>
+
             <form method="post" th:action="@{/admin/media/delete/{id}(id=${m.id})}" style="display:inline;" onsubmit="return confirm('Supprimer ce média ?')">
                 <button type="submit" class="btn-danger-sm btn-sm"><i class="fas fa-trash"></i> Supprimer</button>
             </form>
@@ -79,7 +84,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+<script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         const toastMessage = /*[[${toastMessage}]]*/ null;
         const toastType = /*[[${toastType}]]*/ 'success';
