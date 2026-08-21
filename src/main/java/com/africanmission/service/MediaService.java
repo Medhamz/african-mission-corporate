@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class MediaService {
 
     private final MediaRepository mediaRepository;
+
+    // Utilise un dossier 'uploads' relatif à l'exécution
     private static final String UPLOAD_DIR = "uploads";
 
     public Media uploadFile(MultipartFile file, String altText) throws IOException {
@@ -29,11 +32,16 @@ public class MediaService {
             throw new IllegalArgumentException("Le fichier téléchargé est vide.");
         }
 
-        // Résolution du chemin absolu pour garantir la création du répertoire
-        Path uploadPath = Paths.get(UPLOAD_DIR).toAbsolutePath().normalize();
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+        // Définition et création sécurisée du répertoire
+        File uploadFolder = new File(UPLOAD_DIR);
+        if (!uploadFolder.exists()) {
+            boolean created = uploadFolder.mkdirs();
+            if (!created && !uploadFolder.exists()) {
+                throw new IOException("Impossible de créer le répertoire: " + uploadFolder.getAbsolutePath());
+            }
         }
+
+        Path uploadPath = uploadFolder.toPath().toAbsolutePath().normalize();
 
         // Nettoyage du nom pour éviter le Path Traversal
         String rawFilename = file.getOriginalFilename();
@@ -47,7 +55,7 @@ public class MediaService {
         String uniqueFilename = UUID.randomUUID().toString() + extension;
         Path filePath = uploadPath.resolve(uniqueFilename);
 
-        // Copie sécurisée du flux avec remplacement en cas de conflit
+        // Copie du flux
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }
@@ -55,8 +63,8 @@ public class MediaService {
         Media media = new Media();
         media.setFilename(!originalFilename.isBlank() ? originalFilename : uniqueFilename);
 
-        // Construction correcte du chemin HTTP sans double slash (/uploads/filename.ext)
-        media.setFilePath("/" + UPLOAD_DIR + "/" + uniqueFilename);
+        // URL accessible côté client (ex: /uploads/uuid.png)
+        media.setFilePath("/uploads/" + uniqueFilename);
 
         media.setFileType(file.getContentType());
         media.setFileSize(file.getSize());
@@ -70,7 +78,6 @@ public class MediaService {
         return mediaRepository.findByIsActiveTrueOrderByCreatedAtDesc();
     }
 
-    // Récupération filtrée pour la Galerie (Images uniquement)
     public List<Media> getAllActiveImages() {
         return getAllActive().stream()
                 .filter(m -> m.getFileType() != null && m.getFileType().startsWith("image/"))
@@ -85,10 +92,9 @@ public class MediaService {
     public void delete(Long id) throws IOException {
         Media media = getById(id);
 
-        // Suppression du fichier physique en chemin relatif
         if (media.getFilePath() != null) {
-            String cleanPath = media.getFilePath().startsWith("/") ? media.getFilePath().substring(1) : media.getFilePath();
-            Path filePath = Paths.get(cleanPath).toAbsolutePath().normalize();
+            String filename = media.getFilePath().replace("/uploads/", "");
+            Path filePath = Paths.get(UPLOAD_DIR).resolve(filename).toAbsolutePath().normalize();
             if (Files.exists(filePath)) {
                 Files.delete(filePath);
             }

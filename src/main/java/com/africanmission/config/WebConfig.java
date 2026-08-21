@@ -17,20 +17,29 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(maintenanceInterceptor).addPathPatterns("/**");
+        // Exclure les ressources statiques et l'administration de l'intercepteur de maintenance
+        registry.addInterceptor(maintenanceInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/uploads/**",
+                        "/css/**",
+                        "/js/**",
+                        "/images/**",
+                        "/webjars/**",
+                        "/admin/**"
+                );
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Résolution du chemin absolu du dossier d'uploads pour éviter les problèmes de droits/chemins relatifs
-        Path uploadDir = Paths.get("uploads");
-        String uploadPath = uploadDir.toFile().getAbsolutePath();
+        // 1. Conversion sécurisée en URI compatible multi-plateformes (Windows, Linux, Docker)
+        Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
+        String uploadUri = uploadDir.toUri().toString();
 
-        // Servir les fichiers uploadés depuis la racine du projet
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + uploadPath + "/");
+                .addResourceLocations(uploadUri);
 
-        // Autres ressources statiques
+        // 2. Autres ressources statiques
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/js/**")
