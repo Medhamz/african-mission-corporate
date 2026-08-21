@@ -714,18 +714,24 @@ public class AdminController {
     }
 
     @PostMapping("/media/upload")
-    public String uploadMedia(@RequestParam("file") MultipartFile file,
-                              @RequestParam(required = false) String altText,
-                              RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public org.springframework.http.ResponseEntity<?> uploadMedia(@RequestParam("file") MultipartFile file,
+                                                                  @RequestParam(required = false) String altText) {
         try {
-            mediaService.uploadFile(file, altText);
-            redirectAttributes.addFlashAttribute("toastMessage", "Fichier uploadé avec succès !");
-            redirectAttributes.addFlashAttribute("toastType", "success");
+            Media savedMedia = mediaService.uploadFile(file, altText);
+
+            // Renvoyer une réponse JSON (Statut 200 OK) sans redirection
+            return org.springframework.http.ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Fichier uploadé avec succès !",
+                    "url", savedMedia != null ? savedMedia.getFilePath() : ""
+            ));
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("toastMessage", "Erreur: " + e.getMessage());
-            redirectAttributes.addFlashAttribute("toastType", "error");
+            return org.springframework.http.ResponseEntity.status(500).body(Map.of(
+                    "success", false,
+                    "message", "Erreur: " + e.getMessage()
+            ));
         }
-        return "redirect:/admin/media";
     }
 
     @PostMapping("/media/delete/{id}")
