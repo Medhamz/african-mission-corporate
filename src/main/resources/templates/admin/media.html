@@ -23,7 +23,7 @@
         .media-item .filename { font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .btn-danger-sm { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; font-size: 0.8rem; border-radius: 6px; }
         .btn-danger-sm:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
-        .upload-area { border: 2px dashed var(--border-light); border-radius: var(--radius-md); padding: 40px; text-align: center; color: var(--text-muted); transition: all 0.3s ease; cursor: pointer; }
+        .upload-area { border: 2px dashed var(--border-light); border-radius: var(--radius-md); padding: 30px; text-align: center; color: var(--text-muted); transition: all 0.3s ease; }
         .upload-area:hover { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.02); }
         .upload-area i { font-size: 3rem; opacity: 0.3; margin-bottom: 12px; }
     </style>
@@ -38,36 +38,42 @@
         </div>
     </header>
 
-    <!-- Upload -->
+    <!-- Upload Form -->
     <div class="mb-4">
-        <form method="post" action="/admin/media/upload" enctype="multipart/form-data">
-            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-cloud-upload-alt"></i>
-                <p>Cliquez pour sélectionner un fichier ou glissez-déposez</p>
-                <input type="file" name="file" id="fileInput" style="display:none;" onchange="this.form.submit()">
-                <div class="mt-2">
-                    <input type="text" name="altText" placeholder="Texte alternatif" class="form-control form-control-sm" style="max-width: 300px; margin: 0 auto;">
+        <form method="post" action="/admin/media/upload" enctype="multipart/form-data" class="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p class="mb-2">Sélectionnez une image à ajouter à la galerie</p>
+
+            <div class="d-flex flex-column align-items-center gap-3 style-wrapper" style="max-width: 400px; margin: 0 auto;">
+                <input type="text" name="altText" placeholder="Titre / Légende de l'image" class="form-control form-control-sm">
+
+                <div class="d-flex gap-2 w-100 justify-content-center">
+                    <input type="file" name="file" id="fileInput" required class="form-control form-control-sm" accept="image/*">
+                    <button type="submit" class="btn btn-primary btn-sm px-4">
+                        <i class="fas fa-upload me-1"></i> Publier
+                    </button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- Liste -->
+    <!-- Galerie Médias (Liste) -->
     <div class="media-grid">
         <div th:each="m : ${media}" class="media-item">
             <div class="preview">
-                <img th:src="@{/uploads/ + ${m.filename}}" alt="Media" th:if="${m.fileType != null && m.fileType.startsWith('image/')}">
+                <img th:src="@{${m.filePath}}" th:alt="${m.altText}" th:if="${m.fileType != null && m.fileType.startsWith('image/')}">
                 <i class="fas fa-file" style="font-size: 2rem; opacity: 0.3;" th:unless="${m.fileType != null && m.fileType.startsWith('image/')}"></i>
             </div>
-            <div class="filename" th:text="${m.filename}">filename</div>
-            <div style="font-size: 0.7rem; color: var(--text-muted);" th:text="${#strings.format('%.0f KB', m.fileSize / 1024)}">size</div>
+            <div class="filename" th:text="${m.altText != null && !m.altText.isEmpty() ? m.altText : m.filename}">filename</div>
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px;" th:text="${#strings.format('%.0f KB', m.fileSize / 1024)}">size</div>
             <form method="post" th:action="@{/admin/media/delete/{id}(id=${m.id})}" style="display:inline;" onsubmit="return confirm('Supprimer ce média ?')">
-                <button type="submit" class="btn-danger-sm btn-sm"><i class="fas fa-trash"></i></button>
+                <button type="submit" class="btn-danger-sm btn-sm"><i class="fas fa-trash"></i> Supprimer</button>
             </form>
         </div>
-        <div th:if="${media.isEmpty()}" class="text-center text-muted" style="grid-column: 1 / -1; padding: 40px;">
+
+        <div th:if="${media == null || media.isEmpty()}" class="text-center text-muted" style="grid-column: 1 / -1; padding: 40px;">
             <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
-            <p>Aucun média</p>
+            <p>Aucun média disponible dans le back-office.</p>
         </div>
     </div>
 </div>

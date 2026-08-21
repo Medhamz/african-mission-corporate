@@ -4,6 +4,7 @@ import com.africanmission.model.Media;
 import com.africanmission.repository.MediaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,30 +23,34 @@ public class MediaService {
     private static final String UPLOAD_DIR = "uploads/";
 
     public Media uploadFile(MultipartFile file, String altText) throws IOException {
-        // Créer le dossier si inexistant
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Le fichier téléchargé est vide.");
+        }
+
         Path uploadPath = Paths.get(UPLOAD_DIR);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
 
-        // Générer un nom unique
-        String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename != null && originalFilename.contains(".")
-                ? originalFilename.substring(originalFilename.lastIndexOf("."))
-                : "";
-        String uniqueFilename = UUID.randomUUID().toString() + extension;
+        // Nettoyage du nom pour éviter le Path Traversal
+        String rawFilename = file.getOriginalFilename();
+        String originalFilename = rawFilename != null ? StringUtils.cleanPath(rawFilename) : "";
 
-        // Sauvegarder le fichier
+        String extension = "";
+        if (originalFilename.contains(".")) {
+            extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+
+        String uniqueFilename = UUID.randomUUID().toString() + extension;
         Path filePath = uploadPath.resolve(uniqueFilename);
         Files.copy(file.getInputStream(), filePath);
 
-        // Enregistrer en base
         Media media = new Media();
-        media.setFilename(originalFilename != null ? originalFilename : uniqueFilename);
-        media.setFilePath(UPLOAD_DIR + uniqueFilename);
+        media.setFilename(!originalFilename.isBlank() ? originalFilename : uniqueFilename);
+        media.setFilePath("/" + UPLOAD_DIR + uniqueFilename); // Path relatif accessible en HTTP
         media.setFileType(file.getContentType());
         media.setFileSize(file.getSize());
-        media.setAltText(altText);
+        media.setAltText(altText != null ? altText : originalFilename);
         media.setIsActive(true);
 
         return mediaRepository.save(media);
@@ -54,6 +60,13 @@ public class MediaService {
         return mediaRepository.findByIsActiveTrueOrderByCreatedAtDesc();
     }
 
+    // Récupération filtrée pour la Galerie (Images uniquement)
+    public List<Media> getAllActiveImages() {
+        return getAllActive().stream()
+                .filter(m -> m.getFileType() != null && m.getFileType().startsWith("image/"))
+                .collect(Collectors.toList());
+    }
+
     public Media getById(Long id) {
         return mediaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Média non trouvé"));
@@ -61,7 +74,9 @@ public class MediaService {
 
     public void delete(Long id) throws IOException {
         Media media = getById(id);
-        Path filePath = Paths.get(media.getFilePath());
+        // Supprimer le fichier physique
+        String cleanPath = media.getFilePath().startsWith("/") ? media.getFilePath().substring(1) : media.getFilePath();
+        Path filePath = Paths.get(cleanPath);
         if (Files.exists(filePath)) {
             Files.delete(filePath);
         }

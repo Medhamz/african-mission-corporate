@@ -3,6 +3,7 @@ package com.africanmission.controller;
 import com.africanmission.model.Activity;
 import com.africanmission.model.Partner;
 import com.africanmission.service.ActivityService;
+import com.africanmission.service.MediaService;
 import com.africanmission.service.PartnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ public class HomeController {
 
     private final ActivityService activityService;
     private final PartnerService partnerService;
+    private final MediaService mediaService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -48,10 +50,6 @@ public class HomeController {
         return "activities";
     }
 
-    // ============================================
-    // SERVICES & PROJETS
-    // ============================================
-
     @GetMapping("/services")
     public String services(Model model) {
         model.addAttribute("pageTitle", "Nos services - African Mission Corporate");
@@ -63,10 +61,6 @@ public class HomeController {
         model.addAttribute("pageTitle", "Nos projets - African Mission Corporate");
         return "projects";
     }
-
-    // ============================================
-    // ÉQUIPE & CARRIÈRES
-    // ============================================
 
     @GetMapping("/team")
     public String team(Model model) {
@@ -80,10 +74,6 @@ public class HomeController {
         return "careers";
     }
 
-    // ============================================
-    // BLOG & FAQ
-    // ============================================
-
     @GetMapping("/blog")
     public String blog(Model model) {
         model.addAttribute("pageTitle", "Blog - African Mission Corporate");
@@ -95,10 +85,6 @@ public class HomeController {
         model.addAttribute("pageTitle", "FAQ - African Mission Corporate");
         return "faq";
     }
-
-    // ============================================
-    // MENTIONS LÉGALES & PLAN DU SITE
-    // ============================================
 
     @GetMapping("/legal")
     public String legal(Model model) {
@@ -112,18 +98,16 @@ public class HomeController {
         return "sitemap";
     }
 
-    // ============================================
-    // TÉMOIGNAGES, GALERIE & CHIFFRES CLÉS
-    // ============================================
-
     @GetMapping("/testimonials")
     public String testimonials(Model model) {
         model.addAttribute("pageTitle", "Témoignages - African Mission Corporate");
         return "testimonials";
     }
 
+    // Mise à jour de la Galerie avec l'injection des images uploadées
     @GetMapping("/gallery")
     public String gallery(Model model) {
+        model.addAttribute("mediaList", mediaService.getAllActiveImages());
         model.addAttribute("pageTitle", "Galerie - African Mission Corporate");
         return "gallery";
     }
