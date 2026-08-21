@@ -58,7 +58,7 @@ public class SecurityConfig {
         http
                 .cors(Customizer.withDefaults())
                 .userDetailsService(userDetailsService)
-                // Désactivation ciblée de la protection CSRF sur les endpoints de formulaire POST back-office, APIs et médias
+                // Désactivation ciblée du CSRF pour tous les points d'entrée d'upload et d'API
                 .csrf(csrf -> csrf.ignoringRequestMatchers(
                         "/admin/**",
                         "/newsletter/**",
@@ -66,6 +66,8 @@ public class SecurityConfig {
                         "/contact/**",
                         "/api/**",
                         "/media/**",
+                        "/upload",
+                        "/upload/**",
                         "/uploads/**"
                 ))
                 .authorizeHttpRequests(authz -> authz
@@ -94,7 +96,9 @@ public class SecurityConfig {
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json", "/favicon.ico",
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**", "/maintenance", "/kiosk",
 
-                                // Endpoints médias/uploads
+                                // Endpoints d'upload et de traitement média
+                                "/upload",
+                                "/upload/**",
                                 "/media/**"
                         ).permitAll()
 
@@ -119,7 +123,7 @@ public class SecurityConfig {
     }
 
     // ============================================
-    // 3. CONFIGURATION GLOBAL CORS
+    // 3. CONFIGURATION GLOBALE CORS
     // ============================================
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
