@@ -50,7 +50,14 @@ public class SecurityConfig {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(userDetailsService)
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/**", "/newsletter/**", "/chat/**", "/contact/**", "/api/**"))
+                // Désactivation ciblée de la protection CSRF sur les endpoints de formulaire POST back-office et APIs
+                .csrf(csrf -> csrf.ignoringRequestMatchers(
+                        "/admin/**",
+                        "/newsletter/**",
+                        "/chat/**",
+                        "/contact/**",
+                        "/api/**"
+                ))
                 .authorizeHttpRequests(authz -> authz
                         // Autoriser les ressources statiques par défaut de Spring Boot
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
@@ -73,7 +80,7 @@ public class SecurityConfig {
                                 "/monde", "/monde/**", "/carte-monde", "/world-map",
                                 "/eco", "/eco/**", "/eco-dashboard",
 
-                                // Ressources statiques explicites
+                                // Ressources statiques explicites & dossier des fichiers envoyés
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/uploads/**", "/manifest.json", "/favicon.ico",
                                 "/newsletter/**", "/search", "/chat/**", "/contact/**", "/maintenance", "/kiosk"
                         ).permitAll()

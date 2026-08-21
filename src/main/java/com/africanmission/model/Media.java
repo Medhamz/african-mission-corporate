@@ -34,10 +34,21 @@ public class Media {
     @Column(length = 255)
     private String altText;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    // Garantit que isActive et createdAt sont toujours renseignés avant la sauvegarde en BDD
+    @PrePersist
+    protected void onCreate() {
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+    }
 }
