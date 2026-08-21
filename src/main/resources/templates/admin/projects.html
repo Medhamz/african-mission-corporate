@@ -21,6 +21,7 @@
         .btn-danger-sm { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 4px 12px; font-size: 0.8rem; border-radius: 6px; }
         .btn-danger-sm:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
         .badge-category { background: rgba(59,130,246,0.1); color: var(--primary-blue); padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; }
+        .project-img-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-light); }
     </style>
 </head>
 <body>
@@ -41,6 +42,7 @@
             <thead>
             <tr>
                 <th>#</th>
+                <th>Aperçu</th>
                 <th>Titre</th>
                 <th>Catégorie</th>
                 <th>Client</th>
@@ -52,6 +54,12 @@
             <tbody>
             <tr th:each="p : ${projects}">
                 <td th:text="${p.id}">1</td>
+                <td>
+                    <img th:if="${p.imageUrl != null and !#strings.isEmpty(p.imageUrl)}" th:src="${p.imageUrl}" class="project-img-thumb" alt="Projet">
+                    <div th:unless="${p.imageUrl != null and !#strings.isEmpty(p.imageUrl)}" class="project-img-thumb d-flex align-items-center justify-content-center bg-dark text-muted">
+                        <i class="fas fa-image"></i>
+                    </div>
+                </td>
                 <td th:text="${p.title}" style="color: var(--text-primary); font-weight: 500;">Titre</td>
                 <td><span class="badge-category" th:text="${p.category}">Catégorie</span></td>
                 <td th:text="${p.clientName}">Client</td>
@@ -66,8 +74,8 @@
                     </form>
                 </td>
             </tr>
-            <tr th:if="${projects.isEmpty()}">
-                <td colspan="7" class="text-center text-muted" style="padding: 40px;">
+            <tr th:if="${#lists.isEmpty(projects)}">
+                <td colspan="8" class="text-center text-muted" style="padding: 40px;">
                     <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
                     <p>Aucun projet</p>
                 </td>
@@ -85,10 +93,10 @@
                 <h5 class="modal-title" style="color: var(--text-primary);">Ajouter un projet</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
             </div>
-            <form method="post" action="/admin/projects/add">
+            <form method="post" action="/admin/projects/add" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label style="color: var(--text-secondary);">Titre</label>
+                        <label style="color: var(--text-secondary);">Titre du projet</label>
                         <input type="text" name="title" class="form-control" required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
                     <div class="mb-3">
@@ -97,19 +105,28 @@
                     </div>
                     <div class="mb-3">
                         <label style="color: var(--text-secondary);">Catégorie</label>
-                        <input type="text" name="category" class="form-control" required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                        <input type="text" name="category" class="form-control" placeholder="Ex: Résidentiel, Commercial, Rénovation..." required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
+
+                    <!-- Fichier Image Simulation -->
                     <div class="mb-3">
-                        <label style="color: var(--text-secondary);">Image URL</label>
-                        <input type="text" name="imageUrl" class="form-control" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                        <label style="color: var(--text-secondary);">Image de simulation (Fichier)</label>
+                        <input type="file" name="imageFile" accept="image/*" class="form-control" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
+
+                    <!-- URL d'image alternative -->
+                    <div class="mb-3">
+                        <label style="color: var(--text-secondary);">Ou URL de l'image</label>
+                        <input type="text" name="imageUrl" class="form-control" placeholder="https://..." style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                    </div>
+
                     <div class="mb-3">
                         <label style="color: var(--text-secondary);">Nom du client</label>
-                        <input type="text" name="clientName" class="form-control" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                        <input type="text" name="clientName" class="form-control" placeholder="Ex: AMC Promotion" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
                     <div class="mb-3">
-                        <label style="color: var(--text-secondary);">Date de réalisation</label>
-                        <input type="text" name="completionDate" class="form-control" placeholder="Ex: Janvier 2026" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
+                        <label style="color: var(--text-secondary);">Date / Statut de réalisation</label>
+                        <input type="text" name="completionDate" class="form-control" placeholder="Ex: 2026 / En cours" style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
                 </div>
                 <div class="modal-footer" style="border-color: var(--border-light);">

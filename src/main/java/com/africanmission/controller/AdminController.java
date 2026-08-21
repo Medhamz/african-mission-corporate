@@ -249,22 +249,35 @@ public class AdminController {
                              @RequestParam String description,
                              @RequestParam String category,
                              @RequestParam(required = false) String imageUrl,
+                             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                              @RequestParam(required = false) String clientName,
                              @RequestParam(required = false) String completionDate,
                              HttpServletRequest request,
                              RedirectAttributes redirectAttributes) {
-        Project project = new Project();
-        project.setTitle(title);
-        project.setDescription(description);
-        project.setCategory(category);
-        project.setImageUrl(imageUrl);
-        project.setClientName(clientName);
-        project.setCompletionDate(completionDate);
-        project.setIsActive(true);
-        projectService.save(project);
-        redirectAttributes.addFlashAttribute("toastMessage", "Projet ajouté !");
-        redirectAttributes.addFlashAttribute("toastType", "success");
-        adminLogService.log(getCurrentUsername(), "ADD_PROJECT", "Ajout du projet: " + title, request.getRemoteAddr());
+        try {
+            Project project = new Project();
+            project.setTitle(title);
+            project.setDescription(description);
+            project.setCategory(category);
+            project.setClientName(clientName);
+            project.setCompletionDate(completionDate);
+            project.setIsActive(true);
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                Media savedMedia = mediaService.uploadFile(imageFile, title);
+                project.setImageUrl(savedMedia.getFilePath());
+            } else if (imageUrl != null && !imageUrl.trim().isEmpty()) {
+                project.setImageUrl(imageUrl.trim());
+            }
+
+            projectService.save(project);
+            redirectAttributes.addFlashAttribute("toastMessage", "Projet ajouté avec succès !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "ADD_PROJECT", "Ajout du projet: " + title, request.getRemoteAddr());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de l'ajout du projet : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
         return "redirect:/admin/projects-admin";
     }
 

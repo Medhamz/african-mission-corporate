@@ -2,9 +2,11 @@ package com.africanmission.controller;
 
 import com.africanmission.model.Activity;
 import com.africanmission.model.Partner;
+import com.africanmission.model.Project;
 import com.africanmission.service.ActivityService;
 import com.africanmission.service.MediaService;
 import com.africanmission.service.PartnerService;
+import com.africanmission.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ public class HomeController {
     private final ActivityService activityService;
     private final PartnerService partnerService;
     private final MediaService mediaService;
+    private final ProjectService projectService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -58,6 +61,11 @@ public class HomeController {
 
     @GetMapping("/projects")
     public String projects(Model model) {
+        List<Project> projects = projectService.getActiveProjects();
+        List<String> categories = projectService.getAllCategories();
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("categories", categories);
         model.addAttribute("pageTitle", "Nos projets - African Mission Corporate");
         return "projects";
     }
@@ -104,7 +112,6 @@ public class HomeController {
         return "testimonials";
     }
 
-    // Mise à jour de la Galerie avec l'injection des images uploadées
     @GetMapping("/gallery")
     public String gallery(Model model) {
         model.addAttribute("mediaList", mediaService.getAllActiveImages());
