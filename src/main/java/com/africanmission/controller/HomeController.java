@@ -7,15 +7,19 @@ import com.africanmission.model.Testimonial;
 import com.africanmission.service.ActivityService;
 import com.africanmission.service.FaqService;
 import com.africanmission.service.MediaService;
+import com.africanmission.service.NewsletterService;
 import com.africanmission.service.PartnerService;
 import com.africanmission.service.ProjectService;
 import com.africanmission.service.TestimonialService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -30,6 +34,7 @@ public class HomeController {
     private final ProjectService projectService;
     private final FaqService faqService;
     private final TestimonialService testimonialService;
+    private final NewsletterService newsletterService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -166,5 +171,34 @@ public class HomeController {
     @GetMapping("/devis")
     public String devisRedirect() {
         return "redirect:/contact?type=devis";
+    }
+
+    // GESTION DE LA NEWSLETTER (FRONT-OFFICE)
+    @PostMapping({"/newsletter/subscribe", "/api/newsletter/subscribe"})
+    public Object subscribeNewsletter(@RequestParam("email") String email,
+                                      HttpServletRequest request,
+                                      RedirectAttributes redirectAttributes) {
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+
+        try {
+            newsletterService.subscribe(email);
+            if (isAjax) {
+                return ResponseEntity.ok("Inscription réussie à la newsletter !");
+            }
+            redirectAttributes.addFlashAttribute("newsletterSuccess", "Merci pour votre inscription à notre newsletter !");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            if (isAjax) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+            redirectAttributes.addFlashAttribute("newsletterError", e.getMessage());
+        } catch (Exception e) {
+            if (isAjax) {
+                return ResponseEntity.internalServerError().body("Une erreur est survenue lors de l'inscription.");
+            }
+            redirectAttributes.addFlashAttribute("newsletterError", "Une erreur s'est produite. Veuillez réespayer.");
+        }
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
     }
 }

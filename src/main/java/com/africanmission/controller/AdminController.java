@@ -361,7 +361,7 @@ public class AdminController {
         return "redirect:/admin/activities";
     }
 
-    // PARTENAIRES (Ajusté)
+    // PARTENAIRES
     @GetMapping("/partners")
     public String managePartners(Model model) {
         model.addAttribute("partners", partnerService.getAllPartners());
@@ -487,6 +487,20 @@ public class AdminController {
         model.addAttribute("subscribers", newsletterService.getAllActiveSubscribers());
         model.addAttribute("pageTitle", "Newsletter");
         return "admin/newsletter";
+    }
+
+    @PostMapping("/newsletter/delete/{id}")
+    public String deleteSubscriber(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            newsletterService.unsubscribeById(id);
+            redirectAttributes.addFlashAttribute("toastMessage", "Abonné supprimé avec succès !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "DELETE_SUBSCRIBER", "Suppression de l'abonné newsletter ID: " + id, request.getRemoteAddr());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de la suppression: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/newsletter";
     }
 
     // MEMBRES DE L'ÉQUIPE
