@@ -15,6 +15,7 @@ import java.util.Optional;
 public class NewsletterService {
 
     private final NewsletterRepository newsletterRepository;
+    private final EmailService emailService;
 
     public Newsletter subscribe(String email) {
         if (email == null || email.trim().isEmpty()) {
@@ -29,7 +30,6 @@ public class NewsletterService {
             if (Boolean.TRUE.equals(subscriber.getIsActive())) {
                 throw new IllegalStateException("Cet e-mail est déjà abonné à la newsletter.");
             }
-            // Réabonnement
             subscriber.setIsActive(true);
             return newsletterRepository.save(subscriber);
         }
@@ -58,14 +58,12 @@ public class NewsletterService {
         newsletterRepository.save(subscriber);
     }
 
-    // Basculer l'état (Actif <-> Inactif)
     public void toggleStatus(Long id) {
         Newsletter subscriber = getById(id);
         subscriber.setIsActive(!Boolean.TRUE.equals(subscriber.getIsActive()));
         newsletterRepository.save(subscriber);
     }
 
-    // Vraie suppression en base de données
     public void deleteById(Long id) {
         if (!newsletterRepository.existsById(id)) {
             throw new IllegalArgumentException("Abonné introuvable avec l'ID : " + id);
@@ -73,7 +71,6 @@ public class NewsletterService {
         newsletterRepository.deleteById(id);
     }
 
-    // Enregistrer ou mettre à jour un abonné
     public Newsletter save(Newsletter subscriber) {
         if (subscriber == null || subscriber.getEmail() == null || subscriber.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("L'adresse e-mail ne peut pas être vide.");
@@ -82,7 +79,17 @@ public class NewsletterService {
         return newsletterRepository.save(subscriber);
     }
 
-    // Récupérer un abonné par ID
+    public void sendNewsletterToAll(String subject, String content) {
+        List<Newsletter> activeSubscribers = getAllActiveSubscribers();
+        for (Newsletter subscriber : activeSubscribers) {
+            try {
+                emailService.sendHtmlEmail(subscriber.getEmail(), subject, content);
+            } catch (Exception e) {
+                System.err.println("Échec d'envoi à : " + subscriber.getEmail() + " - " + e.getMessage());
+            }
+        }
+    }
+
     @Transactional(readOnly = true)
     public Newsletter getById(Long id) {
         return newsletterRepository.findById(id)

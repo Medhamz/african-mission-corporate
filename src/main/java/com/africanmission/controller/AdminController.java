@@ -489,11 +489,34 @@ public class AdminController {
         return "admin/newsletter";
     }
 
-    // 1. DÉSACTIVER / ACTIVER UN ABONNÉ
+    @GetMapping("/newsletter/send")
+    public String showSendNewsletterForm(Model model) {
+        model.addAttribute("activeSubscribersCount", newsletterService.getAllActiveSubscribers().size());
+        model.addAttribute("pageTitle", "Envoyer une Newsletter");
+        return "admin/newsletter-send";
+    }
+
+    @PostMapping("/newsletter/send")
+    public String sendNewsletter(@RequestParam String subject,
+                                 @RequestParam String content,
+                                 HttpServletRequest request,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            newsletterService.sendNewsletterToAll(subject, content);
+            redirectAttributes.addFlashAttribute("toastMessage", "Newsletter envoyée avec succès !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "SEND_NEWSLETTER", "Envoi d'une newsletter : " + subject, request.getRemoteAddr());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de l'envoi : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/newsletter";
+    }
+
     @PostMapping({"/newsletter/toggle/{id}", "/newsletter/unsubscribe/{id}"})
     public String toggleSubscriberStatus(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            newsletterService.unsubscribeById(id);
+            newsletterService.toggleStatus(id);
             redirectAttributes.addFlashAttribute("toastMessage", "Statut de l'abonné mis à jour !");
             redirectAttributes.addFlashAttribute("toastType", "success");
             adminLogService.log(getCurrentUsername(), "TOGGLE_SUBSCRIBER", "Modification du statut de l'abonné ID: " + id, request.getRemoteAddr());
@@ -504,7 +527,6 @@ public class AdminController {
         return "redirect:/admin/newsletter";
     }
 
-    // 2. MISE À JOUR D'UN ABONNÉ
     @PostMapping("/newsletter/update/{id}")
     public String updateSubscriber(@PathVariable Long id,
                                    @RequestParam String email,
@@ -528,11 +550,10 @@ public class AdminController {
         return "redirect:/admin/newsletter";
     }
 
-    // 3. SUPPRESSION DÉFINITIVE D'UN ABONNÉ
     @PostMapping("/newsletter/delete/{id}")
     public String deleteSubscriber(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
-            newsletterService.deleteById(id); // <-- Remplacer deleteSubscriberById par deleteById
+            newsletterService.deleteById(id);
             redirectAttributes.addFlashAttribute("toastMessage", "Abonné supprimé définitivement !");
             redirectAttributes.addFlashAttribute("toastType", "success");
             adminLogService.log(getCurrentUsername(), "DELETE_SUBSCRIBER", "Suppression définitive de l'abonné ID: " + id, request.getRemoteAddr());
