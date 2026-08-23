@@ -201,12 +201,14 @@ public class AdminController {
     @PostMapping("/testimonials/add")
     public String addTestimonial(@RequestParam String clientName,
                                  @RequestParam String content,
+                                 @RequestParam(required = false) String role,
                                  @RequestParam(required = false) String company,
                                  @RequestParam(defaultValue = "5") Integer rating,
                                  HttpServletRequest request,
                                  RedirectAttributes redirectAttributes) {
         Testimonial testimonial = new Testimonial();
         testimonial.setClientName(clientName);
+        testimonial.setRole(role);
         testimonial.setContent(content);
         testimonial.setCompany(company);
         testimonial.setRating(rating);
@@ -218,16 +220,32 @@ public class AdminController {
         return "redirect:/admin/testimonials";
     }
 
-    @PostMapping("/testimonials/approve/{id}")
-    public String approveTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        testimonialService.approve(id);
-        redirectAttributes.addFlashAttribute("toastMessage", "Témoignage approuvé !");
+    @PostMapping("/testimonials/save")
+    public String saveTestimonialFromModal(@ModelAttribute Testimonial testimonial,
+                                           HttpServletRequest request,
+                                           RedirectAttributes redirectAttributes) {
+        if (testimonial.getIsApproved() == null) {
+            testimonial.setIsApproved(false);
+        }
+        testimonialService.save(testimonial);
+        redirectAttributes.addFlashAttribute("toastMessage", "Témoignage enregistré !");
         redirectAttributes.addFlashAttribute("toastType", "success");
-        adminLogService.log(getCurrentUsername(), "APPROVE_TESTIMONIAL", "Approbation du témoignage ID: " + id, request.getRemoteAddr());
+        adminLogService.log(getCurrentUsername(), "SAVE_TESTIMONIAL", "Témoignage enregistré pour: " + testimonial.getClientName(), request.getRemoteAddr());
         return "redirect:/admin/testimonials";
     }
 
-    @PostMapping("/testimonials/delete/{id}")
+    // Compatible avec /admin/testimonials/{id}/approve et /admin/testimonials/approve/{id}
+    @PostMapping({"/testimonials/{id}/approve", "/testimonials/approve/{id}"})
+    public String approveTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        testimonialService.approve(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Statut du témoignage mis à jour !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "APPROVE_TESTIMONIAL", "Changement de statut du témoignage ID: " + id, request.getRemoteAddr());
+        return "redirect:/admin/testimonials";
+    }
+
+    // Compatible avec /admin/testimonials/{id}/delete et /admin/testimonials/delete/{id}
+    @PostMapping({"/testimonials/{id}/delete", "/testimonials/delete/{id}"})
     public String deleteTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         testimonialService.delete(id);
         redirectAttributes.addFlashAttribute("toastMessage", "Témoignage supprimé !");
