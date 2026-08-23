@@ -2,14 +2,15 @@ package com.africanmission.repository;
 
 import com.africanmission.model.Newsletter;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface NewsletterRepository extends JpaRepository<Newsletter, Long> {
+
     Optional<Newsletter> findByEmailIgnoreCase(String email);
+
     List<Newsletter> findByIsActiveTrue();
+
     boolean existsByEmailIgnoreCase(String email);
 }

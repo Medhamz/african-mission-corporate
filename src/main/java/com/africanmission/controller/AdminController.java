@@ -484,7 +484,7 @@ public class AdminController {
 
     @GetMapping("/newsletter")
     public String manageNewsletter(Model model) {
-        model.addAttribute("subscribers", newsletterService.getAllActiveSubscribers());
+        model.addAttribute("subscribers", newsletterService.getAllSubscribers());
         model.addAttribute("pageTitle", "Newsletter");
         return "admin/newsletter";
     }
@@ -493,9 +493,9 @@ public class AdminController {
     public String deleteSubscriber(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
             newsletterService.unsubscribeById(id);
-            redirectAttributes.addFlashAttribute("toastMessage", "Abonné supprimé avec succès !");
+            redirectAttributes.addFlashAttribute("toastMessage", "Abonné désactivé avec succès !");
             redirectAttributes.addFlashAttribute("toastType", "success");
-            adminLogService.log(getCurrentUsername(), "DELETE_SUBSCRIBER", "Suppression de l'abonné newsletter ID: " + id, request.getRemoteAddr());
+            adminLogService.log(getCurrentUsername(), "DELETE_SUBSCRIBER", "Désactivation de l'abonné newsletter ID: " + id, request.getRemoteAddr());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de la suppression: " + e.getMessage());
             redirectAttributes.addFlashAttribute("toastType", "error");
@@ -725,7 +725,7 @@ public class AdminController {
 
     @GetMapping("/export/subscribers")
     public void exportSubscribers(HttpServletResponse response) throws IOException {
-        List<Newsletter> subscribers = newsletterService.getAllActiveSubscribers();
+        List<Newsletter> subscribers = newsletterService.getAllSubscribers();
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=subscribers_export.csv");
 

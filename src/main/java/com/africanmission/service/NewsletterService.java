@@ -4,12 +4,14 @@ import com.africanmission.model.Newsletter;
 import com.africanmission.repository.NewsletterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class NewsletterService {
 
     private final NewsletterRepository newsletterRepository;
@@ -65,10 +67,17 @@ public class NewsletterService {
         newsletterRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Newsletter> getAllActiveSubscribers() {
         return newsletterRepository.findByIsActiveTrue();
     }
 
+    @Transactional(readOnly = true)
+    public List<Newsletter> getAllSubscribers() {
+        return newsletterRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
     public long getSubscriberCount() {
         return newsletterRepository.count();
     }
