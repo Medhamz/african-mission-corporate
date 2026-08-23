@@ -19,8 +19,8 @@ public class Testimonial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String clientName;
+    @Column(name = "author", nullable = false, length = 100)
+    private String author;
 
     @Column(length = 100)
     private String company;
