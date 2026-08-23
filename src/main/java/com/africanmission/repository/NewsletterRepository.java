@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface NewsletterRepository extends JpaRepository<Newsletter, Long> {
-    Optional<Newsletter> findByEmail(String email);
+    Optional<Newsletter> findByEmailIgnoreCase(String email);
     List<Newsletter> findByIsActiveTrue();
+    boolean existsByEmailIgnoreCase(String email);
 }
