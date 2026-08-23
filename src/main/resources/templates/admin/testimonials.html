@@ -2,70 +2,297 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${pageTitle}">Gestion des témoignages</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Témoignages · Admin</title>
+
+    <!-- Fonts & Icons & Frameworks -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        :root {
+            --bg-primary: #0b1120;
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .dashboard-wrapper {
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HEADER */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 32px;
+        }
+
+        .dashboard-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .dashboard-header .brand .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-main);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .dashboard-header .brand h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        /* GLASS CARD & TABLE */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .table-glass {
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+
+        .table-glass th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
+            font-weight: 600;
+            padding: 14px;
+        }
+
+        .table-glass td {
+            border-bottom: 1px solid var(--border-light);
+            padding: 14px;
+            vertical-align: middle;
+            color: var(--text-primary);
+        }
+
+        .btn-glass-action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            padding: 6px 12px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-glass-action:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .btn-gradient {
+            background: var(--gradient-main);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: scale(1.03);
+            color: #fff;
+        }
+
+        /* MODAL STYLES */
+        .modal-content-glass {
+            background: #0f172a;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            color: var(--text-primary);
+        }
+
+        .modal-header, .modal-footer {
+            border-color: var(--border-light);
+        }
+
+        .form-control-glass {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+        }
+
+        .form-control-glass:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #3b82f6;
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+    </style>
+
+    <link rel="icon" href="/images/image.jpg" type="image/jpeg">
 </head>
-<body class="bg-light">
-<div class="container py-4">
-    <h2 class="mb-4">Gestion des Témoignages</h2>
+<body>
 
-    <!-- Notifications Toast / Flash -->
-    <div th:if="${toastMessage}" class="alert alert-dismissible fade show"
-         th:classappend="${toastType == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
-        <span th:text="${toastMessage}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<canvas id="bg-particles"></canvas>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <table class="table table-striped table-hover align-middle mb-0">
-                <thead class="table-dark">
+<div class="dashboard-wrapper">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <div class="brand">
+            <div class="brand-icon"><i class="fas fa-star"></i></div>
+            <div>
+                <h1>Témoignages</h1>
+                <small style="color: var(--text-muted);">Gestion des avis et retours d'expérience</small>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/admin/dashboard" class="btn-glass-action"><i class="fas fa-arrow-left me-1"></i> Dashboard</a>
+            <button class="btn-gradient" data-bs-toggle="modal" data-bs-target="#addTestimonialModal">
+                <i class="fas fa-plus me-1"></i> Ajouter un témoignage
+            </button>
+        </div>
+    </header>
+
+    <!-- LISTE DES TÉMOIGNAGES -->
+    <div class="glass-card">
+        <div class="table-responsive">
+            <table class="table table-glass align-middle">
+                <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Entreprise</th>
-                    <th>Note</th>
+                    <th>Auteur</th>
+                    <th>Poste / Entreprise</th>
                     <th>Message</th>
-                    <th>Statut</th>
-                    <th>Actions</th>
+                    <th>Note</th>
+                    <th class="text-end">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${testimonials.empty}">
-                    <td colspan="7" class="text-center text-muted">Aucun témoignage enregistré.</td>
-                </tr>
-                <tr th:each="t : ${testimonials}">
-                    <td th:text="${t.id}">1</td>
-                    <td th:text="${t.clientName}">Nom</td>
-                    <td th:text="${t.company != null ? t.company : '-'}">Entreprise</td>
+                <tr th:each="testimonial : ${testimonials}">
+                    <td th:text="${testimonial.author}">Jean Dupont</td>
+                    <td th:text="${testimonial.role}">Directeur BTP</td>
+                    <td th:text="${testimonial.content}">Un accompagnement exceptionnel...</td>
                     <td>
-                        <span class="badge bg-warning text-dark" th:text="${t.rating + ' / 5'}">5 / 5</span>
+                            <span class="text-warning">
+                                <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, testimonial.rating)}"></i>
+                            </span>
                     </td>
-                    <td th:text="${t.content}">Message</td>
-                    <td>
-                        <span th:if="${t.isApproved}" class="badge bg-success">Approuvé</span>
-                        <span th:unless="${t.isApproved}" class="badge bg-secondary">En attente</span>
-                    </td>
-                    <td>
-                        <div class="d-flex gap-1">
-                            <form th:unless="${t.isApproved}" th:action="@{/admin/testimonials/approve/{id}(id=${t.id})}" method="post">
-                                <button type="submit" class="btn btn-sm btn-success" title="Approuver">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            </form>
-                            <form th:action="@{/admin/testimonials/delete/{id}(id=${t.id})}" method="post">
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce témoignage ?');" title="Supprimer">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </div>
+                    <td class="text-end">
+                        <button class="btn-glass-action btn-sm me-1"><i class="fas fa-edit text-info"></i></button>
+                        <button class="btn-glass-action btn-sm"><i class="fas fa-trash text-danger"></i></button>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
+
+<!-- SCRIPTS & PARTICULES -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const canvas = document.getElementById('bg-particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.opacity = Math.random() * 0.5 + 0.1;
+            this.color = Math.random() > 0.5 ? '#3b82f6' : '#8b5cf6';
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+        }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
 </body>
 </html>
