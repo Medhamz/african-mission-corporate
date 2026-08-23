@@ -39,7 +39,8 @@
     </header>
 
     <!-- Message Flash / Toast -->
-    <div th:if="${toastMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <div th:if="${toastMessage}" class="alert alert-dismissible fade show"
+         th:classappend="${toastType == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
         <span th:text="${toastMessage}">Opération réussie</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -48,13 +49,13 @@
         <div class="col-md-6">
             <div class="stat-card">
                 <div class="stat-number" th:text="${subscribers.size()}">0</div>
-                <div class="stat-label">Abonnés Actifs</div>
+                <div class="stat-label">Total Abonnés Enregistrés</div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="stat-card">
-                <div class="stat-number" th:text="${totalSubscribers}">0</div>
-                <div class="stat-label">Total Inscriptions Historiques</div>
+                <div class="stat-number" th:text="${#lists.size(subscribers.?[isActive == true])}">0</div>
+                <div class="stat-label">Abonnés Actifs</div>
             </div>
         </div>
     </div>
@@ -74,22 +75,61 @@
             <tr th:each="sub : ${subscribers}">
                 <td th:text="${sub.id}">1</td>
                 <td th:text="${sub.email}" style="color: var(--primary-blue); font-weight: 500;">email@example.com</td>
-                <td th:text="${#temporals.format(sub.subscribedAt, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</td>
+                <td th:text="${sub.subscribedAt != null ? #temporals.format(sub.subscribedAt, 'dd/MM/yyyy HH:mm') : 'N/A'}">01/01/2026 12:00</td>
                 <td>
                     <span th:if="${sub.isActive}" class="badge bg-success">Actif</span>
-                    <span th:unless="${sub.isActive}" class="badge bg-secondary">Désabonné</span>
+                    <span th:unless="${sub.isActive}" class="badge bg-secondary">Inactif / Désabonné</span>
                 </td>
                 <td class="text-end">
-                    <form th:action="@{/admin/newsletter/unsubscribe/{id}(id=${sub.id})}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-outline-warning" title="Désabonner" onclick="return confirm('Désabonner cet utilisateur ?');">
-                            <i class="fas fa-user-slash"></i>
+                    <!-- Basculer le statut (Désactiver / Réactiver) -->
+                    <form th:action="@{/admin/newsletter/toggle/{id}(id=${sub.id})}" method="post" style="display:inline;">
+                        <button type="submit"
+                                th:class="${sub.isActive ? 'btn btn-sm btn-outline-warning' : 'btn btn-sm btn-outline-success'}"
+                                th:title="${sub.isActive ? 'Désactiver' : 'Activer'}"
+                                th:onclick="return confirm([[${sub.isActive ? 'Désactiver cet abonné ?' : 'Réactiver cet abonné ?'}]]);">
+                            <i th:class="${sub.isActive ? 'fas fa-user-slash' : 'fas fa-user-check'}"></i>
                         </button>
                     </form>
+
+                    <!-- Éditer l'abonné (Modal Bootstrap) -->
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" th:data-bs-target="'#editModal-' + ${sub.id}" title="Modifier">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
+                    <!-- Supprimer définitivement -->
                     <form th:action="@{/admin/newsletter/delete/{id}(id=${sub.id})}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer" onclick="return confirm('Supprimer définitivement cet abonné ?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer définitivement" onclick="return confirm('Supprimer définitivement cet abonné de la base de données ?');">
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
+
+                    <!-- Modal d'édition pour chaque ligne -->
+                    <div class="modal fade text-start" th:id="'editModal-' + ${sub.id}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form th:action="@{/admin/newsletter/update/{id}(id=${sub.id})}" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Modifier l'abonné</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Adresse Email</label>
+                                            <input type="email" name="email" class="form-control" th:value="${sub.email}" required>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" name="isActive" value="true" th:checked="${sub.isActive}" th:id="'isActiveSwitch-' + ${sub.id}">
+                                            <label class="form-check-label" th:for="'isActiveSwitch-' + ${sub.id}">Compte Actif</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr th:if="${subscribers.isEmpty()}">

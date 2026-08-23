@@ -53,18 +53,40 @@ public class NewsletterService {
     }
 
     public void unsubscribeById(Long id) {
-        Newsletter subscriber = newsletterRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Abonné introuvable avec l'ID : " + id));
-
+        Newsletter subscriber = getById(id);
         subscriber.setIsActive(false);
         newsletterRepository.save(subscriber);
     }
 
+    // Basculer l'état (Actif <-> Inactif)
+    public void toggleStatus(Long id) {
+        Newsletter subscriber = getById(id);
+        subscriber.setIsActive(!Boolean.TRUE.equals(subscriber.getIsActive()));
+        newsletterRepository.save(subscriber);
+    }
+
+    // Vraie suppression en base de données
     public void deleteById(Long id) {
         if (!newsletterRepository.existsById(id)) {
             throw new IllegalArgumentException("Abonné introuvable avec l'ID : " + id);
         }
         newsletterRepository.deleteById(id);
+    }
+
+    // Enregistrer ou mettre à jour un abonné
+    public Newsletter save(Newsletter subscriber) {
+        if (subscriber == null || subscriber.getEmail() == null || subscriber.getEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("L'adresse e-mail ne peut pas être vide.");
+        }
+        subscriber.setEmail(subscriber.getEmail().trim().toLowerCase());
+        return newsletterRepository.save(subscriber);
+    }
+
+    // Récupérer un abonné par ID
+    @Transactional(readOnly = true)
+    public Newsletter getById(Long id) {
+        return newsletterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Abonné introuvable avec l'ID : " + id));
     }
 
     @Transactional(readOnly = true)
