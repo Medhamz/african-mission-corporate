@@ -1,6 +1,8 @@
 package com.africanmission.service;
 
-import jakarta.mail.messaging.MessagingException;
+// CORRECT
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
