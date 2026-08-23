@@ -25,7 +25,7 @@ public class Newsletter {
     private String email;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
     @Column(name = "subscribed_at", nullable = false, updatable = false)
     private LocalDateTime subscribedAt;
