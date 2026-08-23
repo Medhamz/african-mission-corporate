@@ -23,6 +23,9 @@ public class Testimonial {
     private String clientName;
 
     @Column(length = 100)
+    private String role; // Ajout du champ manquant pour Thymeleaf ${testimonial.role}
+
+    @Column(length = 100)
     private String company;
 
     @Column(nullable = false, length = 500)
@@ -41,7 +44,7 @@ public class Testimonial {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // Getter virtuel pour satisfaire la propriété ${testimonial.author} dans Thymeleaf
+    // Getter virtuel pour satisfaire la propriété ${testimonial.author} si utilisée dans Thymeleaf
     public String getAuthor() {
         return this.clientName;
     }
