@@ -19,8 +19,8 @@ public class Testimonial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "author", nullable = false, length = 100)
-    private String author;
+    @Column(nullable = false, length = 100)
+    private String clientName;
 
     @Column(length = 100)
     private String company;
@@ -40,4 +40,9 @@ public class Testimonial {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    // Getter virtuel pour satisfaire la propriété ${testimonial.author} dans Thymeleaf
+    public String getAuthor() {
+        return this.clientName;
+    }
 }
