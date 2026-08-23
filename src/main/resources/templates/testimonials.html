@@ -2,76 +2,274 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">Témoignages - African Mission Corporate</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PWA & Theme Color -->
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <meta name="theme-color" content="#0b1329">
+
+    <!-- Bootstrap + FontAwesome + Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Styles personnalisés -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="https://www.african-mission-corporate.com/images/image.jpg">
+
+    <style>
+        body {
+            background-color: #0b1329;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+
+        .card-testimonial-custom {
+            background: rgba(17, 28, 56, 0.7) !important;
+            border: 1px solid rgba(0, 210, 255, 0.2) !important;
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-testimonial-custom:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 210, 255, 0.6) !important;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.15);
+        }
+
+        .form-card-custom {
+            background: rgba(17, 28, 56, 0.85) !important;
+            border: 1px solid rgba(0, 210, 255, 0.25) !important;
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+        }
+
+        .form-control, .form-select {
+            background-color: rgba(11, 19, 41, 0.8) !important;
+            border: 1px solid rgba(0, 210, 255, 0.3) !important;
+            color: #ffffff !important;
+            border-radius: 10px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #00d2ff !important;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3) !important;
+        }
+
+        .form-label {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .btn-submit-custom {
+            background: linear-gradient(135deg, #00d2ff 0%, #0077ff 100%);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-submit-custom:hover {
+            opacity: 0.9;
+            color: #ffffff;
+        }
+    </style>
 </head>
 <body>
-<div class="container my-5">
-    <h1 class="text-center mb-4">Témoignages de nos clients</h1>
 
-    <!-- Message de succès après soumission -->
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <span th:text="${successMessage}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top premium-navbar" id="mainNav">
+    <div class="container">
+        <a class="logo-premium" th:href="@{/}">
+            <span class="logo-premium-icon"><i class="fas fa-globe-africa"></i></span>
+            <div>
+                <span class="logo-premium-text brand-text-animated">African Mission <span class="highlight">Corporate</span></span>
+            </div>
+        </a>
 
-    <!-- Section Liste des témoignages -->
-    <div class="row mb-5">
-        <div th:if="${testimonials.empty}" class="col-12 text-center text-muted">
-            <p>Aucun témoignage pour le moment. Soyez le premier à donner votre avis !</p>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto menu-premium">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}"><i class="fas fa-home nav-icon"></i>Accueil</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/about}"><i class="fas fa-info-circle nav-icon"></i>À propos</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-cogs nav-icon"></i>Services & Offres
+                    </a>
+                    <ul class="dropdown-menu dropdown-premium">
+                        <li><a class="dropdown-item" th:href="@{/services}"><i class="fas fa-briefcase me-2"></i>Nos services</a></li>
+                        <li><a class="dropdown-item" th:href="@{/activities}"><i class="fas fa-tasks me-2"></i>Activités</a></li>
+                        <li><a class="dropdown-item" th:href="@{/projects}"><i class="fas fa-rocket me-2"></i>Projets & Réalisations</a></li>
+                        <li><a class="dropdown-item" th:href="@{/key-figures}"><i class="fas fa-chart-line me-2"></i>Chiffres Clés</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/diagnostiqueur}"><i class="fas fa-stethoscope me-2"></i>Diagnostic Gratuit</a></li>
+                        <li><a class="dropdown-item" th:href="@{/faq}"><i class="fas fa-question-circle me-2"></i>FAQ</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="companyDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-building nav-icon"></i>Entreprise
+                    </a>
+                    <ul class="dropdown-menu dropdown-premium">
+                        <li><a class="dropdown-item" th:href="@{/team}"><i class="fas fa-users me-2"></i>Notre Équipe</a></li>
+                        <li><a class="dropdown-item" th:href="@{/careers}"><i class="fas fa-user-tie me-2"></i>Carrières & Emploi</a></li>
+                        <li><a class="dropdown-item active" th:href="@{/testimonials}"><i class="fas fa-quote-left me-2"></i>Témoignages</a></li>
+                        <li><a class="dropdown-item" th:href="@{/gallery}"><i class="fas fa-images me-2"></i>Galerie Photos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/monde}"><i class="fas fa-map-marked-alt me-2"></i>Présence Mondiale</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/contact}"><i class="fas fa-envelope nav-icon"></i>Contact</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3 ms-lg-3">
+                <a th:href="@{/contact}" class="cta-premium"><i class="fas fa-paper-plane"></i> Devis</a>
+            </div>
         </div>
-        <div th:each="t : ${testimonials}" class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <div class="mb-2 text-warning">
-                        <i th:each="star : ${#numbers.sequence(1, t.rating)}" class="fas fa-star"></i>
+    </div>
+</nav>
+
+<!-- CONTENU PRINCIPAL -->
+<div class="main-wrapper">
+    <div class="container">
+
+        <!-- EN-TÊTE -->
+        <div class="text-center mb-5">
+            <span class="hero-badge mb-2">Avis & Confiance</span>
+            <h1 class="fw-bold text-white">Témoignages de nos clients</h1>
+            <p style="color: #94a3b8;">Découvrez les retours d'expérience de nos partenaires et clients.</p>
+        </div>
+
+        <!-- MESSAGE DE SUCCÈS -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show border-0 bg-success text-white mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- LISTE DES TÉMOIGNAGES -->
+        <div class="row mb-5">
+            <div th:if="${testimonials.empty}" class="col-12 text-center py-4" style="color: #94a3b8;">
+                <p class="fs-5">Aucun témoignage pour le moment. Soyez le premier à donner votre avis !</p>
+            </div>
+            <div th:each="t : ${testimonials}" class="col-md-4 mb-4">
+                <div class="card card-testimonial-custom h-100 p-3">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="mb-3 text-warning">
+                                <i th:each="star : ${#numbers.sequence(1, t.rating)}" class="fas fa-star"></i>
+                            </div>
+                            <p class="card-text mb-4" style="color: #e2e8f0; line-height: 1.6;" th:text="${'« ' + t.content + ' »'}">Contenu du témoignage...</p>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold" style="color: #00d2ff;" th:text="${t.clientName}">Nom du Client</h6>
+                            <small style="color: #94a3b8;" th:if="${t.company}" th:text="${t.company}">Entreprise</small>
+                        </div>
                     </div>
-                    <p class="card-text" th:text="${t.content}">Contenu du témoignage...</p>
-                    <h6 class="card-subtitle mb-1 text-primary" th:text="${t.clientName}">Nom du Client</h6>
-                    <small class="text-muted" th:if="${t.company}" th:text="${t.company}">Entreprise</small>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Formulaire de soumission -->
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Laissez-nous votre avis</h4>
-                </div>
-                <div class="card-body">
-                    <form th:action="@{/testimonials/submit}" method="post">
-                        <div class="mb-3">
-                            <label for="clientName" class="form-label">Votre Nom *</label>
-                            <input type="text" class="form-control" id="clientName" name="clientName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="company" class="form-label">Entreprise / Organisation</label>
-                            <input type="text" class="form-control" id="company" name="company">
-                        </div>
-                        <div class="mb-3">
-                            <label for="rating" class="form-label">Note (sur 5)</label>
-                            <select class="form-select" id="rating" name="rating">
-                                <option value="5">5 / 5 - Excellent</option>
-                                <option value="4">4 / 5 - Très bien</option>
-                                <option value="3">3 / 5 - Moyen</option>
-                                <option value="2">2 / 5 - Insatisfaisant</option>
-                                <option value="1">1 / 5 - À éviter</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="content" class="form-label">Votre Témoignage *</label>
-                            <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Soumettre mon témoignage</button>
-                    </form>
+        <!-- FORMULAIRE DE SOUMISSION -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card form-card-custom p-4">
+                    <div class="card-body">
+                        <h3 class="fw-bold text-white mb-4"><i class="fas fa-pen-nib me-2" style="color: #00d2ff;"></i>Laissez-nous votre avis</h3>
+                        <form th:action="@{/testimonials/submit}" method="post">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="clientName" class="form-label">Votre Nom *</label>
+                                    <input type="text" class="form-control" id="clientName" name="clientName" required placeholder="Ex: Amadou Diallo">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="company" class="form-label">Entreprise / Organisation</label>
+                                    <input type="text" class="form-control" id="company" name="company" placeholder="Ex: Sarl Mali Invest">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Note</label>
+                                <select class="form-select" id="rating" name="rating">
+                                    <option value="5">⭐⭐⭐⭐⭐ (5/5) - Excellent</option>
+                                    <option value="4">⭐⭐⭐⭐ (4/5) - Très bien</option>
+                                    <option value="3">⭐⭐⭐ (3/5) - Moyen</option>
+                                    <option value="2">⭐⭐ (2/5) - Insatisfaisant</option>
+                                    <option value="1">⭐ (1/5) - À éviter</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="content" class="form-label">Votre Témoignage *</label>
+                                <textarea class="form-control" id="content" name="content" rows="4" required placeholder="Partagez votre expérience avec nous..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-submit-custom w-100">
+                                <i class="fas fa-paper-plane me-2"></i>Soumettre mon témoignage
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+<!-- FOOTER -->
+<footer class="footer-premium mt-auto">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-md-4">
+                <h4 class="fw-bold">
+                    <i class="fas fa-globe-africa me-2" style="color: var(--primary-cyan);"></i>
+                    <span class="animated-company-name" style="font-size: 1.1rem;">African Mission Corporate</span>
+                </h4>
+                <p class="mt-3" style="line-height: 1.8;">
+                    Spécialisée dans les prestations de services, la promotion immobilière, l'agrobusiness, l'import-export et l'innovation.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-3">Plan du site</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a th:href="@{/}">Accueil</a></li>
+                    <li><a th:href="@{/about}">À propos</a></li>
+                    <li><a th:href="@{/services}">Services</a></li>
+                    <li><a th:href="@{/testimonials}">Témoignages</a></li>
+                    <li><a th:href="@{/contact}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-3">Contact</h5>
+                <ul class="list-unstyled contact-list">
+                    <li><i class="fas fa-map-marker-alt me-2"></i> Bamako, Mali</li>
+                    <li><i class="fas fa-phone me-2"></i> +223 44 39 12 03</li>
+                    <li><i class="fas fa-envelope me-2"></i> africanmc@african-mission-corporate.com</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="mt-5 border-secondary">
+        <div class="row align-items-center">
+            <div class="col-md-12 text-center copyright-text">
+                &copy; 2026 <span class="animated-company-name">African Mission Corporate</span>. Tous droits réservés.
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
