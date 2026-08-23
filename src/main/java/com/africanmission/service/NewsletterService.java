@@ -50,6 +50,21 @@ public class NewsletterService {
         newsletterRepository.save(subscriber);
     }
 
+    public void unsubscribeById(Long id) {
+        Newsletter subscriber = newsletterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Abonné introuvable avec l'ID : " + id));
+
+        subscriber.setIsActive(false);
+        newsletterRepository.save(subscriber);
+    }
+
+    public void deleteById(Long id) {
+        if (!newsletterRepository.existsById(id)) {
+            throw new IllegalArgumentException("Abonné introuvable avec l'ID : " + id);
+        }
+        newsletterRepository.deleteById(id);
+    }
+
     public List<Newsletter> getAllActiveSubscribers() {
         return newsletterRepository.findByIsActiveTrue();
     }
