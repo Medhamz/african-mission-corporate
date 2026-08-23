@@ -14,9 +14,9 @@
     <style>
         :root {
             --bg-primary: #0b1120;
-            --bg-card: rgba(15, 23, 42, 0.6);
+            --bg-card: rgba(15, 23, 42, 0.7);
             --bg-card-hover: rgba(30, 41, 59, 0.8);
-            --border-light: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.1);
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
@@ -95,7 +95,7 @@
             margin: 0;
         }
 
-        /* GLASS CARD & TABLE */
+        /* GLASS CARD & TABLE CORRIGÉE */
         .glass-card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -107,36 +107,41 @@
         }
 
         .table-glass {
-            color: var(--text-primary);
+            color: var(--text-primary) !important;
             margin-bottom: 0;
         }
 
         .table-glass th {
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.03) !important;
+            color: var(--text-secondary) !important;
+            border-bottom: 1px solid var(--border-light) !important;
             font-weight: 600;
             padding: 14px;
         }
 
         .table-glass td {
-            border-bottom: 1px solid var(--border-light);
+            background: transparent !important;
+            border-bottom: 1px solid var(--border-light) !important;
             padding: 14px;
             vertical-align: middle;
-            color: var(--text-primary);
+            color: var(--text-primary) !important;
         }
 
         .btn-glass-action {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-light);
             color: var(--text-primary);
             border-radius: var(--radius-sm);
             padding: 6px 12px;
             transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-glass-action:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             color: #fff;
         }
 
@@ -155,6 +160,27 @@
             color: #fff;
         }
 
+        /* BADGES DES STATUTS */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge-approved {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .badge-pending {
+            background: rgba(234, 179, 8, 0.15);
+            color: #fde047;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
         /* MODAL STYLES */
         .modal-content-glass {
             background: #0f172a;
@@ -168,14 +194,14 @@
         }
 
         .form-control-glass {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-light);
             color: var(--text-primary);
             border-radius: var(--radius-sm);
         }
 
         .form-control-glass:focus {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
             border-color: #3b82f6;
             color: var(--text-primary);
             box-shadow: none;
@@ -214,25 +240,53 @@
                 <thead>
                 <tr>
                     <th>Auteur</th>
-                    <th>Poste / Entreprise</th>
+                    <th>Rôle / Entreprise</th>
                     <th>Message</th>
                     <th>Note</th>
+                    <th>Statut</th>
                     <th class="text-end">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="testimonial : ${testimonials}">
-                    <td th:text="${testimonial.author}">Jean Dupont</td>
-                    <td th:text="${testimonial.role}">Directeur BTP</td>
-                    <td th:text="${testimonial.content}">Un accompagnement exceptionnel...</td>
+                    <td th:text="${testimonial.clientName}">Jean Dupont</td>
                     <td>
-                            <span class="text-warning">
-                                <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, testimonial.rating)}"></i>
-                            </span>
+                        <span th:text="${testimonial.role}">Directeur</span>
+                        <small th:if="${testimonial.company}" class="text-muted" th:text="'(' + ${testimonial.company} + ')'"></small>
+                    </td>
+                    <td style="max-width: 300px; color: var(--text-primary) !important;" th:text="${testimonial.content}">Un accompagnement exceptionnel...</td>
+                    <td>
+                        <span class="text-warning">
+                            <i class="fas fa-star" th:each="i : ${#numbers.sequence(1, testimonial.rating)}"></i>
+                        </span>
+                    </td>
+                    <td>
+                        <span th:if="${testimonial.isApproved}" class="badge-status badge-approved">
+                            <i class="fas fa-check-circle"></i> Approuvé
+                        </span>
+                        <span th:unless="${testimonial.isApproved}" class="badge-status badge-pending">
+                            <i class="fas fa-clock"></i> En attente
+                        </span>
                     </td>
                     <td class="text-end">
-                        <button class="btn-glass-action btn-sm me-1"><i class="fas fa-edit text-info"></i></button>
-                        <button class="btn-glass-action btn-sm"><i class="fas fa-trash text-danger"></i></button>
+                        <div class="d-inline-flex gap-1">
+                            <!-- BOUTON D'APPROBATION / MASQUAGE -->
+                            <form th:action="@{/admin/testimonials/{id}/approve(id=${testimonial.id})}" method="post" class="d-inline">
+                                <button type="submit"
+                                        class="btn-glass-action btn-sm"
+                                        th:classappend="${testimonial.isApproved} ? 'text-warning' : 'text-success'"
+                                        th:title="${testimonial.isApproved} ? 'Masquer' : 'Approuver'">
+                                    <i class="fas" th:classappend="${testimonial.isApproved} ? 'fa-eye-slash' : 'fa-check'"></i>
+                                </button>
+                            </form>
+
+                            <!-- BOUTON SUPPRESSION -->
+                            <form th:action="@{/admin/testimonials/{id}/delete(id=${testimonial.id})}" method="post" class="d-inline">
+                                <button type="submit" class="btn-glass-action btn-sm text-danger" title="Supprimer" onclick="return confirm('Supprimer ce témoignage ?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
@@ -240,6 +294,54 @@
         </div>
     </div>
 
+</div>
+
+<!-- MODAL D'AJOUT -->
+<div class="modal fade" id="addTestimonialModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-glass">
+            <div class="modal-header">
+                <h5 class="modal-title">Nouveau témoignage</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/admin/testimonials/save}" method="post">
+                <div class="modal-body d-flex flex-column gap-3">
+                    <div>
+                        <label class="form-label small text-muted">Nom du client *</label>
+                        <input type="text" name="clientName" class="form-control form-control-glass" required>
+                    </div>
+                    <div>
+                        <label class="form-label small text-muted">Rôle / Poste</label>
+                        <input type="text" name="role" class="form-control form-control-glass" placeholder="ex: Directeur BTP">
+                    </div>
+                    <div>
+                        <label class="form-label small text-muted">Entreprise</label>
+                        <input type="text" name="company" class="form-control form-control-glass">
+                    </div>
+                    <div>
+                        <label class="form-label small text-muted">Note (sur 5)</label>
+                        <select name="rating" class="form-select form-control-glass">
+                            <option value="5" selected>⭐⭐⭐⭐⭐ (5/5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                            <option value="3">⭐⭐⭐ (3/5)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label small text-muted">Témoignage *</label>
+                        <textarea name="content" class="form-control form-control-glass" rows="4" required></textarea>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="isApproved" id="isApproved" value="true" checked>
+                        <label class="form-check-label" for="isApproved">Approuver immédiatement</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn-gradient btn-sm">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- SCRIPTS & PARTICULES -->
