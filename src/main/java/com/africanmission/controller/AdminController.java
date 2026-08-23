@@ -234,7 +234,6 @@ public class AdminController {
         return "redirect:/admin/testimonials";
     }
 
-    // Compatible avec /admin/testimonials/{id}/approve et /admin/testimonials/approve/{id}
     @PostMapping({"/testimonials/{id}/approve", "/testimonials/approve/{id}"})
     public String approveTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         testimonialService.approve(id);
@@ -244,7 +243,6 @@ public class AdminController {
         return "redirect:/admin/testimonials";
     }
 
-    // Compatible avec /admin/testimonials/{id}/delete et /admin/testimonials/delete/{id}
     @PostMapping({"/testimonials/{id}/delete", "/testimonials/delete/{id}"})
     public String deleteTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         testimonialService.delete(id);
@@ -363,7 +361,7 @@ public class AdminController {
         return "redirect:/admin/activities";
     }
 
-    // PARTENAIRES
+    // PARTENAIRES (Ajusté)
     @GetMapping("/partners")
     public String managePartners(Model model) {
         model.addAttribute("partners", partnerService.getAllPartners());
@@ -374,16 +372,66 @@ public class AdminController {
     @PostMapping("/partners/add")
     public String addPartner(@RequestParam String name,
                              @RequestParam(required = false) String website,
+                             @RequestParam(required = false) String logoUrl,
+                             @RequestParam(value = "logoFile", required = false) MultipartFile logoFile,
+                             @RequestParam(required = false) String description,
                              HttpServletRequest request,
                              RedirectAttributes redirectAttributes) {
-        Partner partner = new Partner();
-        partner.setName(name);
-        partner.setWebsite(website);
-        partner.setIsActive(true);
-        partnerService.savePartner(partner);
-        redirectAttributes.addFlashAttribute("toastMessage", "Partenaire ajouté !");
+        try {
+            Partner partner = new Partner();
+            partner.setName(name);
+            partner.setWebsite(website);
+            partner.setDescription(description);
+            partner.setIsActive(true);
+
+            if (logoFile != null && !logoFile.isEmpty()) {
+                Media savedMedia = mediaService.uploadFile(logoFile, name);
+                partner.setLogoUrl(savedMedia.getFilePath());
+            } else if (logoUrl != null && !logoUrl.trim().isEmpty()) {
+                partner.setLogoUrl(logoUrl.trim());
+            }
+
+            partnerService.savePartner(partner);
+            redirectAttributes.addFlashAttribute("toastMessage", "Partenaire ajouté !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "ADD_PARTNER", "Ajout du partenaire: " + name, request.getRemoteAddr());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de l'ajout : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/partners";
+    }
+
+    @PostMapping("/partners/save")
+    public String savePartner(@ModelAttribute Partner partner,
+                              @RequestParam(value = "logoFile", required = false) MultipartFile logoFile,
+                              HttpServletRequest request,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            if (partner.getIsActive() == null) {
+                partner.setIsActive(false);
+            }
+            if (logoFile != null && !logoFile.isEmpty()) {
+                Media savedMedia = mediaService.uploadFile(logoFile, partner.getName());
+                partner.setLogoUrl(savedMedia.getFilePath());
+            }
+            partnerService.savePartner(partner);
+            redirectAttributes.addFlashAttribute("toastMessage", "Partenaire mis à jour !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "SAVE_PARTNER", "Mise à jour du partenaire: " + partner.getName(), request.getRemoteAddr());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de la modification : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/partners";
+    }
+
+    @PostMapping("/partners/toggle/{id}")
+    public String togglePartnerStatus(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        partnerService.togglePartnerStatus(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Statut du partenaire mis à jour !");
         redirectAttributes.addFlashAttribute("toastType", "success");
-        adminLogService.log(getCurrentUsername(), "ADD_PARTNER", "Ajout du partenaire: " + name, request.getRemoteAddr());
+        adminLogService.log(getCurrentUsername(), "TOGGLE_PARTNER", "Modification du statut du partenaire ID: " + id, request.getRemoteAddr());
         return "redirect:/admin/partners";
     }
 

@@ -452,7 +452,7 @@
     </div>
 </section>
 
-<!-- PARTENAIRES -->
+<!-- PARTENAIRES DYNAMIQUES -->
 <section class="py-5 partners-section">
     <div class="container">
         <div class="text-center mb-4" data-aos="fade-up">
@@ -461,8 +461,20 @@
         <div class="row align-items-center justify-content-center g-3">
             <div class="col-md-2 col-6" th:each="partner : ${partners}" data-aos="zoom-in">
                 <div class="partner-premium">
-                    <span th:text="${partner.name}">Partenaire</span>
+                    <a th:if="${partner.website != null and !#strings.isEmpty(partner.website)}"
+                       th:href="${partner.website}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="text-decoration-none text-white fw-bold">
+                        <span th:text="${partner.name}">Partenaire</span>
+                    </a>
+                    <span th:unless="${partner.website != null and !#strings.isEmpty(partner.website)}"
+                          th:text="${partner.name}">Partenaire</span>
                 </div>
+            </div>
+
+            <div class="col-12 text-center" th:if="${partners == null or partners.isEmpty()}">
+                <p class="text-muted mb-0">Aucun partenaire enregistré pour le moment.</p>
             </div>
         </div>
     </div>

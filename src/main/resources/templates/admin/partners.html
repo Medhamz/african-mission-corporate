@@ -27,7 +27,7 @@
 <div class="admin-wrapper">
     <header class="admin-header">
         <div style="display: flex; align-items: center; gap: 16px;">
-            <a href="/admin/dashboard" class="btn-back"><i class="fas fa-arrow-left"></i></a>
+            <a th:href="@{/admin/dashboard}" class="btn-back"><i class="fas fa-arrow-left"></i></a>
             <h1><i class="fas fa-handshake" style="color: var(--primary-blue);"></i> Gestion des partenaires</h1>
         </div>
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPartnerModal" style="background: var(--gradient-main); border: none;">
@@ -49,17 +49,24 @@
             <tr th:each="partner : ${partners}">
                 <td th:text="${partner.id}">1</td>
                 <td th:text="${partner.name}">Nom</td>
-                <td><a th:href="${partner.website}" target="_blank" th:text="${partner.website}" style="color: var(--primary-blue); text-decoration: none;"></a></td>
                 <td>
-                    <form method="post" th:action="@{/admin/partners/delete/{id}(id=${partner.id})}" style="display:inline;" onsubmit="return confirm('Supprimer ce partenaire ?')">
+                    <a th:if="${partner.website != null and !#strings.isEmpty(partner.website)}"
+                       th:href="${partner.website}"
+                       target="_blank"
+                       th:text="${partner.website}"
+                       style="color: var(--primary-blue); text-decoration: none;">https://...</a>
+                    <span th:unless="${partner.website != null and !#strings.isEmpty(partner.website)}" class="text-muted">Non spécifié</span>
+                </td>
+                <td>
+                    <form method="post" th:action="@{|/admin/partners/delete/${partner.id}|}" style="display:inline;" onsubmit="return confirm('Supprimer ce partenaire ?')">
                         <button type="submit" class="btn-danger-sm"><i class="fas fa-trash"></i></button>
                     </form>
                 </td>
             </tr>
-            <tr th:if="${partners.isEmpty()}">
+            <tr th:if="${partners == null or partners.isEmpty()}">
                 <td colspan="4" class="text-center text-muted" style="padding: 40px;">
                     <i class="fas fa-inbox" style="font-size: 2rem; opacity: 0.3;"></i>
-                    <p>Aucun partenaire pour le moment</p>
+                    <p class="mb-0 mt-2">Aucun partenaire pour le moment</p>
                 </td>
             </tr>
             </tbody>
@@ -75,14 +82,14 @@
                 <h5 class="modal-title" style="color: var(--text-primary);">Ajouter un partenaire</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
             </div>
-            <form method="post" action="/admin/partners/add">
+            <form method="post" th:action="@{/admin/partners/add}">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label style="color: var(--text-secondary);">Nom</label>
+                        <label class="form-label" style="color: var(--text-secondary);">Nom</label>
                         <input type="text" name="name" class="form-control" required style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
                     <div class="mb-3">
-                        <label style="color: var(--text-secondary);">Site web</label>
+                        <label class="form-label" style="color: var(--text-secondary);">Site web</label>
                         <input type="url" name="website" class="form-control" placeholder="https://..." style="background: var(--bg-primary); border: 1px solid var(--border-light); color: var(--text-primary);">
                     </div>
                 </div>
@@ -96,7 +103,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+<script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         const toastMessage = /*[[${toastMessage}]]*/ null;
         const toastType = /*[[${toastType}]]*/ 'success';

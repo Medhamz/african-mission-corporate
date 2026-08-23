@@ -45,8 +45,18 @@ public class HomeController {
 
     @GetMapping("/about")
     public String about(Model model) {
+        List<Partner> partners = partnerService.getAllActivePartners();
+        model.addAttribute("partners", partners);
         model.addAttribute("pageTitle", "À propos - African Mission Corporate");
         return "about";
+    }
+
+    @GetMapping("/partners")
+    public String partners(Model model) {
+        List<Partner> partners = partnerService.getAllActivePartners();
+        model.addAttribute("partners", partners);
+        model.addAttribute("pageTitle", "Nos Partenaires - African Mission Corporate");
+        return "partners";
     }
 
     @GetMapping("/activities")

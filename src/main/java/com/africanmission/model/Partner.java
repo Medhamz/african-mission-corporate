@@ -25,6 +25,9 @@ public class Partner {
     @Column(length = 255)
     private String website;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "display_order")
     private Integer displayOrder = 0;
 
