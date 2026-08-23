@@ -3,15 +3,20 @@ package com.africanmission.controller;
 import com.africanmission.model.Activity;
 import com.africanmission.model.Partner;
 import com.africanmission.model.Project;
+import com.africanmission.model.Testimonial;
 import com.africanmission.service.ActivityService;
 import com.africanmission.service.FaqService;
 import com.africanmission.service.MediaService;
 import com.africanmission.service.PartnerService;
 import com.africanmission.service.ProjectService;
+import com.africanmission.service.TestimonialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -24,6 +29,7 @@ public class HomeController {
     private final MediaService mediaService;
     private final ProjectService projectService;
     private final FaqService faqService;
+    private final TestimonialService testimonialService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -111,8 +117,27 @@ public class HomeController {
 
     @GetMapping("/testimonials")
     public String testimonials(Model model) {
+        model.addAttribute("testimonials", testimonialService.getApprovedTestimonials());
         model.addAttribute("pageTitle", "Témoignages - African Mission Corporate");
         return "testimonials";
+    }
+
+    @PostMapping("/testimonials/submit")
+    public String submitTestimonial(@RequestParam String clientName,
+                                    @RequestParam String content,
+                                    @RequestParam(required = false) String company,
+                                    @RequestParam(defaultValue = "5") Integer rating,
+                                    RedirectAttributes redirectAttributes) {
+        Testimonial testimonial = new Testimonial();
+        testimonial.setClientName(clientName);
+        testimonial.setContent(content);
+        testimonial.setCompany(company);
+        testimonial.setRating(rating);
+        testimonial.setIsApproved(false);
+        testimonialService.save(testimonial);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Merci pour votre témoignage ! Il sera publié dès validation par notre équipe.");
+        return "redirect:/testimonials";
     }
 
     @GetMapping("/gallery")

@@ -10,4 +10,5 @@ import java.util.List;
 public interface TestimonialRepository extends JpaRepository<Testimonial, Long> {
     List<Testimonial> findByIsApprovedTrueOrderByDisplayOrderAsc();
     List<Testimonial> findByIsApprovedFalseOrderByCreatedAtDesc();
+    long countByIsApprovedFalse();
 }

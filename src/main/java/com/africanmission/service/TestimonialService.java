@@ -45,6 +45,6 @@ public class TestimonialService {
     }
 
     public long countPending() {
-        return testimonialRepository.findByIsApprovedFalseOrderByCreatedAtDesc().size();
+        return testimonialRepository.countByIsApprovedFalse();
     }
 }
