@@ -1,29 +1,71 @@
-<tbody>
-<tr th:each="t : ${testimonials}">
-    <td th:text="${t.id}">1</td>
-    <td th:text="${t.clientName}" style="color: var(--text-primary); font-weight: 500;">Client</td>
-    <td th:text="${t.company}">Entreprise</td>
-    <td th:text="${t.content}">Contenu</td>
-    <td>
-        <span class="rating-stars" th:each="i : ${#numbers.sequence(1, t.rating)}">★</span>
-    </td>
-    <td>
-        <span th:if="${t.isApproved}" class="badge-approved"><i class="fas fa-check me-1"></i>Approuvé</span>
-        <span th:unless="${t.isApproved}" class="badge-pending"><i class="fas fa-clock me-1"></i>En attente</span>
-    </td>
-    <td>
-        <!-- Bouton Approuver -->
-        <form method="post" th:action="@{/admin/testimonials/approve/{id}(id=${t.id})}" style="display:inline;" th:unless="${t.isApproved}">
-            <button type="submit" class="btn-success-sm" title="Approuver le témoignage">
-                <i class="fas fa-check"></i> Approuver
-            </button>
-        </form>
-        <!-- Bouton Supprimer -->
-        <form method="post" th:action="@{/admin/testimonials/delete/{id}(id=${t.id})}" style="display:inline;" onsubmit="return confirm('Supprimer ce témoignage ?')">
-            <button type="submit" class="btn-danger-sm" title="Supprimer">
-                <i class="fas fa-trash"></i>
-            </button>
-        </form>
-    </td>
-</tr>
-</tbody>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle}">Gestion des témoignages</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <h2 class="mb-4">Gestion des Témoignages</h2>
+
+    <!-- Notifications Toast / Flash -->
+    <div th:if="${toastMessage}" class="alert alert-dismissible fade show"
+         th:classappend="${toastType == 'success' ? 'alert-success' : 'alert-danger'}" role="alert">
+        <span th:text="${toastMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Entreprise</th>
+                    <th>Note</th>
+                    <th>Message</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${testimonials.empty}">
+                    <td colspan="7" class="text-center text-muted">Aucun témoignage enregistré.</td>
+                </tr>
+                <tr th:each="t : ${testimonials}">
+                    <td th:text="${t.id}">1</td>
+                    <td th:text="${t.clientName}">Nom</td>
+                    <td th:text="${t.company != null ? t.company : '-'}">Entreprise</td>
+                    <td>
+                        <span class="badge bg-warning text-dark" th:text="${t.rating + ' / 5'}">5 / 5</span>
+                    </td>
+                    <td th:text="${t.content}">Message</td>
+                    <td>
+                        <span th:if="${t.isApproved}" class="badge bg-success">Approuvé</span>
+                        <span th:unless="${t.isApproved}" class="badge bg-secondary">En attente</span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <form th:unless="${t.isApproved}" th:action="@{/admin/testimonials/approve/{id}(id=${t.id})}" method="post">
+                                <button type="submit" class="btn btn-sm btn-success" title="Approuver">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                            <form th:action="@{/admin/testimonials/delete/{id}(id=${t.id})}" method="post">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce témoignage ?');" title="Supprimer">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
