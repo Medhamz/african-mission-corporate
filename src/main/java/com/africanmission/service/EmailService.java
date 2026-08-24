@@ -1,10 +1,9 @@
 package com.africanmission.service;
 
-// CORRECT
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,8 +15,12 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @Value("${app.mail.from:africanmc@african-mission-corporate.com}")
+    private String mailFrom;
+
     public void sendContactConfirmation(String to, String name, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(mailFrom);
         mail.setTo(to);
         mail.setSubject("Confirmation de votre message - African Mission Corporate");
         mail.setText("Bonjour " + name + ",\n\n" +
@@ -31,7 +34,8 @@ public class EmailService {
 
     public void sendAdminNotification(String name, String email, String subject, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo("admin@africanmission.com");
+        mail.setFrom(mailFrom);
+        mail.setTo("africanmc@african-mission-corporate.com");
         mail.setSubject("Nouveau message de contact - " + subject);
         mail.setText("Nouveau message de :\n\n" +
                 "Nom : " + name + "\n" +
@@ -44,6 +48,7 @@ public class EmailService {
     public void sendHtmlEmail(String to, String subject, String content) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom(mailFrom);
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(content, true);
