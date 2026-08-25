@@ -43,6 +43,7 @@ public class AdminController {
     private final MediaService mediaService;
     private final PageService pageService;
     private final MaintenanceService maintenanceService;
+    private final CareerService careerService;
 
     @GetMapping("/login")
     public String login() {
@@ -111,6 +112,55 @@ public class AdminController {
 
         model.addAttribute("pageTitle", "Dashboard - Administration");
         return "admin/dashboard";
+    }
+
+    // GESTION DES CARRIÈRES
+    @GetMapping("/careers")
+    public String manageCareers(Model model) {
+        model.addAttribute("careers", careerService.getAllCareers());
+        model.addAttribute("pageTitle", "Gestion des carrières");
+        return "admin/careers";
+    }
+
+    @PostMapping("/careers/add")
+    public String addCareer(@RequestParam String title,
+                            @RequestParam String location,
+                            @RequestParam String contractType,
+                            @RequestParam(required = false) String experience,
+                            @RequestParam(required = false) String badge,
+                            @RequestParam(required = false) String icon,
+                            @RequestParam(defaultValue = "0") Integer displayOrder,
+                            HttpServletRequest request,
+                            RedirectAttributes redirectAttributes) {
+        try {
+            Career career = new Career();
+            career.setTitle(title);
+            career.setLocation(location);
+            career.setContractType(contractType);
+            career.setExperience(experience);
+            career.setBadge(badge);
+            career.setIcon(icon != null && !icon.isBlank() ? icon : "fas fa-briefcase");
+            career.setDisplayOrder(displayOrder);
+            career.setIsActive(true);
+
+            careerService.save(career);
+            redirectAttributes.addFlashAttribute("toastMessage", "Offre d'emploi ajoutée avec succès !");
+            redirectAttributes.addFlashAttribute("toastType", "success");
+            adminLogService.log(getCurrentUsername(), "ADD_CAREER", "Ajout de l'offre: " + title, request.getRemoteAddr());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("toastMessage", "Erreur lors de l'ajout : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("toastType", "error");
+        }
+        return "redirect:/admin/careers";
+    }
+
+    @PostMapping("/careers/delete/{id}")
+    public String deleteCareer(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        careerService.delete(id);
+        redirectAttributes.addFlashAttribute("toastMessage", "Offre d'emploi supprimée !");
+        redirectAttributes.addFlashAttribute("toastType", "success");
+        adminLogService.log(getCurrentUsername(), "DELETE_CAREER", "Suppression de l'offre ID: " + id, request.getRemoteAddr());
+        return "redirect:/admin/careers";
     }
 
     // GESTION DES UTILISATEURS ADMIN

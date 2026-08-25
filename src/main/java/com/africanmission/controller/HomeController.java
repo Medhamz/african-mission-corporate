@@ -1,10 +1,12 @@
 package com.africanmission.controller;
 
 import com.africanmission.model.Activity;
+import com.africanmission.model.Career;
 import com.africanmission.model.Partner;
 import com.africanmission.model.Project;
 import com.africanmission.model.Testimonial;
 import com.africanmission.service.ActivityService;
+import com.africanmission.service.CareerService;
 import com.africanmission.service.FaqService;
 import com.africanmission.service.MediaService;
 import com.africanmission.service.NewsletterService;
@@ -19,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class HomeController {
     private final FaqService faqService;
     private final TestimonialService testimonialService;
     private final NewsletterService newsletterService;
+    private final CareerService careerService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -101,6 +103,8 @@ public class HomeController {
 
     @GetMapping("/careers")
     public String careers(Model model) {
+        List<Career> careers = careerService.getActiveCareers();
+        model.addAttribute("careers", careers);
         model.addAttribute("pageTitle", "Carrières - African Mission Corporate");
         return "careers";
     }

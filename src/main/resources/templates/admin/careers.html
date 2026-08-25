@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Gestion des carrières</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        :root {
+            --bg-primary: #0b1120;
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --radius-lg: 20px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .admin-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            color: #fff;
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: #3b82f6;
+            box-shadow: none;
+        }
+        .table {
+            color: var(--text-primary);
+        }
+        .table th, .table td {
+            border-color: var(--border-light);
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid" style="max-width: 1440px;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-3" style="border-bottom: 1px solid var(--border-light);">
+        <div>
+            <h1 class="h3 fw-bold mb-0">Gestion des offres d'emploi</h1>
+            <small style="color: var(--text-secondary);">Ajoutez et modifiez les opportunités affichées sur le site.</small>
+        </div>
+        <a href="/admin/dashboard" class="btn btn-outline-light rounded-pill px-4">
+            <i class="fas fa-arrow-left me-2"></i> Dashboard
+        </a>
+    </div>
+
+    <!-- Alertes Feedback -->
+    <div th:if="${toastMessage}" th:class="'alert alert-' + (${toastType == 'success' ? 'success' : 'danger'}) + ' alert-dismissible fade show'" role="alert">
+        <span th:text="${toastMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Formulaire d'ajout -->
+    <div class="admin-card mb-4">
+        <h5 class="fw-bold mb-3"><i class="fas fa-plus-circle text-primary me-2"></i> Ajouter une nouvelle offre</h5>
+        <form action="/admin/careers/add" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Titre du poste</label>
+                    <input type="text" name="title" class="form-control" placeholder="ex: Ingénieur Web" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Lieu</label>
+                    <input type="text" name="location" class="form-control" placeholder="ex: Bamako, Mali / Télétravail" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Type de contrat</label>
+                    <input type="text" name="contractType" class="form-control" placeholder="ex: CDI, CDD, Stage" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Expérience requise</label>
+                    <input type="text" name="experience" class="form-control" placeholder="ex: Expérience 3 ans min.">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Badge (Optionnel)</label>
+                    <input type="text" name="badge" class="form-control" placeholder="ex: Urgent, Nouveau">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Icône FontAwesome</label>
+                    <input type="text" name="icon" class="form-control" placeholder="ex: fas fa-code (par défaut fa-briefcase)">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Ordre d'affichage</label>
+                    <input type="number" name="displayOrder" class="form-control" value="0">
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4" style="background: var(--gradient-main); border:none;">
+                        <i class="fas fa-save me-2"></i> Enregistrer l'offre
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Liste des offres -->
+    <div class="admin-card">
+        <h5 class="fw-bold mb-3"><i class="fas fa-list text-primary me-2"></i> Liste des offres actuelles</h5>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                <tr>
+                    <th>Icône</th>
+                    <th>Titre</th>
+                    <th>Lieu</th>
+                    <th>Contrat</th>
+                    <th>Badge</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="job : ${careers}">
+                    <td><i th:class="${job.icon}"></i></td>
+                    <td th:text="${job.title}" class="fw-semibold"></td>
+                    <td th:text="${job.location}"></td>
+                    <td th:text="${job.contractType}"></td>
+                    <td>
+                        <span class="badge bg-info text-dark" th:text="${job.badge}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${job.isActive}" class="badge bg-success">Actif</span>
+                        <span th:unless="${job.isActive}" class="badge bg-secondary">Inactif</span>
+                    </td>
+                    <td class="text-end">
+                        <form th:action="@{/admin/careers/delete/{id}(id=${job.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" onclick="return confirm('Supprimer cette offre ?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(careers)}">
+                    <td colspan="7" class="text-center text-muted py-4">Aucune offre enregistrée.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

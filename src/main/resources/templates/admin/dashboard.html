@@ -40,7 +40,6 @@
             overflow-x: hidden;
         }
 
-        /* Canvas Particules d'arrière-plan */
         #bg-particles {
             position: fixed;
             top: 0;
@@ -309,16 +308,12 @@
         }
     </style>
 
-    <!-- Favicon (icône de l'onglet du navigateur) -->
     <link rel="icon" href="/images/image.jpg" type="image/jpeg">
-
-    <!-- Image de prévisualisation (partage de liens, WhatsApp, Facebook) -->
     <meta property="og:image" content="/images/image.jpg">
     <meta name="twitter:image" content="/images/image.jpg">
 </head>
 <body>
 
-<!-- Particules lumineuses dynamiques -->
 <canvas id="bg-particles"></canvas>
 
 <div class="dashboard-wrapper">
@@ -424,13 +419,14 @@
         <div class="col-12">
             <div class="section-title">
                 <i class="fas fa-bolt text-primary"></i> Gestion du contenu
-                <span class="title-badge">16 modules</span>
+                <span class="title-badge">17 modules</span>
             </div>
         </div>
 
         <div class="col-md-3 col-6"><a href="/admin/activities" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-tasks"></i></div><div class="qa-label">Activités</div></a></div>
         <div class="col-md-3 col-6"><a href="/admin/partners" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-handshake"></i></div><div class="qa-label">Partenaires</div></a></div>
         <div class="col-md-3 col-6"><a href="/admin/projects-admin" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-rocket"></i></div><div class="qa-label">Projets</div></a></div>
+        <div class="col-md-3 col-6"><a href="/admin/careers" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-briefcase"></i></div><div class="qa-label">Carrières</div></a></div>
         <div class="col-md-3 col-6"><a href="/admin/testimonials" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-star"></i></div><div class="qa-label">Témoignages</div></a></div>
         <div class="col-md-3 col-6"><a href="/admin/team-members" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-users"></i></div><div class="qa-label">Équipe</div></a></div>
         <div class="col-md-3 col-6"><a href="/admin/faqs" class="quick-action-3d"><div class="qa-icon"><i class="fas fa-question-circle"></i></div><div class="qa-label">FAQ</div></a></div>
@@ -474,7 +470,6 @@
 <!-- SCRIPTS & ANIMATIONS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Particules lumineuses d'arrière-plan pour le dashboard
     const canvas = document.getElementById('bg-particles');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -524,9 +519,7 @@
     }
     animate();
 
-    // Chart.js Initialisation
     document.addEventListener('DOMContentLoaded', function() {
-        // Activity Chart
         const ctx1 = document.getElementById('activityChart').getContext('2d');
         new Chart(ctx1, {
             type: 'bar',
@@ -541,7 +534,6 @@
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // Message Chart
         const ctx2 = document.getElementById('messageChart').getContext('2d');
         new Chart(ctx2, {
             type: 'line',
@@ -558,7 +550,6 @@
             options: { responsive: true, plugins: { legend: { display: false } } }
         });
 
-        // Pie Chart
         const ctx3 = document.getElementById('pieChart').getContext('2d');
         new Chart(ctx3, {
             type: 'doughnut',
@@ -569,7 +560,6 @@
             options: { responsive: true, cutout: '70%' }
         });
 
-        // Chat Chart
         const ctx4 = document.getElementById('chatChart').getContext('2d');
         new Chart(ctx4, {
             type: 'bar',
