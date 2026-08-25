@@ -17,7 +17,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${app.mail.from:africanmc@african-mission-corporate.com}")
+    @Value("${app.mail.from:sidimohamedhamza2@gmail.com}")
     private String mailFrom;
 
     public void sendContactConfirmation(String to, String name, String message) {
@@ -43,7 +43,7 @@ public class EmailService {
         try {
             SimpleMailMessage mail = new SimpleMailMessage();
             mail.setFrom(mailFrom);
-            mail.setTo("africanmc@african-mission-corporate.com");
+            mail.setTo("sidimohamedhamza2@gmail.com");
             mail.setSubject("Nouveau message de contact - " + subject);
             mail.setText("Nouveau message de :\n\n" +
                     "Nom : " + name + "\n" +
