@@ -140,7 +140,7 @@
                         <span class="badge bg-info text-dark" th:text="${job.badge}"></span>
                     </td>
                     <td>
-                        <span th:if="${job.isActive}" class="badge bg-success">Actif</span>
+                        <span th:if="${job.active}" class="badge bg-success">Actif</span>
                         <span th:unless="${job.isActive}" class="badge bg-secondary">Inactif</span>
                     </td>
                     <td class="text-end">
