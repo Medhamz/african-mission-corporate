@@ -141,7 +141,7 @@
                     </td>
                     <td>
                         <span th:if="${job.active}" class="badge bg-success">Actif</span>
-                        <span th:unless="${job.isActive}" class="badge bg-secondary">Inactif</span>
+                        <span th:unless="${job.active}" class="badge bg-secondary">Inactif</span>
                     </td>
                     <td class="text-end">
                         <form th:action="@{/admin/careers/delete/{id}(id=${job.id})}" method="post" style="display:inline;">
