@@ -36,7 +36,7 @@ public class Career {
 
     private Integer displayOrder = 0;
 
-    private Boolean isActive = true;
+    private Boolean active = true;
 
     private LocalDate createdAt = LocalDate.now();
 }
