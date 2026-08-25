@@ -141,7 +141,7 @@ public class AdminController {
             career.setBadge(badge);
             career.setIcon(icon != null && !icon.isBlank() ? icon : "fas fa-briefcase");
             career.setDisplayOrder(displayOrder);
-            career.setIsActive(true);
+            career.setActive(true);
 
             careerService.save(career);
             redirectAttributes.addFlashAttribute("toastMessage", "Offre d'emploi ajoutée avec succès !");
@@ -284,7 +284,7 @@ public class AdminController {
         return "redirect:/admin/testimonials";
     }
 
-    @PostMapping({"/testimonials/{id}/approve", "/testimonials/approve/{id}"})
+    @PostMapping("/testimonials/{id}/approve")
     public String approveTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         testimonialService.approve(id);
         redirectAttributes.addFlashAttribute("toastMessage", "Statut du témoignage mis à jour !");
@@ -293,13 +293,23 @@ public class AdminController {
         return "redirect:/admin/testimonials";
     }
 
-    @PostMapping({"/testimonials/{id}/delete", "/testimonials/delete/{id}"})
+    @PostMapping("/testimonials/approve/{id}")
+    public String approveTestimonialLegacy(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        return approveTestimonial(id, request, redirectAttributes);
+    }
+
+    @PostMapping("/testimonials/{id}/delete")
     public String deleteTestimonial(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         testimonialService.delete(id);
         redirectAttributes.addFlashAttribute("toastMessage", "Témoignage supprimé !");
         redirectAttributes.addFlashAttribute("toastType", "success");
         adminLogService.log(getCurrentUsername(), "DELETE_TESTIMONIAL", "Suppression du témoignage ID: " + id, request.getRemoteAddr());
         return "redirect:/admin/testimonials";
+    }
+
+    @PostMapping("/testimonials/delete/{id}")
+    public String deleteTestimonialLegacy(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        return deleteTestimonial(id, request, redirectAttributes);
     }
 
     // PROJETS
@@ -563,7 +573,7 @@ public class AdminController {
         return "redirect:/admin/newsletter";
     }
 
-    @PostMapping({"/newsletter/toggle/{id}", "/newsletter/unsubscribe/{id}"})
+    @PostMapping("/newsletter/toggle/{id}")
     public String toggleSubscriberStatus(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         try {
             newsletterService.toggleStatus(id);
@@ -575,6 +585,11 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("toastType", "error");
         }
         return "redirect:/admin/newsletter";
+    }
+
+    @PostMapping("/newsletter/unsubscribe/{id}")
+    public String unsubscribeSubscriberStatus(@PathVariable Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        return toggleSubscriberStatus(id, request, redirectAttributes);
     }
 
     @PostMapping("/newsletter/update/{id}")
