@@ -766,7 +766,7 @@ public class AdminController {
     // NOTIFICATIONS
     @GetMapping("/notifications")
     public String getNotifications(Model model) {
-        model.addAttribute("notifications", notificationService.getUnreadNotifications());
+        model.addAttribute("notifications", notificationService.getAllActiveNotifications());
         model.addAttribute("unreadCount", notificationService.getUnreadCount());
         model.addAttribute("pageTitle", "Notifications");
         return "admin/notifications";

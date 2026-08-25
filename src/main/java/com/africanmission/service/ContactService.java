@@ -12,16 +12,27 @@ import java.util.List;
 public class ContactService {
 
     private final ContactRepository contactRepository;
+    private final NotificationService notificationService;
 
     public ContactMessage saveMessage(ContactMessage message) {
-        return contactRepository.save(message);
+        ContactMessage savedMessage = contactRepository.save(message);
+
+        // Déclenchement de la notification pour le Back-Office
+        notificationService.createNotification(
+                "Nouveau message de contact",
+                "Message de " + savedMessage.getName() + " (" + savedMessage.getEmail() + ") : " +
+                        (savedMessage.getSubject() != null ? savedMessage.getSubject() : "Sans sujet"),
+                "info",
+                "/admin/messages"
+        );
+
+        return savedMessage;
     }
 
     public List<ContactMessage> getAllUnreadMessages() {
         return contactRepository.findByIsReadFalseOrderByCreatedAtDesc();
     }
 
-    // ✅ Méthode ajoutée pour récupérer TOUS les messages
     public List<ContactMessage> getAllMessages() {
         return contactRepository.findAll();
     }
@@ -33,7 +44,6 @@ public class ContactService {
         return contactRepository.save(message);
     }
 
-    // ✅ Méthode ajoutée pour supprimer un message
     public void deleteMessage(Long id) {
         contactRepository.deleteById(id);
     }

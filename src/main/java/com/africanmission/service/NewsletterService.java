@@ -16,6 +16,7 @@ public class NewsletterService {
 
     private final NewsletterRepository newsletterRepository;
     private final EmailService emailService;
+    private final NotificationService notificationService;
 
     public Newsletter subscribe(String email) {
         if (email == null || email.trim().isEmpty()) {
@@ -25,19 +26,30 @@ public class NewsletterService {
         String normalizedEmail = email.trim().toLowerCase();
         Optional<Newsletter> existingSubscriber = newsletterRepository.findByEmailIgnoreCase(normalizedEmail);
 
+        Newsletter subscriber;
         if (existingSubscriber.isPresent()) {
-            Newsletter subscriber = existingSubscriber.get();
+            subscriber = existingSubscriber.get();
             if (Boolean.TRUE.equals(subscriber.getIsActive())) {
                 throw new IllegalStateException("Cet e-mail est déjà abonné à la newsletter.");
             }
             subscriber.setIsActive(true);
-            return newsletterRepository.save(subscriber);
+            subscriber = newsletterRepository.save(subscriber);
+        } else {
+            subscriber = new Newsletter();
+            subscriber.setEmail(normalizedEmail);
+            subscriber.setIsActive(true);
+            subscriber = newsletterRepository.save(subscriber);
         }
 
-        Newsletter subscriber = new Newsletter();
-        subscriber.setEmail(normalizedEmail);
-        subscriber.setIsActive(true);
-        return newsletterRepository.save(subscriber);
+        // Déclenchement de la notification pour le Back-Office
+        notificationService.createNotification(
+                "Nouvel abonné à la Newsletter",
+                "L'adresse " + subscriber.getEmail() + " s'est abonnée avec succès.",
+                "success",
+                "/admin/newsletter"
+        );
+
+        return subscriber;
     }
 
     public void unsubscribe(String email) {

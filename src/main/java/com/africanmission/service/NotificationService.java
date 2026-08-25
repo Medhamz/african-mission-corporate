@@ -14,53 +14,80 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
+    /**
+     * Crée et enregistre une notification système
+     */
     public Notification createNotification(String title, String message, String type, String targetUrl) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setMessage(message);
-        notification.setType(type);
+        notification.setType(type != null ? type : "info");
         notification.setTargetUrl(targetUrl);
         notification.setIsRead(false);
         notification.setIsDismissed(false);
         return notificationRepository.save(notification);
     }
 
-    public List<Notification> getUnreadNotifications() {
-        return notificationRepository.findTop10ByIsReadFalseAndIsDismissedFalseOrderByCreatedAtDesc();
+    /**
+     * Récupère toutes les notifications non supprimées (lues + non lues)
+     */
+    public List<Notification> getAllActiveNotifications() {
+        return notificationRepository.findByIsDismissedFalseOrderByCreatedAtDesc();
     }
 
+    /**
+     * Récupère les notifications non lues pour le menu rapide
+     */
+    public List<Notification> getUnreadNotifications() {
+        return notificationRepository.findByIsReadFalseAndIsDismissedFalseOrderByCreatedAtDesc();
+    }
+
+    /**
+     * Compte des notifications non lues pour les badges
+     */
     public long getUnreadCount() {
         return notificationRepository.countByIsReadFalseAndIsDismissedFalse();
     }
 
-    public Notification markAsRead(Long id) {
-        Notification notification = notificationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Notification non trouvée"));
-        notification.setIsRead(true);
-        notification.setReadAt(LocalDateTime.now());
-        return notificationRepository.save(notification);
+    /**
+     * Marquer une notification comme lue
+     */
+    public void markAsRead(Long id) {
+        notificationRepository.findById(id).ifPresent(n -> {
+            n.setIsRead(true);
+            n.setReadAt(LocalDateTime.now());
+            notificationRepository.save(n);
+        });
     }
 
-    public Notification dismiss(Long id) {
-        Notification notification = notificationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Notification non trouvée"));
-        notification.setIsDismissed(true);
-        return notificationRepository.save(notification);
+    /**
+     * Supprimer une notification (masquer pour l'administrateur)
+     */
+    public void dismiss(Long id) {
+        notificationRepository.findById(id).ifPresent(n -> {
+            n.setIsDismissed(true);
+            notificationRepository.save(n);
+        });
     }
 
-    public void dismissAll() {
-        List<Notification> notifications = notificationRepository.findByIsReadFalseAndIsDismissedFalseOrderByCreatedAtDesc();
-        notifications.forEach(n -> n.setIsDismissed(true));
-        notificationRepository.saveAll(notifications);
-    }
-
-    public Notification markAllAsRead() {
-        List<Notification> notifications = notificationRepository.findByIsReadFalseAndIsDismissedFalseOrderByCreatedAtDesc();
-        notifications.forEach(n -> {
+    /**
+     * Tout marquer comme lu
+     */
+    public void markAllAsRead() {
+        List<Notification> unread = notificationRepository.findByIsReadFalseAndIsDismissedFalseOrderByCreatedAtDesc();
+        unread.forEach(n -> {
             n.setIsRead(true);
             n.setReadAt(LocalDateTime.now());
         });
-        notificationRepository.saveAll(notifications);
-        return null;
+        notificationRepository.saveAll(unread);
+    }
+
+    /**
+     * Tout supprimer / masquer
+     */
+    public void dismissAll() {
+        List<Notification> active = notificationRepository.findByIsDismissedFalseOrderByCreatedAtDesc();
+        active.forEach(n -> n.setIsDismissed(true));
+        notificationRepository.saveAll(active);
     }
 }
