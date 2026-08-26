@@ -251,7 +251,7 @@
                 </div>
                 <div>
                     <span class="text-muted small fw-semibold d-block">Non Lus</span>
-                    <h4 class="mb-0 fw-bold" th:text="${messages != null ? messages.stream().filter(m -> !m.isRead).count() : 0}">0</h4>
+                    <h4 class="mb-0 fw-bold" th:text="${unreadMessagesCount}">0</h4>
                 </div>
             </div>
         </div>
@@ -262,7 +262,7 @@
                 </div>
                 <div>
                     <span class="text-muted small fw-semibold d-block">Traités / Lus</span>
-                    <h4 class="mb-0 fw-bold" th:text="${messages != null ? messages.stream().filter(m -> m.isRead).count() : 0}">0</h4>
+                    <h4 class="mb-0 fw-bold" th:text="${readMessagesCount}">0</h4>
                 </div>
             </div>
         </div>

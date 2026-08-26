@@ -507,7 +507,13 @@ public class AdminController {
     // MESSAGES
     @GetMapping("/messages")
     public String manageMessages(Model model) {
-        model.addAttribute("messages", contactService.getAllMessages());
+        List<ContactMessage> messages = contactService.getAllMessages();
+        long readCount = (messages != null) ? messages.stream().filter(m -> Boolean.TRUE.equals(m.getIsRead())).count() : 0;
+        long unreadCount = (messages != null) ? (messages.size() - readCount) : 0;
+
+        model.addAttribute("messages", messages);
+        model.addAttribute("readMessagesCount", readCount);
+        model.addAttribute("unreadMessagesCount", unreadCount);
         model.addAttribute("pageTitle", "Gestion des messages");
         return "admin/messages";
     }
